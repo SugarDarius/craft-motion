@@ -1,9 +1,13 @@
 'use client'
 
-export function EditorCanvas() {
+export function EditorCanvas({
+  canvasRef,
+}: {
+  canvasRef: React.MutableRefObject<HTMLCanvasElement | null>
+}) {
   return (
     <div className='flex h-full w-full flex-col items-center justify-center overflow-hidden'>
-      <canvas id='canvas' className='h-full w-full' />
+      <canvas ref={canvasRef} id='canvas' className='h-full w-full' />
     </div>
   )
 }
