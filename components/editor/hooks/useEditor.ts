@@ -43,7 +43,7 @@ export function useEditor(): UseEditorReturnType {
     return (): void => {
       canvas.dispose()
     }
-  }, [])
+  }, [canvasRef])
 
   useEffect(() => {
     renderCanvas({

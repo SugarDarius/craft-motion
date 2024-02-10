@@ -11,6 +11,7 @@ export function setupCanvas({
 }): Canvas {
   const canvasElement =
     targetCanvasRef.current ?? document.getElementById('canvas')
+
   const canvas = new fabric.Canvas(targetCanvasRef.current, {
     width: canvasElement?.clientWidth ?? 0,
     height: canvasElement?.clientHeight ?? 0,
@@ -30,6 +31,28 @@ export function renderCanvas({
 }): void {
   if (fabricCanvasRef.current) {
     fabricCanvasRef.current.clear()
+
+    // @note: working box
+    const width = Math.round(fabricCanvasRef.current.getWidth()) * 0.6
+    const height = width / (16 / 9)
+
+    const workingBoxRect = new fabric.Rect({
+      originX: 'center',
+      originY: 'center',
+      left: fabricCanvasRef.current.getWidth() / 2,
+      top: fabricCanvasRef.current.getHeight() / 2,
+      width,
+      height,
+      fill: 'white',
+      shadow: new fabric.Shadow({
+        color: '#88A0EB',
+        blur: 12,
+      }),
+      selectable: false,
+      hoverCursor: 'default',
+    })
+
+    fabricCanvasRef.current.add(workingBoxRect)
 
     for (const [objectId, craftMotionObject] of canvasObjects) {
       fabric.util.enlivenObjects(
@@ -86,5 +109,9 @@ export function handleCanvasMouseDown({
       type: currentSelectedShapeRef.current,
       pointer: pointer as PointerEvent,
     })
+
+    if (currentDrawnShapeRef.current) {
+      canvas.add(currentDrawnShapeRef.current.fabricObject)
+    }
   }
 }
