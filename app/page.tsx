@@ -1,3 +1,8 @@
+import { LiveblocksRoom } from './liveblocks-room'
 export default function Page() {
-  return null
+  return (
+    <LiveblocksRoom>
+      <div />
+    </LiveblocksRoom>
+  )
 }
