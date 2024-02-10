@@ -3,6 +3,7 @@ import { Inter as FontSans } from 'next/font/google'
 
 import { cn } from '@/lib/utils'
 import { ThemeProvider } from '@/components/theme-provider'
+import { LiveblocksRoom } from './liveblocks-room'
 
 import './globals.css'
 
@@ -32,7 +33,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <LiveblocksRoom>{children}</LiveblocksRoom>
         </ThemeProvider>
       </body>
     </html>
