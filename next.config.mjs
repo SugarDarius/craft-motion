@@ -1,4 +1,10 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  webpack: (config) => {
+    config.resolve.alias.canvas = false
 
-export default nextConfig;
+    return config
+  },
+}
+
+export default nextConfig
