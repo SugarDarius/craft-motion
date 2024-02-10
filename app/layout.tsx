@@ -22,14 +22,11 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body
-        className={cn(
-          'font-fontSans min-h-screen bg-background antialiased',
-          fontSans.variable
-        )}
+        className={cn('bg-background font-sans antialiased', fontSans.variable)}
       >
         <ThemeProvider
           attribute='class'
-          defaultTheme='system'
+          defaultTheme='dark'
           enableSystem
           disableTransitionOnChange
         >

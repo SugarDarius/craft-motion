@@ -1,3 +1,8 @@
+import { AppView } from '@/components/app-view'
 export default function Page() {
-  return <div />
+  return (
+    <AppView>
+      <div />
+    </AppView>
+  )
 }
