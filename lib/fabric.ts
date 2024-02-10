@@ -19,6 +19,38 @@ export function setupCanvas({
   return canvas
 }
 
+export function renderCanvas({
+  canvasObjects,
+  fabricCanvasRef,
+  activeObjectRef,
+}: {
+  canvasObjects: Map<string, CraftMotionObject>
+  fabricCanvasRef: React.MutableRefObject<Canvas | null>
+  activeObjectRef: React.MutableRefObject<CraftMotionObject | null>
+}): void {
+  if (fabricCanvasRef.current) {
+    fabricCanvasRef.current.clear()
+
+    for (const [objectId, craftMotionObject] of canvasObjects) {
+      fabric.util.enlivenObjects(
+        [craftMotionObject.fabricObject],
+        (enlivenObjects: fabric.Object[]): void => {
+          for (const enlivenObject of enlivenObjects) {
+            if (activeObjectRef.current?.objectId === objectId) {
+              fabricCanvasRef.current?.setActiveObject(enlivenObject)
+            }
+
+            fabricCanvasRef.current?.add(enlivenObject)
+          }
+        },
+        'fabric'
+      )
+    }
+
+    fabricCanvasRef.current.renderAll()
+  }
+}
+
 export function handleCanvasMouseDown({
   options,
   canvas,

@@ -5,6 +5,7 @@ import { ReloadIcon } from '@radix-ui/react-icons'
 import { ClientSideSuspense } from '@liveblocks/react'
 
 import { RoomProvider } from '@/liveblocks.config'
+import { LiveMap, LiveObject } from '@liveblocks/client'
 
 function LiveblocksRoomSuspenseFallback() {
   return (
@@ -25,6 +26,9 @@ export function LiveblocksRoom({ children }: { children: React.ReactNode }) {
     <RoomProvider
       id={ROOM_ID}
       initialPresence={{ cursor: null, cursorColor: null, editingText: null }}
+      initialStorage={{
+        craftMotionData: new LiveObject({ canvasObjects: new LiveMap() }),
+      }}
     >
       <ClientSideSuspense fallback={<LiveblocksRoomSuspenseFallback />}>
         {() => children}

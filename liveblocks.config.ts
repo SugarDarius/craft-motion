@@ -1,4 +1,4 @@
-import { LiveMap, Lson, createClient } from '@liveblocks/client'
+import { LiveMap, LiveObject, Lson, createClient } from '@liveblocks/client'
 import { createRoomContext } from '@liveblocks/react'
 
 const client = createClient({
@@ -18,7 +18,9 @@ type Presence = {
 // LiveList, LiveMap, LiveObject instances, for which updates are
 // automatically persisted and synced to all connected clients.
 type Storage = {
-  canvasObjects: LiveMap<string, Lson>
+  craftMotionData: LiveObject<{
+    canvasObjects: LiveMap<string, Lson>
+  }>
 }
 
 // Optionally, UserMeta represents static/readonly metadata on each user, as
