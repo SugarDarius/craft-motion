@@ -9,12 +9,11 @@ export function setupCanvas({
 }: {
   targetCanvasRef: React.MutableRefObject<HTMLCanvasElement | null>
 }): Canvas {
-  const canvasElement =
-    targetCanvasRef.current ?? document.getElementById('canvas')
+  const canvasContainerElement = document.getElementById('canvas-box')
 
   const canvas = new fabric.Canvas(targetCanvasRef.current, {
-    width: canvasElement?.clientWidth ?? 0,
-    height: canvasElement?.clientHeight ?? 0,
+    width: canvasContainerElement?.clientWidth ?? 0,
+    height: canvasContainerElement?.clientHeight ?? 0,
   })
 
   return canvas
