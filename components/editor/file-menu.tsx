@@ -1,5 +1,5 @@
 'use client'
-import { ThickArrowDownIcon } from '@radix-ui/react-icons'
+import { CaretDownIcon } from '@radix-ui/react-icons'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -18,25 +18,25 @@ export function FileMenu() {
       <DropdownMenuTrigger asChild>
         <Button>
           Craft Motion
-          <ThickArrowDownIcon className='ml-2 h-4 w-4' />
+          <CaretDownIcon className='ml-2 h-4 w-4' />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className='w-56'>
+      <DropdownMenuContent className='w-56' align='start' side='right'>
         <DropdownMenuGroup>
           <DropdownMenuItem>
             Undo
-            <DropdownMenuShortcut>⌘Z</DropdownMenuShortcut>
+            <DropdownMenuShortcut>⌘+Z</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            Undo
-            <DropdownMenuShortcut>⇧⌘Z</DropdownMenuShortcut>
+            Redo
+            <DropdownMenuShortcut>⇧+⌘+Z</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem disabled>
             Fullscreen
-            <DropdownMenuShortcut>⇧⌘F</DropdownMenuShortcut>
+            <DropdownMenuShortcut>⇧+⌘+F</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
