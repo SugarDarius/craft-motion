@@ -1,5 +1,4 @@
 'use client'
-
 import React from 'react'
 
 export function EditorHeader({ children }: { children: React.ReactNode }) {
