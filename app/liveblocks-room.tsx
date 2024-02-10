@@ -7,7 +7,10 @@ import { RoomProvider } from '@/liveblocks.config'
 const ROOM_ID = 'craft-motion-room'
 export function LiveblocksRoom({ children }: { children: React.ReactNode }) {
   return (
-    <RoomProvider id={ROOM_ID} initialPresence={{}}>
+    <RoomProvider
+      id={ROOM_ID}
+      initialPresence={{ cursor: null, cursorColor: null, editingText: null }}
+    >
       <ClientSideSuspense fallback={<h1>loading room...</h1>}>
         {() => children}
       </ClientSideSuspense>
