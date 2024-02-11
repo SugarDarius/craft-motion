@@ -2,7 +2,10 @@ import type { Metadata } from 'next'
 import { Inter as FontSans } from 'next/font/google'
 
 import { cn } from '@/lib/utils'
+
+import { TooltipProvider } from '@/components/ui/tooltip'
 import { ThemeProvider } from '@/components/theme-provider'
+
 import { LiveblocksRoom } from './liveblocks-room'
 
 import './globals.css'
@@ -30,7 +33,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <LiveblocksRoom>{children}</LiveblocksRoom>
+          <TooltipProvider>
+            <LiveblocksRoom>{children}</LiveblocksRoom>
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -5,6 +5,7 @@ import { useEditor } from './hooks/useEditor'
 import { FileMenu } from './file-menu'
 import { ProjectName } from './project-name'
 import { ExportMenu } from './export-menu'
+import { LiveUsers } from './live-users'
 
 import { EditorHeader } from './editor-header'
 import { EditorControls } from './editor-controls'
@@ -24,6 +25,7 @@ export function EditorView() {
           <EditorControls />
         </div>
         <div className='flex w-full flex-row items-center justify-end gap-4'>
+          <LiveUsers />
           <ExportMenu />
         </div>
       </EditorHeader>
