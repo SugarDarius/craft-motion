@@ -1,9 +1,9 @@
-import type { JsonObject } from '@liveblocks/client'
 import type { Canvas, IEvent } from 'fabric/fabric-impl'
 import { fabric } from 'fabric'
 
 import type { ShapeType, CraftMotionObject } from './codex/shape'
 import type { ActiveControl } from './codex/control'
+import type { CanvasObjects } from './codex/liveblocks'
 
 import { createSpecificShape } from './shapes'
 
@@ -30,14 +30,7 @@ export function renderCanvas({
   fabricCanvasRef,
   activeObjectRef,
 }: {
-  canvasObjects: ReadonlyMap<
-    string,
-    {
-      objectId: string
-      type: ShapeType
-      fabricObjectData: JsonObject
-    }
-  >
+  canvasObjects: CanvasObjects
   fabricCanvasRef: React.MutableRefObject<Canvas | null>
   activeObjectRef: React.MutableRefObject<CraftMotionObject | null>
 }): void {
