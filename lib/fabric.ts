@@ -2,7 +2,7 @@ import type { LiveMap, Lson } from '@liveblocks/client'
 import type { Canvas, IEvent } from 'fabric/fabric-impl'
 import { fabric } from 'fabric'
 
-import { getObject } from '@/lib/liveblocks'
+import { getJsonObject } from '@/lib/liveblocks'
 
 import type { ShapeType, CraftMotionObject } from './codex/shape'
 import { createSpecificShape } from './shapes'
@@ -62,7 +62,7 @@ export function renderCanvas({
 
     for (const [objectId, lsonObject] of canvasObjects) {
       // ensure to get an object based on Lson type
-      const fabricObject = getObject(lsonObject)
+      const fabricObject = getJsonObject(lsonObject)
 
       fabric.util.enlivenObjects(
         [fabricObject],
