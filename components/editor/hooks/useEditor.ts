@@ -188,6 +188,14 @@ export function useEditor(): UseEditorReturnType {
       })
     })
 
+    canvas.on('object:selected', (options): void => {
+      const target = options.target
+      if (!target) {
+        return
+      }
+      activeObjectIdRef.current = (target as ExtendedFabricObject).objectId
+    })
+
     return (): void => {
       canvas.dispose()
       window.removeEventListener('resize', handleWindowResize)
