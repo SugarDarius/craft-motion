@@ -59,6 +59,7 @@ export function useEditor(): UseEditorReturnType {
     if (!value) {
       setActiveControl(null)
       activeObjectIdRef.current = null
+      fabricCanvasRef.current?.discardActiveObject().renderAll()
     } else {
       switch (value) {
         case 'select':
