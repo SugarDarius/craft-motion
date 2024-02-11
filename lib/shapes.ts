@@ -42,9 +42,9 @@ export function createCircle({
 }): CraftMotionObject {
   const id = nanoid(16)
   const circle = new fabric.Circle({
-    left: pointer.x - 59,
-    top: pointer.y - 59,
-    radius: 100,
+    left: pointer.x - 50,
+    top: pointer.y - 50,
+    radius: 50,
     fill: generateRandomHexColor(),
   })
 
