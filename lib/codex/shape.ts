@@ -1,8 +1,4 @@
-import type {
-  Gradient,
-  Pattern,
-  Object as FabricObject,
-} from 'fabric/fabric-impl'
+import type { Gradient, Pattern, Rect, Circle } from 'fabric/fabric-impl'
 
 export type ShapeType = 'rectangle' | 'circle'
 
@@ -18,5 +14,5 @@ export type ShapeProps = {
 export type CraftMotionObject = {
   objectId: string
   type: ShapeType
-  fabricObject: FabricObject
+  fabricObject: Rect | Circle
 }

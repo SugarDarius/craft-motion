@@ -22,6 +22,7 @@ import {
   handleCanvasZoom,
   handleCanvasMouseDown,
   handleCanvasMouseUp,
+  handleCanvasMouseMove,
 } from '@/lib/fabric'
 
 type UseEditorReturnType = {
@@ -128,6 +129,17 @@ export function useEditor(): UseEditorReturnType {
         activeObjectRef,
         syncCraftMotionObjectsInStorage,
         setActiveControl,
+      })
+    })
+
+    canvas.on('mouse:move', (options): void => {
+      handleCanvasMouseMove({
+        options,
+        canvas,
+        isCurrentUserDrawing,
+        currentDrawnShapeRef,
+        currentSelectedShapeRef,
+        syncCraftMotionObjectsInStorage,
       })
     })
 

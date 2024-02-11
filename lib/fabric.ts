@@ -155,6 +155,59 @@ export function handleCanvasMouseUp({
   }
 }
 
+export function handleCanvasMouseMove({
+  options,
+  canvas,
+  isCurrentUserDrawing,
+  currentDrawnShapeRef,
+  currentSelectedShapeRef,
+  syncCraftMotionObjectsInStorage,
+}: {
+  options: IEvent<MouseEvent>
+  canvas: Canvas
+  isCurrentUserDrawing: React.MutableRefObject<boolean>
+  currentDrawnShapeRef: React.MutableRefObject<CraftMotionObject | null>
+  currentSelectedShapeRef: React.MutableRefObject<ShapeType | null>
+  syncCraftMotionObjectsInStorage: (
+    craftMotionObject: CraftMotionObject | null
+  ) => void
+}): void {
+  if (!isCurrentUserDrawing.current) {
+    return
+  }
+
+  canvas.isDrawingMode = false
+  const pointer = canvas.getPointer(options.e)
+
+  switch (currentSelectedShapeRef.current) {
+    case 'rectangle':
+      if (currentDrawnShapeRef.current?.fabricObject instanceof fabric.Rect) {
+        currentDrawnShapeRef.current?.fabricObject.set({
+          width:
+            pointer.x - (currentDrawnShapeRef.current?.fabricObject.left || 0),
+          height:
+            pointer.y - (currentDrawnShapeRef.current?.fabricObject.top || 0),
+        })
+      }
+      break
+    case 'circle':
+      if (currentDrawnShapeRef.current?.fabricObject instanceof fabric.Circle) {
+        currentDrawnShapeRef.current?.fabricObject.set({
+          radius:
+            Math.abs(
+              pointer.x - (currentDrawnShapeRef.current?.fabricObject.left || 0)
+            ) / 2,
+        })
+      }
+      break
+    default:
+      break
+  }
+
+  canvas.renderAll()
+  syncCraftMotionObjectsInStorage(currentDrawnShapeRef.current)
+}
+
 export function handleCanvasWindowResize({
   fabricCanvasRef,
 }: {
