@@ -52,7 +52,10 @@ export function useEditor(): UseEditorReturnType {
   const currentDrawnShapeRef = useRef<CraftMotionObject | null>(null)
 
   const currentSelectedShapeRef = useRef<ShapeType | null>(null)
+
+  const [activeObjectId, setActiveObjectId] = useState<string | null>(null)
   const activeObjectIdRef = useRef<string | null>(null)
+  activeObjectIdRef.current = activeObjectId
 
   const [activeControl, setActiveControl] = useState<ActiveControl | null>(
     'select'
@@ -61,7 +64,7 @@ export function useEditor(): UseEditorReturnType {
   const handleChangeActiveControl = useEvent((value: string) => {
     if (!value) {
       setActiveControl(null)
-      activeObjectIdRef.current = null
+      setActiveObjectId(null)
       fabricCanvasRef.current?.discardActiveObject().renderAll()
     } else {
       switch (value) {
@@ -177,7 +180,6 @@ export function useEditor(): UseEditorReturnType {
         isCurrentUserDrawing,
         currentDrawnShapeRef,
         currentSelectedShapeRef,
-        activeObjectIdRef,
         syncCraftMotionObjectsInStorage,
         setActiveControl,
       })
@@ -208,12 +210,22 @@ export function useEditor(): UseEditorReturnType {
       })
     })
 
-    canvas.on('object:selected', (options): void => {
-      const target = options.target
-      if (!target) {
-        return
+    canvas.on('selection:created', (): void => {
+      const activeObject = canvas.getActiveObject()
+      if (activeObject) {
+        setActiveObjectId((activeObject as ExtendedFabricObject).objectId)
       }
-      activeObjectIdRef.current = (target as ExtendedFabricObject).objectId
+    })
+
+    canvas.on('selection:updated', (): void => {
+      const activeObject = canvas.getActiveObject()
+      if (activeObject) {
+        setActiveObjectId((activeObject as ExtendedFabricObject).objectId)
+      }
+    })
+
+    canvas.on('selection:cleared', (): void => {
+      setActiveObjectId(null)
     })
 
     return (): void => {
@@ -234,7 +246,7 @@ export function useEditor(): UseEditorReturnType {
     })
   }, [canvasObjects])
 
-  const canDelete = canvasObjects.size > 0
+  const canDelete = canvasObjects.size > 0 && activeObjectId !== null
 
   return {
     canvasRef,

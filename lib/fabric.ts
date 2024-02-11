@@ -134,7 +134,6 @@ export function handleCanvasMouseUp({
   isCurrentUserDrawing,
   currentDrawnShapeRef,
   currentSelectedShapeRef,
-  activeObjectIdRef,
   syncCraftMotionObjectsInStorage,
   setActiveControl,
 }: {
@@ -142,7 +141,6 @@ export function handleCanvasMouseUp({
   isCurrentUserDrawing: React.MutableRefObject<boolean>
   currentDrawnShapeRef: React.MutableRefObject<CraftMotionObject | null>
   currentSelectedShapeRef: React.MutableRefObject<ShapeType | null>
-  activeObjectIdRef: React.MutableRefObject<string | null>
   syncCraftMotionObjectsInStorage: (
     craftMotionObject: CraftMotionObject | null
   ) => void
@@ -152,7 +150,6 @@ export function handleCanvasMouseUp({
   syncCraftMotionObjectsInStorage(currentDrawnShapeRef.current)
 
   currentDrawnShapeRef.current = null
-  activeObjectIdRef.current = null
   currentSelectedShapeRef.current = null
 
   if (!canvas.isDrawingMode) {
