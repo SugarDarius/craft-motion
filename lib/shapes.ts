@@ -21,6 +21,22 @@ export function createRect({
   return { objectId: id, type: 'rectangle', fabricObject: rect }
 }
 
+export function createCircle({
+  pointer,
+}: {
+  pointer: PointerEvent
+}): CraftMotionObject {
+  const id = nanoid(16)
+  const circle = new fabric.Circle({
+    left: pointer.x,
+    top: pointer.y,
+    radius: 100,
+    fill: generateRandomHexColor(),
+  })
+
+  return { objectId: id, type: 'circle', fabricObject: circle }
+}
+
 export function createSpecificShape({
   type,
   pointer,
@@ -31,6 +47,8 @@ export function createSpecificShape({
   switch (type) {
     case 'rectangle':
       return createRect({ pointer })
+    case 'circle':
+      return createCircle({ pointer })
     default:
       throw new Error('unsupported shape type: ' + type)
   }

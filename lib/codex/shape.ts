@@ -1,6 +1,6 @@
 import { Gradient, Pattern, Object as FabricObject } from 'fabric/fabric-impl'
 
-export type ShapeType = 'rectangle'
+export type ShapeType = 'rectangle' | 'circle'
 
 export type ShapeProps = {
   width: string

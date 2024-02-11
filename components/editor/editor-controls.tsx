@@ -37,13 +37,14 @@ function ControlTooltip({
   )
 }
 
-export function EditorControls() {
+export function EditorControls({
+  onChangeActiveControl,
+}: {
+  onChangeActiveControl: (value: string) => void
+}) {
   return (
     <div className='flex flex-row gap-1 rounded-2xl border-2 bg-background p-2'>
-      <ToggleGroup
-        type='single'
-        onValueChange={(value) => console.log('value', value)}
-      >
+      <ToggleGroup type='single' onValueChange={onChangeActiveControl}>
         <ToggleGroupItem value='select'>
           <ControlTooltip text='Select shape' sideOffset={16}>
             <CursorArrowIcon className='h-4 w-4' />
@@ -54,7 +55,7 @@ export function EditorControls() {
             <SquareIcon className='h-4 w-4' />
           </ControlTooltip>
         </ToggleGroupItem>
-        <ToggleGroupItem value='circle' disabled>
+        <ToggleGroupItem value='circle'>
           <ControlTooltip text='Create circle shape'>
             <CircleIcon className='h-4 w-4' />
           </ControlTooltip>

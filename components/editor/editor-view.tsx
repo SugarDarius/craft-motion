@@ -12,7 +12,7 @@ import { EditorControls } from './editor-controls'
 import { EditorCanvas } from './editor-canvas'
 
 export function EditorView() {
-  const { canvasRef } = useEditor()
+  const { canvasRef, onChangeActiveControl } = useEditor()
 
   return (
     <div className='relative flex h-full w-full flex-col'>
@@ -22,7 +22,7 @@ export function EditorView() {
           <ProjectName />
         </div>
         <div className='flex w-full flex-row items-center justify-center'>
-          <EditorControls />
+          <EditorControls onChangeActiveControl={onChangeActiveControl} />
         </div>
         <div className='flex w-full flex-row items-center justify-end gap-4'>
           <LiveUsers />

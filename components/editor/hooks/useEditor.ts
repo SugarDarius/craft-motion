@@ -1,10 +1,12 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import useEvent from 'react-use-event-hook'
 import type { Canvas } from 'fabric/fabric-impl'
 
 import throttle from 'lodash/throttle'
 
 import { useStorage } from '@/liveblocks.config'
 import type { ShapeType, CraftMotionObject } from '@/lib/codex/shape'
+import type { ActiveControl } from '@/lib/codex/control'
 import {
   setupCanvas,
   renderCanvas,
@@ -15,6 +17,7 @@ import {
 
 type UseEditorReturnType = {
   canvasRef: React.RefObject<HTMLCanvasElement>
+  onChangeActiveControl: (value: string) => void
 }
 
 export function useEditor(): UseEditorReturnType {
@@ -26,6 +29,30 @@ export function useEditor(): UseEditorReturnType {
 
   const currentSelectedShapeRef = useRef<ShapeType | null>(null)
   const activeObjectRef = useRef<CraftMotionObject | null>(null)
+
+  const [activeControl, setActiveControl] = useState<ActiveControl | null>(null)
+
+  const handleChangeActiveControl = useEvent((value: string) => {
+    if (!value) {
+      setActiveControl(null)
+    } else {
+      switch (value) {
+        case 'select':
+          setActiveControl('select')
+          break
+        case 'rectangle':
+          setActiveControl('rectangle')
+          currentSelectedShapeRef.current = 'rectangle'
+          break
+        case 'circle':
+          setActiveControl('circle')
+          currentSelectedShapeRef.current = 'circle'
+          break
+        default:
+          throw new Error('unsupported active control value: ' + value)
+      }
+    }
+  })
 
   // Extra type casting as Liveblocks' typing do not allow to use
   // own defined type definitions
@@ -70,5 +97,8 @@ export function useEditor(): UseEditorReturnType {
     })
   }, [canvasObjects])
 
-  return { canvasRef } as const
+  return {
+    canvasRef,
+    onChangeActiveControl: handleChangeActiveControl,
+  } as const
 }
