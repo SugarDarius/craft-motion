@@ -7,6 +7,7 @@ import { ProjectName } from './project-name'
 import { ExportMenu } from './export-menu'
 
 import { EditorHeader } from './editor-header'
+import { EditorControls } from './editor-controls'
 import { EditorCanvas } from './editor-canvas'
 
 export function EditorView() {
@@ -19,6 +20,7 @@ export function EditorView() {
           <FileMenu />
           <ProjectName />
         </div>
+        <EditorControls />
         <div className='flex flex-row items-center gap-4'>
           <ExportMenu />
         </div>
