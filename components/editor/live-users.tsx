@@ -1,5 +1,7 @@
 'use client'
 
+import { useMemo } from 'react'
+
 import { cn } from '@/lib/utils'
 import { getRandomUsername } from '@/lib/random-names'
 import {
@@ -18,13 +20,16 @@ function LiveUserAvatar({
   name: string
   twClassNames?: string
 }) {
+  const src = useMemo(
+    () =>
+      `https://liveblocks.io/avatars/avatar-${Math.floor(Math.random() * 30)}.png`,
+    []
+  )
   return (
     <Tooltip>
       <TooltipTrigger>
         <Avatar className={cn(twClassNames)}>
-          <AvatarImage
-            src={`https://liveblocks.io/avatars/avatar-${Math.floor(Math.random() * 30)}.png`}
-          />
+          <AvatarImage src={src} />
         </Avatar>
       </TooltipTrigger>
       <TooltipContent side='bottom'>
