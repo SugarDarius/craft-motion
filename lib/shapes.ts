@@ -50,7 +50,7 @@ export function createCircle({
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  circle.set('circle', id)
+  circle.set('objectId', id)
 
   return {
     objectId: id,

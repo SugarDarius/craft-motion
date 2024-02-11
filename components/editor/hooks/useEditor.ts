@@ -29,6 +29,7 @@ import {
   handleCanvasMouseMove,
   handleCanvasObjectMoving,
   handleCanvasObjectModified,
+  handleDeleteCanvasObject,
 } from '@/lib/fabric'
 
 type UseEditorReturnType = {
@@ -39,6 +40,8 @@ type UseEditorReturnType = {
   onUndo: () => void
   canRedo: boolean
   onRedo: () => void
+  canDelete: boolean
+  onDeleteObject: () => void
 }
 
 export function useEditor(): UseEditorReturnType {
@@ -88,6 +91,14 @@ export function useEditor(): UseEditorReturnType {
   const canRedo = useCanRedo()
   const redo = useRedo()
 
+  const deleteCraftMotionObjectInStorage = useMutation(
+    ({ storage }, objectId: string): void => {
+      const canvasObjects = storage.get('craftMotionData').get('canvasObjects')
+      canvasObjects.delete(objectId)
+    },
+    []
+  )
+
   const syncCraftMotionObjectsInStorage = useMutation(
     ({ storage }, craftMotionObject: CraftMotionObject | null): void => {
       if (!craftMotionObject) {
@@ -127,6 +138,15 @@ export function useEditor(): UseEditorReturnType {
       }
     }
   )
+
+  const handleDeleteObject = useEvent((): void => {
+    if (fabricCanvasRef.current) {
+      handleDeleteCanvasObject({
+        canvas: fabricCanvasRef.current,
+        deleteCraftMotionObjectInStorage,
+      })
+    }
+  })
 
   useEffect(() => {
     const canvas = setupCanvas({ targetCanvasRef: canvasRef })
@@ -214,6 +234,8 @@ export function useEditor(): UseEditorReturnType {
     })
   }, [canvasObjects])
 
+  const canDelete = canvasObjects.size > 0
+
   return {
     canvasRef,
     activeControl,
@@ -222,5 +244,7 @@ export function useEditor(): UseEditorReturnType {
     onUndo: undo,
     canRedo,
     onRedo: redo,
+    canDelete,
+    onDeleteObject: handleDeleteObject,
   } as const
 }

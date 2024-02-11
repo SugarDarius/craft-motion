@@ -20,6 +20,8 @@ export function EditorView() {
     onUndo,
     canRedo,
     onRedo,
+    canDelete,
+    onDeleteObject,
   } = useEditor()
 
   return (
@@ -42,6 +44,8 @@ export function EditorView() {
             onUndo={onUndo}
             canRedo={canRedo}
             onRedo={onRedo}
+            canDelete={canDelete}
+            onDeleteObject={onDeleteObject}
           />
         </div>
         <div className='flex w-full flex-row items-center justify-end gap-4'>

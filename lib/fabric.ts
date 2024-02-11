@@ -323,3 +323,27 @@ export function handleCanvasZoom({
   options.e.preventDefault()
   options.e.stopPropagation()
 }
+
+export function handleDeleteCanvasObject({
+  canvas,
+  deleteCraftMotionObjectInStorage,
+}: {
+  canvas: Canvas
+  deleteCraftMotionObjectInStorage: (objectId: string) => void
+}): void {
+  const activeObjects = canvas.getActiveObjects()
+  if (activeObjects.length === 0) {
+    return
+  }
+
+  for (const activeObject of activeObjects) {
+    const objectId = (activeObject as ExtendedFabricObject).objectId
+    if (objectId) {
+      canvas.remove(activeObject)
+      deleteCraftMotionObjectInStorage(objectId)
+    }
+  }
+
+  canvas.discardActiveObject()
+  canvas.requestRenderAll()
+}
