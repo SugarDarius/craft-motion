@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import useEvent from 'react-use-event-hook'
+import { JsonObject } from '@liveblocks/client'
 import type { Canvas } from 'fabric/fabric-impl'
 
 import throttle from 'lodash/throttle'
@@ -67,16 +68,12 @@ export function useEditor(): UseEditorReturnType {
       const fabricObjectData = craftMotionObject.fabricObject.toJSON()
       const canvasObjects = storage.get('craftMotionData').get('canvasObjects')
 
-      // @note: forced operation to make Liveblocks typing happy
-      const lson = JSON.parse(
-        JSON.stringify({
-          objectId: craftMotionObject.objectId,
-          type: craftMotionObject.type,
-          fabricObjectData: fabricObjectData,
-        })
-      )
-
-      canvasObjects.set(craftMotionObject.objectId, lson)
+      canvasObjects.set(craftMotionObject.objectId, {
+        objectId: craftMotionObject.objectId,
+        type: craftMotionObject.type,
+        // Make Liveblocks happy. A bit a shame this typing to serialize
+        fabricObjectData: fabricObjectData as unknown as JsonObject,
+      })
     },
     []
   )

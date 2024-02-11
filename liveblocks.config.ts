@@ -1,5 +1,12 @@
-import { LiveMap, LiveObject, Lson, createClient } from '@liveblocks/client'
+import {
+  JsonObject,
+  LiveMap,
+  LiveObject,
+  createClient,
+} from '@liveblocks/client'
 import { createRoomContext } from '@liveblocks/react'
+
+import type { ShapeType } from '@/lib/codex/shape'
 
 const client = createClient({
   publicApiKey: process.env.NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY!,
@@ -12,14 +19,20 @@ type Presence = {
   // cursor: { x: number, y: number } | null,
   // ...
 }
-
 // Optionally, Storage represents the shared document that persists in the
 // Room, even after all users leave. Fields under Storage typically are
 // LiveList, LiveMap, LiveObject instances, for which updates are
 // automatically persisted and synced to all connected clients.
 type Storage = {
   craftMotionData: LiveObject<{
-    canvasObjects: LiveMap<string, Lson>
+    canvasObjects: LiveMap<
+      string,
+      {
+        objectId: string
+        type: ShapeType
+        fabricObjectData: JsonObject
+      }
+    >
   }>
 }
 
