@@ -49,13 +49,16 @@ export function useEditor(): UseEditorReturnType {
   const currentDrawnShapeRef = useRef<CraftMotionObject | null>(null)
 
   const currentSelectedShapeRef = useRef<ShapeType | null>(null)
-  const activeObjectRef = useRef<CraftMotionObject | null>(null)
+  const activeObjectIdtRef = useRef<string | null>(null)
 
-  const [activeControl, setActiveControl] = useState<ActiveControl | null>(null)
+  const [activeControl, setActiveControl] = useState<ActiveControl | null>(
+    'select'
+  )
 
   const handleChangeActiveControl = useEvent((value: string) => {
     if (!value) {
       setActiveControl(null)
+      activeObjectIdtRef.current = null
     } else {
       switch (value) {
         case 'select':
@@ -153,7 +156,7 @@ export function useEditor(): UseEditorReturnType {
         isCurrentUserDrawing,
         currentDrawnShapeRef,
         currentSelectedShapeRef,
-        activeObjectRef,
+        activeObjectIdtRef,
         syncCraftMotionObjectsInStorage,
         setActiveControl,
       })
@@ -198,7 +201,7 @@ export function useEditor(): UseEditorReturnType {
     renderCanvas({
       canvasObjects,
       fabricCanvasRef,
-      activeObjectRef,
+      activeObjectIdtRef,
     })
   }, [canvasObjects])
 

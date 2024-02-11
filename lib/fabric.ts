@@ -32,11 +32,11 @@ export function setupCanvas({
 export function renderCanvas({
   canvasObjects,
   fabricCanvasRef,
-  activeObjectRef,
+  activeObjectIdtRef,
 }: {
   canvasObjects: CanvasObjects
   fabricCanvasRef: React.MutableRefObject<Canvas | null>
-  activeObjectRef: React.MutableRefObject<CraftMotionObject | null>
+  activeObjectIdtRef: React.MutableRefObject<string | null>
 }): void {
   if (fabricCanvasRef.current) {
     fabricCanvasRef.current.clear()
@@ -71,7 +71,7 @@ export function renderCanvas({
         [fabricObjectData],
         (enlivenObjects: fabric.Object[]): void => {
           for (const enlivenObject of enlivenObjects) {
-            if (activeObjectRef.current?.objectId === objectId) {
+            if (activeObjectIdtRef.current === objectId) {
               fabricCanvasRef.current?.setActiveObject(enlivenObject)
             }
 
@@ -134,7 +134,7 @@ export function handleCanvasMouseUp({
   isCurrentUserDrawing,
   currentDrawnShapeRef,
   currentSelectedShapeRef,
-  activeObjectRef,
+  activeObjectIdtRef,
   syncCraftMotionObjectsInStorage,
   setActiveControl,
 }: {
@@ -142,7 +142,7 @@ export function handleCanvasMouseUp({
   isCurrentUserDrawing: React.MutableRefObject<boolean>
   currentDrawnShapeRef: React.MutableRefObject<CraftMotionObject | null>
   currentSelectedShapeRef: React.MutableRefObject<ShapeType | null>
-  activeObjectRef: React.MutableRefObject<CraftMotionObject | null>
+  activeObjectIdtRef: React.MutableRefObject<string | null>
   syncCraftMotionObjectsInStorage: (
     craftMotionObject: CraftMotionObject | null
   ) => void
@@ -152,7 +152,7 @@ export function handleCanvasMouseUp({
   syncCraftMotionObjectsInStorage(currentDrawnShapeRef.current)
 
   currentDrawnShapeRef.current = null
-  activeObjectRef.current = null
+  activeObjectIdtRef.current = null
   currentSelectedShapeRef.current = null
 
   if (!canvas.isDrawingMode) {
