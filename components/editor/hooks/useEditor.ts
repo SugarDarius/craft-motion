@@ -4,7 +4,7 @@ import type { Canvas } from 'fabric/fabric-impl'
 
 import throttle from 'lodash/throttle'
 
-import { useStorage } from '@/liveblocks.config'
+import { useMutation, useStorage } from '@/liveblocks.config'
 import type { ShapeType, CraftMotionObject } from '@/lib/codex/shape'
 import type { ActiveControl } from '@/lib/codex/control'
 import {
@@ -59,6 +59,29 @@ export function useEditor(): UseEditorReturnType {
   const canvasObjects = useStorage(
     (root) => root.craftMotionData.canvasObjects
   ) as unknown as Map<string, CraftMotionObject>
+
+  const syncCraftMotionObjectsInStorage = useMutation(
+    ({ storage }, craftMotionObject: CraftMotionObject | null): void => {
+      if (!craftMotionObject) {
+        return
+      }
+
+      const fabricObjectData = craftMotionObject.fabricObject.toJSON()
+      const canvasObjects = storage.get('craftMotionData').get('canvasObjects')
+
+      canvasObjects.set(
+        craftMotionObject.objectId,
+        JSON.parse(
+          JSON.stringify({
+            objectId: craftMotionObject.objectId,
+            fabricObjectData: fabricObjectData,
+            type: craftMotionObject.type,
+          })
+        )
+      )
+    },
+    []
+  )
 
   useEffect(() => {
     const canvas = setupCanvas({ targetCanvasRef: canvasRef })

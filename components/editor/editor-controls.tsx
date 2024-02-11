@@ -29,7 +29,7 @@ function ControlTooltip({
 }) {
   return (
     <Tooltip>
-      <TooltipTrigger>{children}</TooltipTrigger>
+      <TooltipTrigger asChild>{children}</TooltipTrigger>
       <TooltipContent side='bottom' sideOffset={sideOffset}>
         <span>{text}</span>
       </TooltipContent>
