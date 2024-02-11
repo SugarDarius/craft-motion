@@ -6,6 +6,7 @@ import type { CanvasObjects } from '@/lib/codex/liveblocks'
 import { LayerButton } from './layer-button'
 
 export function EditorLayer({
+  activeObjectId,
   canvasObjects,
   onLayerClick,
 }: {
@@ -31,6 +32,7 @@ export function EditorLayer({
               objectId={layer.objectId}
               type={layer.type}
               onClick={onLayerClick}
+              isSelected={layer.objectId === activeObjectId}
             />
           ))}
         </div>
