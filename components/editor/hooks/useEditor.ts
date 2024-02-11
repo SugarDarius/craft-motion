@@ -69,16 +69,16 @@ export function useEditor(): UseEditorReturnType {
       const fabricObjectData = craftMotionObject.fabricObject.toJSON()
       const canvasObjects = storage.get('craftMotionData').get('canvasObjects')
 
-      canvasObjects.set(
-        craftMotionObject.objectId,
-        JSON.parse(
-          JSON.stringify({
-            objectId: craftMotionObject.objectId,
-            fabricObjectData: fabricObjectData,
-            type: craftMotionObject.type,
-          })
-        )
+      // @note: forced operation to make Liveblocks typing happy
+      const lson = JSON.parse(
+        JSON.stringify({
+          fabricObjectData: fabricObjectData,
+          objectId: craftMotionObject.objectId,
+          type: craftMotionObject.type,
+        })
       )
+
+      canvasObjects.set(craftMotionObject.objectId, lson)
     },
     []
   )
