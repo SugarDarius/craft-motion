@@ -4,16 +4,18 @@ import { fabric } from 'fabric'
 import type { ShapeType, CraftMotionObject } from './codex/shape'
 import { createSpecificShape } from './shapes'
 
+const CANVAS_BOX_ID = 'canvas-box'
+
 export function setupCanvas({
   targetCanvasRef,
 }: {
   targetCanvasRef: React.MutableRefObject<HTMLCanvasElement | null>
 }): Canvas {
-  const canvasContainerElement = document.getElementById('canvas-box')
+  const canvasBoxElement = document.getElementById(CANVAS_BOX_ID)
 
   const canvas = new fabric.Canvas(targetCanvasRef.current, {
-    width: canvasContainerElement?.clientWidth ?? 0,
-    height: canvasContainerElement?.clientHeight ?? 0,
+    width: canvasBoxElement?.clientWidth ?? 0,
+    height: canvasBoxElement?.clientHeight ?? 0,
   })
 
   return canvas
@@ -112,5 +114,19 @@ export function handleCanvasMouseDown({
     if (currentDrawnShapeRef.current) {
       canvas.add(currentDrawnShapeRef.current.fabricObject)
     }
+  }
+}
+
+export function handleCanvasWindowResize({
+  fabricCanvasRef,
+}: {
+  fabricCanvasRef: React.MutableRefObject<Canvas | null>
+}): void {
+  const canvasBoxElement = document.getElementById(CANVAS_BOX_ID)
+  if (canvasBoxElement && fabricCanvasRef.current) {
+    fabricCanvasRef.current.setDimensions({
+      width: canvasBoxElement.clientWidth,
+      height: canvasBoxElement.clientHeight,
+    })
   }
 }

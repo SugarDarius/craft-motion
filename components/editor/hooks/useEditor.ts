@@ -4,7 +4,12 @@ import type { Canvas } from 'fabric/fabric-impl'
 import { useStorage } from '@/liveblocks.config'
 
 import type { ShapeType, CraftMotionObject } from '@/lib/codex/shape'
-import { setupCanvas, renderCanvas, handleCanvasMouseDown } from '@/lib/fabric'
+import {
+  setupCanvas,
+  renderCanvas,
+  handleCanvasWindowResize,
+  handleCanvasMouseDown,
+} from '@/lib/fabric'
 
 type UseEditorReturnType = {
   canvasRef: React.RefObject<HTMLCanvasElement>
@@ -30,6 +35,11 @@ export function useEditor(): UseEditorReturnType {
     const canvas = setupCanvas({ targetCanvasRef: canvasRef })
     fabricCanvasRef.current = canvas
 
+    const handleWindowResize = (): void => {
+      handleCanvasWindowResize({ fabricCanvasRef })
+    }
+    window.addEventListener('resize', handleWindowResize)
+
     canvas.on('mouse:down', (options): void => {
       handleCanvasMouseDown({
         options,
@@ -42,6 +52,7 @@ export function useEditor(): UseEditorReturnType {
 
     return (): void => {
       canvas.dispose()
+      window.removeEventListener('resize', handleWindowResize)
     }
   }, [canvasRef])
 
