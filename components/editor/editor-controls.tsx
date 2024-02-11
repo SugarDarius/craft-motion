@@ -40,9 +40,13 @@ function ControlTooltip({
 export function EditorControls({
   activeControl,
   onChangeActiveControl,
+  canUndo,
+  onUndo,
 }: {
   activeControl: string | null
   onChangeActiveControl: (value: string) => void
+  canUndo: boolean
+  onUndo: () => void
 }) {
   return (
     <div className='flex flex-row gap-1 rounded-2xl border-2 bg-background p-2'>
@@ -78,7 +82,12 @@ export function EditorControls({
         </Button>
       </ControlTooltip>
       <ControlTooltip text='Undo'>
-        <Button variant='ghost' size='icon'>
+        <Button
+          variant='ghost'
+          size='icon'
+          onClick={onUndo}
+          disabled={!canUndo}
+        >
           <ChevronLeftIcon className='h-4 w-4' />
         </Button>
       </ControlTooltip>

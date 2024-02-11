@@ -5,7 +5,12 @@ import type { Canvas } from 'fabric/fabric-impl'
 
 import throttle from 'lodash/throttle'
 
-import { useMutation, useStorage } from '@/liveblocks.config'
+import {
+  useCanUndo,
+  useMutation,
+  useStorage,
+  useUndo,
+} from '@/liveblocks.config'
 import type { ShapeType, CraftMotionObject } from '@/lib/codex/shape'
 import type { ActiveControl } from '@/lib/codex/control'
 import {
@@ -21,6 +26,8 @@ type UseEditorReturnType = {
   canvasRef: React.RefObject<HTMLCanvasElement>
   activeControl: ActiveControl | null
   onChangeActiveControl: (value: string) => void
+  canUndo: boolean
+  onUndo: () => void
 }
 
 export function useEditor(): UseEditorReturnType {
@@ -59,6 +66,8 @@ export function useEditor(): UseEditorReturnType {
   })
 
   const canvasObjects = useStorage((root) => root.craftMotionData.canvasObjects)
+  const undo = useUndo()
+  const canUndo = useCanUndo()
 
   const syncCraftMotionObjectsInStorage = useMutation(
     ({ storage }, craftMotionObject: CraftMotionObject | null): void => {
@@ -132,5 +141,7 @@ export function useEditor(): UseEditorReturnType {
     canvasRef,
     activeControl,
     onChangeActiveControl: handleChangeActiveControl,
+    canUndo,
+    onUndo: undo,
   } as const
 }

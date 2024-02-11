@@ -12,7 +12,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-export function FileMenu() {
+export function FileMenu({
+  canUndo,
+  onUndo,
+}: {
+  canUndo: boolean
+  onUndo: () => void
+}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -23,7 +29,7 @@ export function FileMenu() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-56' align='start' side='right'>
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={onUndo} disabled={!canUndo}>
             Undo
             <DropdownMenuShortcut>⌘+Z</DropdownMenuShortcut>
           </DropdownMenuItem>
