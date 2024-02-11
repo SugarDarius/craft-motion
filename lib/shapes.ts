@@ -11,6 +11,7 @@ export function createRect({
 }): CraftMotionObject {
   const id = nanoid(16)
   const rect = new fabric.Rect({
+    name: id,
     left: pointer.x,
     top: pointer.y,
     width: 100,
@@ -28,6 +29,7 @@ export function createCircle({
 }): CraftMotionObject {
   const id = nanoid(16)
   const circle = new fabric.Circle({
+    name: id,
     left: pointer.x,
     top: pointer.y,
     radius: 100,

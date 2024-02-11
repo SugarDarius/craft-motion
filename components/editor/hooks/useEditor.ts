@@ -23,6 +23,7 @@ import {
   handleCanvasMouseDown,
   handleCanvasMouseUp,
   handleCanvasMouseMove,
+  handleCanvasObjectMoving,
 } from '@/lib/fabric'
 
 type UseEditorReturnType = {
@@ -140,6 +141,13 @@ export function useEditor(): UseEditorReturnType {
         currentDrawnShapeRef,
         currentSelectedShapeRef,
         syncCraftMotionObjectsInStorage,
+      })
+    })
+
+    canvas.on('object:moving', (options): void => {
+      handleCanvasObjectMoving({
+        options,
+        canvas,
       })
     })
 

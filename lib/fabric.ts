@@ -1,4 +1,4 @@
-import type { Canvas, IEvent } from 'fabric/fabric-impl'
+import type { Canvas, IEvent, Object as FabricObject } from 'fabric/fabric-impl'
 import { fabric } from 'fabric'
 
 import type { ShapeType, CraftMotionObject } from './codex/shape'
@@ -206,6 +206,39 @@ export function handleCanvasMouseMove({
 
   canvas.renderAll()
   syncCraftMotionObjectsInStorage(currentDrawnShapeRef.current)
+}
+
+export function handleCanvasObjectMoving({
+  options,
+  canvas,
+  findAndSyncCraftMotionObject,
+}: {
+  options: IEvent
+  canvas: Canvas
+  findAndSyncCraftMotionObject: (fabricObject: FabricObject) => void
+}): void {
+  const target = options.target
+  if (!target) {
+    return
+  }
+
+  target.setCoords()
+  target.left = Math.max(
+    0,
+    Math.min(
+      target.left ?? 0,
+      (canvas.width ?? 0) - (target.getScaledWidth() ?? target.width ?? 0)
+    )
+  )
+  target.top = Math.max(
+    0,
+    Math.min(
+      target.top ?? 0,
+      (canvas.height ?? 0) - (target.getScaledHeight() ?? target.height ?? 0)
+    )
+  )
+
+  findAndSyncCraftMotionObject(target)
 }
 
 export function handleCanvasWindowResize({
