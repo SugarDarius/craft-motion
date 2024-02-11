@@ -10,6 +10,7 @@ import { LiveUsers } from './live-users'
 import { EditorHeader } from './editor-header'
 import { EditorControls } from './editor-controls'
 import { EditorCanvas } from './editor-canvas'
+import { EditorLayer } from './editor-layers'
 
 export function EditorView() {
   const {
@@ -22,6 +23,8 @@ export function EditorView() {
     onRedo,
     canDelete,
     onDeleteObject,
+    activeObjectId,
+    canvasObjects,
   } = useEditor()
 
   return (
@@ -54,6 +57,10 @@ export function EditorView() {
         </div>
       </EditorHeader>
       <div className='relative flex w-full flex-grow flex-col overflow-hidden'>
+        <EditorLayer
+          activeObjectId={activeObjectId}
+          canvasObjects={canvasObjects}
+        />
         <EditorCanvas canvasRef={canvasRef} />
       </div>
     </div>

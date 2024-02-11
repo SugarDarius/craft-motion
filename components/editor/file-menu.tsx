@@ -26,7 +26,7 @@ export function FileMenu({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button>
+        <Button variant='outline'>
           Craft Motion
           <CaretDownIcon className='ml-2 h-4 w-4' />
         </Button>

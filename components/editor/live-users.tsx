@@ -43,7 +43,7 @@ export function LiveUsers() {
   const others = useOthers()
   const currentUser = useSelf()
 
-  const hasMoreThanTwoUsers = others.length > 0
+  const hasMoreThanTwoUsers = others.length > 2
   const firstTwoUsers = others.slice(0, 2)
 
   return (

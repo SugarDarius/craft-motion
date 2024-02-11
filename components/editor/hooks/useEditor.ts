@@ -19,6 +19,7 @@ import type {
   ExtendedFabricObject,
 } from '@/lib/codex/shape'
 import type { ActiveControl } from '@/lib/codex/control'
+import type { CanvasObjects } from '@/lib/codex/liveblocks'
 import {
   setupCanvas,
   renderCanvas,
@@ -42,6 +43,8 @@ type UseEditorReturnType = {
   onRedo: () => void
   canDelete: boolean
   onDeleteObject: () => void
+  activeObjectId: string | null
+  canvasObjects: CanvasObjects
 }
 
 export function useEditor(): UseEditorReturnType {
@@ -258,5 +261,7 @@ export function useEditor(): UseEditorReturnType {
     onRedo: redo,
     canDelete,
     onDeleteObject: handleDeleteObject,
+    activeObjectId,
+    canvasObjects,
   } as const
 }

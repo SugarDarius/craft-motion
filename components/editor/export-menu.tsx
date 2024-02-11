@@ -13,7 +13,7 @@ export function ExportMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button>Export</Button>
+        <Button variant='outline'>Export</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-56' align='end' side='bottom'>
         <DropdownMenuGroup>
