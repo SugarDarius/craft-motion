@@ -38,13 +38,19 @@ function ControlTooltip({
 }
 
 export function EditorControls({
+  activeControl,
   onChangeActiveControl,
 }: {
+  activeControl: string | null
   onChangeActiveControl: (value: string) => void
 }) {
   return (
     <div className='flex flex-row gap-1 rounded-2xl border-2 bg-background p-2'>
-      <ToggleGroup type='single' onValueChange={onChangeActiveControl}>
+      <ToggleGroup
+        type='single'
+        value={activeControl ?? undefined}
+        onValueChange={onChangeActiveControl}
+      >
         <ToggleGroupItem value='select'>
           <ControlTooltip text='Select shape' sideOffset={16}>
             <CursorArrowIcon className='h-4 w-4' />

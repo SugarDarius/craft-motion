@@ -19,6 +19,7 @@ import {
 
 type UseEditorReturnType = {
   canvasRef: React.RefObject<HTMLCanvasElement>
+  activeControl: ActiveControl | null
   onChangeActiveControl: (value: string) => void
 }
 
@@ -131,6 +132,7 @@ export function useEditor(): UseEditorReturnType {
 
   return {
     canvasRef,
+    activeControl,
     onChangeActiveControl: handleChangeActiveControl,
   } as const
 }
