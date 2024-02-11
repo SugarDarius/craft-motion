@@ -14,6 +14,7 @@ import {
   handleCanvasWindowResize,
   handleCanvasZoom,
   handleCanvasMouseDown,
+  handleCanvasMouseUp,
 } from '@/lib/fabric'
 
 type UseEditorReturnType = {
@@ -40,14 +41,15 @@ export function useEditor(): UseEditorReturnType {
       switch (value) {
         case 'select':
           setActiveControl('select')
+          currentSelectedShapeRef.current = null
           break
         case 'rectangle':
-          setActiveControl('rectangle')
           currentSelectedShapeRef.current = 'rectangle'
+          setActiveControl('rectangle')
           break
         case 'circle':
-          setActiveControl('circle')
           currentSelectedShapeRef.current = 'circle'
+          setActiveControl('circle')
           break
         default:
           throw new Error('unsupported active control value: ' + value)
@@ -101,11 +103,23 @@ export function useEditor(): UseEditorReturnType {
       })
     })
 
+    canvas.on('mouse:up', (): void => {
+      handleCanvasMouseUp({
+        canvas,
+        isCurrentUserDrawing,
+        currentDrawnShapeRef,
+        currentSelectedShapeRef,
+        activeObjectRef,
+        syncCraftMotionObjectsInStorage,
+        setActiveControl,
+      })
+    })
+
     return (): void => {
       canvas.dispose()
       window.removeEventListener('resize', handleWindowResize)
     }
-  }, [canvasRef])
+  }, [canvasRef, syncCraftMotionObjectsInStorage])
 
   useEffect(() => {
     renderCanvas({

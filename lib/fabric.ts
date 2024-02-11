@@ -3,6 +3,8 @@ import type { Canvas, IEvent } from 'fabric/fabric-impl'
 import { fabric } from 'fabric'
 
 import type { ShapeType, CraftMotionObject } from './codex/shape'
+import type { ActiveControl } from './codex/control'
+
 import { createSpecificShape } from './shapes'
 
 const CANVAS_BOX_ID = 'canvas-box'
@@ -126,6 +128,37 @@ export function handleCanvasMouseDown({
     if (currentDrawnShapeRef.current) {
       canvas.add(currentDrawnShapeRef.current.fabricObject)
     }
+  }
+}
+
+export function handleCanvasMouseUp({
+  canvas,
+  isCurrentUserDrawing,
+  currentDrawnShapeRef,
+  currentSelectedShapeRef,
+  activeObjectRef,
+  syncCraftMotionObjectsInStorage,
+  setActiveControl,
+}: {
+  canvas: Canvas
+  isCurrentUserDrawing: React.MutableRefObject<boolean>
+  currentDrawnShapeRef: React.MutableRefObject<CraftMotionObject | null>
+  currentSelectedShapeRef: React.MutableRefObject<ShapeType | null>
+  activeObjectRef: React.MutableRefObject<CraftMotionObject | null>
+  syncCraftMotionObjectsInStorage: (
+    craftMotionObject: CraftMotionObject | null
+  ) => void
+  setActiveControl: (value: React.SetStateAction<ActiveControl | null>) => void
+}): void {
+  isCurrentUserDrawing.current = false
+  syncCraftMotionObjectsInStorage(currentDrawnShapeRef.current)
+
+  currentDrawnShapeRef.current = null
+  activeObjectRef.current = null
+  currentSelectedShapeRef.current = null
+
+  if (!canvas.isDrawingMode) {
+    setActiveControl('select')
   }
 }
 
