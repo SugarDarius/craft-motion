@@ -1,4 +1,4 @@
-import type { Gradient, Pattern, Rect, Circle } from 'fabric/fabric-impl'
+import type { Circle, Gradient, Pattern, Rect } from 'fabric/fabric-impl'
 
 export type ShapeType = 'rectangle' | 'circle'
 
@@ -11,8 +11,13 @@ export type ShapeProps = {
   objectId: string
 }
 
+type ExtendsWithObjectId<T> = T & { objectId: string }
+export type ExtendedFabricObject =
+  | ExtendsWithObjectId<Rect>
+  | ExtendsWithObjectId<Circle>
+
 export type CraftMotionObject = {
   objectId: string
   type: ShapeType
-  fabricObject: Rect | Circle
+  fabricObject: ExtendedFabricObject
 }

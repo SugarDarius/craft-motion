@@ -1,7 +1,11 @@
 import type { Canvas, IEvent } from 'fabric/fabric-impl'
 import { fabric } from 'fabric'
 
-import type { ShapeType, CraftMotionObject } from './codex/shape'
+import type {
+  ShapeType,
+  CraftMotionObject,
+  ExtendedFabricObject,
+} from './codex/shape'
 import type { ActiveControl } from './codex/control'
 import type { CanvasObjects } from './codex/liveblocks'
 
@@ -207,6 +211,25 @@ export function handleCanvasMouseMove({
 
   canvas.renderAll()
   syncCraftMotionObjectsInStorage(currentDrawnShapeRef.current)
+}
+
+export function handleCanvasObjectModified({
+  options,
+  findAndSyncCraftMotionObjectInStorage,
+}: {
+  options: IEvent
+  findAndSyncCraftMotionObjectInStorage: (
+    fabricObject: ExtendedFabricObject
+  ) => void
+}): void {
+  const target = options.target
+  if (!target) {
+    return
+  }
+
+  if (target.type !== 'activeSelection') {
+    findAndSyncCraftMotionObjectInStorage(target as ExtendedFabricObject)
+  }
 }
 
 export function handleCanvasObjectMoving({

@@ -13,7 +13,11 @@ import {
   useStorage,
   useUndo,
 } from '@/liveblocks.config'
-import type { ShapeType, CraftMotionObject } from '@/lib/codex/shape'
+import type {
+  ShapeType,
+  CraftMotionObject,
+  ExtendedFabricObject,
+} from '@/lib/codex/shape'
 import type { ActiveControl } from '@/lib/codex/control'
 import {
   setupCanvas,
@@ -24,6 +28,7 @@ import {
   handleCanvasMouseUp,
   handleCanvasMouseMove,
   handleCanvasObjectMoving,
+  handleCanvasObjectModified,
 } from '@/lib/fabric'
 
 type UseEditorReturnType = {
@@ -85,7 +90,9 @@ export function useEditor(): UseEditorReturnType {
         return
       }
 
-      const fabricObjectData = craftMotionObject.fabricObject.toJSON()
+      const fabricObjectData = craftMotionObject.fabricObject.toJSON([
+        'objectId',
+      ])
       const canvasObjects = storage.get('craftMotionData').get('canvasObjects')
 
       canvasObjects.set(craftMotionObject.objectId, {
@@ -96,6 +103,25 @@ export function useEditor(): UseEditorReturnType {
       })
     },
     []
+  )
+
+  const findAndSyncCraftMotionObjectInStorage = useEvent(
+    (fabricObject: ExtendedFabricObject): void => {
+      if (!fabricObject.objectId) {
+        return
+      }
+
+      const craftMotionObject = canvasObjects.get(fabricObject.objectId)
+      if (craftMotionObject) {
+        const updatedCraftMotionObject: CraftMotionObject = {
+          objectId: craftMotionObject.objectId,
+          type: craftMotionObject.type,
+          fabricObject,
+        }
+
+        syncCraftMotionObjectsInStorage(updatedCraftMotionObject)
+      }
+    }
   )
 
   useEffect(() => {
@@ -151,11 +177,22 @@ export function useEditor(): UseEditorReturnType {
       })
     })
 
+    canvas.on('object:modified', (options): void => {
+      handleCanvasObjectModified({
+        options,
+        findAndSyncCraftMotionObjectInStorage,
+      })
+    })
+
     return (): void => {
       canvas.dispose()
       window.removeEventListener('resize', handleWindowResize)
     }
-  }, [canvasRef, syncCraftMotionObjectsInStorage])
+  }, [
+    canvasRef,
+    syncCraftMotionObjectsInStorage,
+    findAndSyncCraftMotionObjectInStorage,
+  ])
 
   useEffect(() => {
     renderCanvas({

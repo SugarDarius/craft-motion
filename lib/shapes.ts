@@ -1,8 +1,14 @@
 import { fabric } from 'fabric'
 import { nanoid } from 'nanoid'
 
-import type { ShapeType, CraftMotionObject } from './codex/shape'
+import type {
+  ShapeType,
+  CraftMotionObject,
+  ExtendedFabricObject,
+} from './codex/shape'
 import { generateRandomHexColor } from './colors'
+
+fabric.util
 
 export function createRect({
   pointer,
@@ -11,7 +17,6 @@ export function createRect({
 }): CraftMotionObject {
   const id = nanoid(16)
   const rect = new fabric.Rect({
-    name: id,
     left: pointer.x,
     top: pointer.y,
     width: 100,
@@ -19,7 +24,15 @@ export function createRect({
     fill: generateRandomHexColor(),
   })
 
-  return { objectId: id, type: 'rectangle', fabricObject: rect }
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  rect.set('objectId', id)
+
+  return {
+    objectId: id,
+    type: 'rectangle',
+    fabricObject: rect as ExtendedFabricObject,
+  }
 }
 
 export function createCircle({
@@ -29,14 +42,21 @@ export function createCircle({
 }): CraftMotionObject {
   const id = nanoid(16)
   const circle = new fabric.Circle({
-    name: id,
     left: pointer.x,
     top: pointer.y,
     radius: 100,
     fill: generateRandomHexColor(),
   })
 
-  return { objectId: id, type: 'circle', fabricObject: circle }
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  circle.set('circle', id)
+
+  return {
+    objectId: id,
+    type: 'circle',
+    fabricObject: circle as ExtendedFabricObject,
+  }
 }
 
 export function createSpecificShape({
