@@ -58,8 +58,6 @@ export function useEditor(): UseEditorReturnType {
     }
   })
 
-  // Extra type casting as Liveblocks' typing do not allow to use
-  // own defined type definitions
   const canvasObjects = useStorage((root) => root.craftMotionData.canvasObjects)
 
   const syncCraftMotionObjectsInStorage = useMutation(
