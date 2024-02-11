@@ -7,6 +7,7 @@ import {
   TrashIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  CircleBackslashIcon,
 } from '@radix-ui/react-icons'
 
 import {
@@ -60,6 +61,11 @@ export function EditorControls() {
       <ControlTooltip text='Delete shape'>
         <Button variant='ghost' size='icon' disabled>
           <TrashIcon className='h-4 w-4' />
+        </Button>
+      </ControlTooltip>
+      <ControlTooltip text='Clean canvas'>
+        <Button variant='ghost' size='icon' disabled>
+          <CircleBackslashIcon className='h-4 w-4' />
         </Button>
       </ControlTooltip>
       <ControlTooltip text='Undo'>
