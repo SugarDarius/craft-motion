@@ -21,16 +21,18 @@ import { Button } from '@/components/ui/button'
 
 function ControlTooltip({
   text,
+  sideOffset,
   children,
 }: {
   text: string
+  sideOffset?: number
   children: React.ReactNode
 }) {
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
-        <TooltipContent side='bottom'>
+        <TooltipContent side='bottom' sideOffset={sideOffset}>
           <span>{text}</span>
         </TooltipContent>
       </Tooltip>
@@ -41,22 +43,25 @@ function ControlTooltip({
 export function EditorControls() {
   return (
     <div className='flex flex-row gap-1 rounded-2xl border-2 bg-background p-2'>
-      <ToggleGroup type='single'>
-        <ControlTooltip text='Select shape'>
-          <ToggleGroupItem value='select'>
+      <ToggleGroup
+        type='single'
+        onValueChange={(value) => console.log('value', value)}
+      >
+        <ToggleGroupItem value='select'>
+          <ControlTooltip text='Select shape' sideOffset={16}>
             <CursorArrowIcon className='h-4 w-4' />
-          </ToggleGroupItem>
-        </ControlTooltip>
-        <ControlTooltip text='Create rectangle shape'>
-          <ToggleGroupItem value='rectangle'>
+          </ControlTooltip>
+        </ToggleGroupItem>
+        <ToggleGroupItem value='rectangle'>
+          <ControlTooltip text='Create rectangle shape' sideOffset={16}>
             <SquareIcon className='h-4 w-4' />
-          </ToggleGroupItem>
-        </ControlTooltip>
-        <ControlTooltip text='Create circle shape'>
-          <ToggleGroupItem value='circle' disabled>
+          </ControlTooltip>
+        </ToggleGroupItem>
+        <ToggleGroupItem value='circle' disabled>
+          <ControlTooltip text='Create circle shape'>
             <CircleIcon className='h-4 w-4' />
-          </ToggleGroupItem>
-        </ControlTooltip>
+          </ControlTooltip>
+        </ToggleGroupItem>
       </ToggleGroup>
       <ControlTooltip text='Delete shape'>
         <Button variant='ghost' size='icon' disabled>
