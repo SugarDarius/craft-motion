@@ -45,6 +45,7 @@ type UseEditorReturnType = {
   onDeleteObject: () => void
   activeObjectId: string | null
   canvasObjects: CanvasObjects
+  onSelectObject: (objectId: string) => void
 }
 
 export function useEditor(): UseEditorReturnType {
@@ -151,6 +152,23 @@ export function useEditor(): UseEditorReturnType {
         canvas: fabricCanvasRef.current,
         deleteCraftMotionObjectInStorage,
       })
+    }
+  })
+
+  const handleSelectObject = useEvent((objectId: string) => {
+    if (fabricCanvasRef.current) {
+      const canvasObjects = fabricCanvasRef.current.getObjects()
+      const objectToSelect = canvasObjects.find(
+        (canvasObject): boolean =>
+          (canvasObject as ExtendedFabricObject).objectId === objectId
+      )
+
+      if (objectToSelect) {
+        fabricCanvasRef.current.setActiveObject(objectToSelect)
+        setActiveObjectId((objectToSelect as ExtendedFabricObject).objectId)
+
+        fabricCanvasRef.current.requestRenderAll()
+      }
     }
   })
 
@@ -263,5 +281,6 @@ export function useEditor(): UseEditorReturnType {
     onDeleteObject: handleDeleteObject,
     activeObjectId,
     canvasObjects,
+    onSelectObject: handleSelectObject,
   } as const
 }

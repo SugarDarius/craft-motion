@@ -25,6 +25,7 @@ export function EditorView() {
     onDeleteObject,
     activeObjectId,
     canvasObjects,
+    onSelectObject,
   } = useEditor()
 
   return (
@@ -60,6 +61,7 @@ export function EditorView() {
         <EditorLayer
           activeObjectId={activeObjectId}
           canvasObjects={canvasObjects}
+          onLayerClick={onSelectObject}
         />
         <EditorCanvas canvasRef={canvasRef} />
       </div>
