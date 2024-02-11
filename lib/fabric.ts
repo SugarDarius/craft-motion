@@ -113,6 +113,7 @@ export function handleCanvasMouseDown({
   } else if (currentSelectedShapeRef.current) {
     isCurrentUserDrawing.current = true
 
+    // TODO: update based working box bounds
     currentDrawnShapeRef.current = createSpecificShape({
       type: currentSelectedShapeRef.current,
       pointer: pointer as PointerEvent,
@@ -221,6 +222,7 @@ export function handleCanvasObjectMoving({
   }
 
   target.setCoords()
+  // TODO: update based working box bounds
   target.left = Math.max(
     0,
     Math.min(
