@@ -16,12 +16,14 @@ export function EditorView() {
   return (
     <div className='relative flex h-full w-full flex-col'>
       <EditorHeader>
-        <div className='flex flex-row items-center gap-4'>
+        <div className='flex w-full flex-row items-center gap-4'>
           <FileMenu />
           <ProjectName />
         </div>
-        <EditorControls />
-        <div className='flex flex-row items-center gap-4'>
+        <div className='flex w-full flex-row items-center justify-center'>
+          <EditorControls />
+        </div>
+        <div className='flex w-full flex-row items-center justify-end gap-4'>
           <ExportMenu />
         </div>
       </EditorHeader>
