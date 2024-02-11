@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react'
 import type { Canvas } from 'fabric/fabric-impl'
 
-import { useStorage } from '@/liveblocks.config'
+import throttle from 'lodash/throttle'
 
+import { useStorage } from '@/liveblocks.config'
 import type { ShapeType, CraftMotionObject } from '@/lib/codex/shape'
 import {
   setupCanvas,
@@ -35,9 +36,9 @@ export function useEditor(): UseEditorReturnType {
     const canvas = setupCanvas({ targetCanvasRef: canvasRef })
     fabricCanvasRef.current = canvas
 
-    const handleWindowResize = (): void => {
+    const handleWindowResize = throttle((): void => {
       handleCanvasWindowResize({ fabricCanvasRef })
-    }
+    }, 200)
     window.addEventListener('resize', handleWindowResize)
 
     canvas.on('mouse:down', (options): void => {

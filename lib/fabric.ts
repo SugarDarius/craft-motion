@@ -124,9 +124,28 @@ export function handleCanvasWindowResize({
 }): void {
   const canvasBoxElement = document.getElementById(CANVAS_BOX_ID)
   if (canvasBoxElement && fabricCanvasRef.current) {
+    const nextWidth = canvasBoxElement.clientWidth
+    const nextHeight = canvasBoxElement.clientHeight
+
+    const scaleMultiplierX = nextWidth / fabricCanvasRef.current.getWidth()
+    const scaleMultiplierY = nextHeight / fabricCanvasRef.current.getHeight()
+
+    for (const canvasObject of fabricCanvasRef.current.getObjects()) {
+      canvasObject.scaleX = canvasObject.scaleX ?? 0 * scaleMultiplierX
+      canvasObject.scaleY = canvasObject.scaleY ?? 0 * scaleMultiplierY
+
+      canvasObject.left = canvasObject.left ?? 0 * scaleMultiplierX
+      canvasObject.top = canvasObject.top ?? 0 * scaleMultiplierY
+
+      canvasObject.setCoords()
+    }
+
     fabricCanvasRef.current.setDimensions({
-      width: canvasBoxElement.clientWidth,
-      height: canvasBoxElement.clientHeight,
+      width: nextWidth,
+      height: nextHeight,
     })
+
+    fabricCanvasRef.current.calcOffset()
+    fabricCanvasRef.current.renderAll()
   }
 }
