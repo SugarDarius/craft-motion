@@ -15,9 +15,13 @@ import {
 export function FileMenu({
   canUndo,
   onUndo,
+  canRedo,
+  onRedo,
 }: {
   canUndo: boolean
   onUndo: () => void
+  canRedo: boolean
+  onRedo: () => void
 }) {
   return (
     <DropdownMenu>
@@ -33,7 +37,7 @@ export function FileMenu({
             Undo
             <DropdownMenuShortcut>⌘+Z</DropdownMenuShortcut>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={onRedo} disabled={!canRedo}>
             Redo
             <DropdownMenuShortcut>⇧+⌘+Z</DropdownMenuShortcut>
           </DropdownMenuItem>

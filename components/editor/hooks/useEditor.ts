@@ -6,8 +6,10 @@ import type { Canvas } from 'fabric/fabric-impl'
 import throttle from 'lodash/throttle'
 
 import {
+  useCanRedo,
   useCanUndo,
   useMutation,
+  useRedo,
   useStorage,
   useUndo,
 } from '@/liveblocks.config'
@@ -28,6 +30,8 @@ type UseEditorReturnType = {
   onChangeActiveControl: (value: string) => void
   canUndo: boolean
   onUndo: () => void
+  canRedo: boolean
+  onRedo: () => void
 }
 
 export function useEditor(): UseEditorReturnType {
@@ -66,8 +70,12 @@ export function useEditor(): UseEditorReturnType {
   })
 
   const canvasObjects = useStorage((root) => root.craftMotionData.canvasObjects)
-  const undo = useUndo()
+
   const canUndo = useCanUndo()
+  const undo = useUndo()
+
+  const canRedo = useCanRedo()
+  const redo = useRedo()
 
   const syncCraftMotionObjectsInStorage = useMutation(
     ({ storage }, craftMotionObject: CraftMotionObject | null): void => {
@@ -143,5 +151,7 @@ export function useEditor(): UseEditorReturnType {
     onChangeActiveControl: handleChangeActiveControl,
     canUndo,
     onUndo: undo,
+    canRedo,
+    onRedo: redo,
   } as const
 }

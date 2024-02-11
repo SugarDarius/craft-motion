@@ -42,11 +42,15 @@ export function EditorControls({
   onChangeActiveControl,
   canUndo,
   onUndo,
+  canRedo,
+  onRedo,
 }: {
   activeControl: string | null
   onChangeActiveControl: (value: string) => void
   canUndo: boolean
   onUndo: () => void
+  canRedo: boolean
+  onRedo: () => void
 }) {
   return (
     <div className='flex flex-row gap-1 rounded-2xl border-2 bg-background p-2'>
@@ -92,7 +96,12 @@ export function EditorControls({
         </Button>
       </ControlTooltip>
       <ControlTooltip text='Redo'>
-        <Button variant='ghost' size='icon'>
+        <Button
+          variant='ghost'
+          size='icon'
+          onClick={onRedo}
+          disabled={!canRedo}
+        >
           <ChevronRightIcon className='h-4 w-4' />
         </Button>
       </ControlTooltip>

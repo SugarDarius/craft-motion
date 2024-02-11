@@ -12,14 +12,26 @@ import { EditorControls } from './editor-controls'
 import { EditorCanvas } from './editor-canvas'
 
 export function EditorView() {
-  const { canvasRef, activeControl, onChangeActiveControl, canUndo, onUndo } =
-    useEditor()
+  const {
+    canvasRef,
+    activeControl,
+    onChangeActiveControl,
+    canUndo,
+    onUndo,
+    canRedo,
+    onRedo,
+  } = useEditor()
 
   return (
     <div className='relative flex h-full w-full flex-col'>
       <EditorHeader>
         <div className='flex w-full flex-row items-center gap-4'>
-          <FileMenu canUndo={canUndo} onUndo={onUndo} />
+          <FileMenu
+            canUndo={canUndo}
+            onUndo={onUndo}
+            canRedo={canRedo}
+            onRedo={onRedo}
+          />
           <ProjectName />
         </div>
         <div className='flex w-full flex-row items-center justify-center'>
@@ -28,6 +40,8 @@ export function EditorView() {
             onChangeActiveControl={onChangeActiveControl}
             canUndo={canUndo}
             onUndo={onUndo}
+            canRedo={canRedo}
+            onRedo={onRedo}
           />
         </div>
         <div className='flex w-full flex-row items-center justify-end gap-4'>
