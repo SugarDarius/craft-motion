@@ -39,6 +39,7 @@ export function renderCanvas({
     const height = width / (16 / 9)
 
     const workingBoxRect = new fabric.Rect({
+      name: 'Working box',
       originX: 'center',
       originY: 'center',
       left: fabricCanvasRef.current.getWidth() / 2,
