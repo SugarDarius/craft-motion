@@ -1,43 +1,9 @@
 'use client'
 
-import { useMemo } from 'react'
-
-import { cn } from '@/lib/utils'
 import { getRandomUsername } from '@/lib/random-names'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
-import { Avatar, AvatarImage } from '@/components/ui/avatar'
-
 import { useOthers, useSelf } from '@/liveblocks.config'
 
-function LiveUserAvatar({
-  name,
-  twClassNames,
-}: {
-  name: string
-  twClassNames?: string
-}) {
-  const src = useMemo(
-    () =>
-      `https://liveblocks.io/avatars/avatar-${Math.floor(Math.random() * 30)}.png`,
-    []
-  )
-  return (
-    <Tooltip>
-      <TooltipTrigger>
-        <Avatar className={cn(twClassNames)}>
-          <AvatarImage src={src} />
-        </Avatar>
-      </TooltipTrigger>
-      <TooltipContent side='bottom'>
-        <span>{name}</span>
-      </TooltipContent>
-    </Tooltip>
-  )
-}
+import { LiveUserAvatar } from './live-user-avatar'
 
 export function LiveUsers() {
   const others = useOthers()
