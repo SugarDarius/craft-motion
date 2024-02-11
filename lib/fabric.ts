@@ -1,5 +1,8 @@
+import type { LiveMap, Lson } from '@liveblocks/client'
 import type { Canvas, IEvent } from 'fabric/fabric-impl'
 import { fabric } from 'fabric'
+
+import { getObject } from '@/lib/liveblocks'
 
 import type { ShapeType, CraftMotionObject } from './codex/shape'
 import { createSpecificShape } from './shapes'
@@ -27,7 +30,7 @@ export function renderCanvas({
   fabricCanvasRef,
   activeObjectRef,
 }: {
-  canvasObjects: Map<string, CraftMotionObject>
+  canvasObjects: LiveMap<string, Lson>
   fabricCanvasRef: React.MutableRefObject<Canvas | null>
   activeObjectRef: React.MutableRefObject<CraftMotionObject | null>
 }): void {
@@ -57,9 +60,12 @@ export function renderCanvas({
 
     fabricCanvasRef.current.add(workingBoxRect)
 
-    for (const [objectId, craftMotionObject] of canvasObjects) {
+    for (const [objectId, lsonObject] of canvasObjects) {
+      // ensure to get an object based on Lson type
+      const fabricObject = getObject(lsonObject)
+
       fabric.util.enlivenObjects(
-        [craftMotionObject.fabricObject],
+        [fabricObject],
         (enlivenObjects: fabric.Object[]): void => {
           for (const enlivenObject of enlivenObjects) {
             if (activeObjectRef.current?.objectId === objectId) {
