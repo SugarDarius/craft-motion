@@ -10,32 +10,9 @@ import {
   CircleBackslashIcon,
 } from '@radix-ui/react-icons'
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { Button } from '@/components/ui/button'
-
-function ControlTooltip({
-  text,
-  sideOffset,
-  children,
-}: {
-  text: string
-  sideOffset?: number
-  children: React.ReactNode
-}) {
-  return (
-    <Tooltip>
-      <TooltipTrigger asChild>{children}</TooltipTrigger>
-      <TooltipContent side='bottom' sideOffset={sideOffset}>
-        <span>{text}</span>
-      </TooltipContent>
-    </Tooltip>
-  )
-}
+import { ControlTooltip } from './control-tooltip'
 
 export function EditorControls({
   activeControl,
