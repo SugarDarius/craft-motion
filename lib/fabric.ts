@@ -150,3 +150,32 @@ export function handleCanvasWindowResize({
     fabricCanvasRef.current.renderAll()
   }
 }
+
+export function handleCanvasZoom({
+  options,
+  canvas,
+}: {
+  options: IEvent<WheelEvent>
+  canvas: Canvas
+}): void {
+  const delta = options.e?.deltaY
+  const canvasZoom = canvas.getZoom()
+
+  const minZoom = 0.2 // min of 20% of zoom
+  const maxZoom = 1.8 // max of 180% of zoom
+
+  const zoomStep = 0.01
+
+  const zoom = Math.min(
+    Math.max(minZoom, canvasZoom + delta * zoomStep),
+    maxZoom
+  )
+
+  canvas.zoomToPoint(
+    { x: canvas.getWidth() / 2, y: canvas.getHeight() / 2 },
+    zoom
+  )
+
+  options.e.preventDefault()
+  options.e.stopPropagation()
+}

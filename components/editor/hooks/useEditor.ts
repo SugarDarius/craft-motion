@@ -9,6 +9,7 @@ import {
   setupCanvas,
   renderCanvas,
   handleCanvasWindowResize,
+  handleCanvasZoom,
   handleCanvasMouseDown,
 } from '@/lib/fabric'
 
@@ -40,6 +41,10 @@ export function useEditor(): UseEditorReturnType {
       handleCanvasWindowResize({ fabricCanvasRef })
     }, 200)
     window.addEventListener('resize', handleWindowResize)
+
+    canvas.on('mouse:wheel', (options): void => {
+      handleCanvasZoom({ options, canvas })
+    })
 
     canvas.on('mouse:down', (options): void => {
       handleCanvasMouseDown({
