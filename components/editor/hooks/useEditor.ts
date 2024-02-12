@@ -185,8 +185,8 @@ export function useEditor(): UseEditorReturnType {
     }
   })
 
-  useHotkeys('meta+z', () => undo(), { enabled: canUndo })
-  useHotkeys('shift+meta+z', () => redo(), { enabled: canRedo })
+  useHotkeys('mod+z', () => undo(), { enabled: canUndo })
+  useHotkeys('shift+mod+z', () => redo(), { enabled: canRedo })
 
   useEffect(() => {
     const canvas = setupCanvas({ targetCanvasRef: canvasRef })
