@@ -23,7 +23,7 @@ export function setupCanvas({
   const canvas = new fabric.Canvas(targetCanvasRef.current, {
     width: canvasBoxElement?.clientWidth ?? 0,
     height: canvasBoxElement?.clientHeight ?? 0,
-    selectionColor: 'rgba(136,160,235, 0.25)',
+    selection: false,
   })
 
   return canvas
