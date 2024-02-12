@@ -190,6 +190,14 @@ export function useEditor(): UseEditorReturnType {
   useHotkeys('backspace', () => handleDeleteObject(), {
     enabled: activeObjectId !== null,
   })
+  useHotkeys(
+    'mod+1',
+    (e) => {
+      e.preventDefault()
+      handleChangeActiveControl('select')
+    },
+    []
+  )
 
   useEffect(() => {
     const canvas = setupCanvas({ targetCanvasRef: canvasRef })

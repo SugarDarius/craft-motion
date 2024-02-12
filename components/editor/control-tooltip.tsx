@@ -17,7 +17,7 @@ export function ControlTooltip({
 }) {
   return (
     <Tooltip>
-      <TooltipTrigger asChild>{children}</TooltipTrigger>
+      <TooltipTrigger>{children}</TooltipTrigger>
       <TooltipContent side='bottom' sideOffset={sideOffset}>
         <span>{text}</span>
       </TooltipContent>
