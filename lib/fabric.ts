@@ -278,11 +278,11 @@ export function handleCanvasWindowResize({
     const scaleMultiplierY = nextHeight / fabricCanvasRef.current.getHeight()
 
     for (const canvasObject of fabricCanvasRef.current.getObjects()) {
-      canvasObject.scaleX = canvasObject.scaleX ?? 0 * scaleMultiplierX
-      canvasObject.scaleY = canvasObject.scaleY ?? 0 * scaleMultiplierY
+      canvasObject.scaleX = (canvasObject.scaleX ?? 0) * scaleMultiplierX
+      canvasObject.scaleY = (canvasObject.scaleY ?? 0) * scaleMultiplierY
 
-      canvasObject.left = canvasObject.left ?? 0 * scaleMultiplierX
-      canvasObject.top = canvasObject.top ?? 0 * scaleMultiplierY
+      canvasObject.left = (canvasObject.left ?? 0) * scaleMultiplierX
+      canvasObject.top = (canvasObject.top ?? 0) * scaleMultiplierY
 
       canvasObject.setCoords()
     }

@@ -323,10 +323,11 @@ export function useEditor(): UseEditorReturnType {
     })
 
     canvas.on('selection:updated', (): void => {
-      const activeObject = canvas.getActiveObject()
-      if (activeObject) {
-        setActiveObjectId((activeObject as ExtendedFabricObject).objectId)
-      }
+      handleCanvasSelectionCreatedOrObjectScaled({
+        canvas,
+        setActiveObjectId,
+        setInspectedObject,
+      })
     })
 
     canvas.on('selection:cleared', (): void => {

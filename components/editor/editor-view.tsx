@@ -10,6 +10,7 @@ import { ZoomInfo } from './zoom-info'
 import { ExportMenu } from './export-menu'
 import { LiveUsers } from './live-users'
 import { SocialLinks } from './social-links'
+import { InspectedOject } from './inspected-object'
 
 import { EditorHeader } from './editor-header'
 import { EditorControls } from './editor-controls'
@@ -38,6 +39,7 @@ export function EditorView() {
     zoom,
     duration,
     onChangeDuration,
+    inspectedObject,
   } = useEditor()
 
   return (
@@ -84,7 +86,9 @@ export function EditorView() {
           duration={duration}
           onChangeDuration={onChangeDuration}
         >
-          <div />
+          {inspectedObject ? (
+            <InspectedOject inspectedObject={inspectedObject} />
+          ) : null}
         </EditorInspector>
       </div>
       <EditorFooter>

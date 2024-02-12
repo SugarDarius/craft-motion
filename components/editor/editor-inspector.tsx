@@ -25,7 +25,7 @@ export function EditorInspector({
             Inspector
           </span>
         </div>
-        <div className='flex w-full flex-grow flex-col overflow-y-auto py-2'>
+        <div className='flex w-full flex-grow flex-col overflow-y-auto'>
           {children}
         </div>
         <div className='w-full flex-shrink-0 border-b-2 border-t-2 px-4 py-2'>
