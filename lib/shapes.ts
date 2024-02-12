@@ -8,7 +8,8 @@ import type {
 } from './codex/shape'
 import { generateRandomHexColor } from './colors'
 
-fabric.util
+fabric.Object.prototype.cornerStrokeColor = '#8b5cf6'
+fabric.Object.prototype.borderColor = '#8b5cf6'
 
 export function createRect({
   pointer,

@@ -55,7 +55,7 @@ export function renderCanvas({
       height,
       fill: 'white',
       shadow: new fabric.Shadow({
-        color: '#88A0EB',
+        color: '#333333',
         blur: 12,
       }),
       selectable: false,
