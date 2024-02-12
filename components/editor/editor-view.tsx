@@ -14,6 +14,7 @@ import { EditorHeader } from './editor-header'
 import { EditorControls } from './editor-controls'
 import { EditorCanvas } from './editor-canvas'
 import { EditorLayer } from './editor-layers'
+import { EditorInspector } from './editor-inspector'
 import { EditorFooter } from './editor-footer'
 
 export function EditorView() {
@@ -74,6 +75,7 @@ export function EditorView() {
           onLayerDelete={onDeleteObjectById}
         />
         <EditorCanvas canvasRef={canvasRef} />
+        <EditorInspector />
       </div>
       <EditorFooter>
         <ToggleColorMode />
