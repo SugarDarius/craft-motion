@@ -8,9 +8,11 @@ import { Slider } from '@/components/ui/slider'
 export function EditorInspector({
   duration,
   onChangeDuration,
+  children,
 }: {
   duration: number
   onChangeDuration: (duration: number) => void
+  children: React.ReactNode
 }) {
   const handleValueChange = useEvent((values: number[]): void => {
     onChangeDuration(values[0])
@@ -23,7 +25,9 @@ export function EditorInspector({
             Inspector
           </span>
         </div>
-        <div className='flex w-full flex-grow flex-col overflow-y-auto py-2'></div>
+        <div className='flex w-full flex-grow flex-col overflow-y-auto py-2'>
+          {children}
+        </div>
         <div className='w-full flex-shrink-0 border-b-2 border-t-2 px-4 py-2'>
           <span className='text-xl font-semibold tracking-tight'>
             Animation

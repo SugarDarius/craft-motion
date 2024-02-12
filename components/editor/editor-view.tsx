@@ -83,7 +83,9 @@ export function EditorView() {
         <EditorInspector
           duration={duration}
           onChangeDuration={onChangeDuration}
-        />
+        >
+          <div />
+        </EditorInspector>
       </div>
       <EditorFooter>
         <ToggleColorMode />
