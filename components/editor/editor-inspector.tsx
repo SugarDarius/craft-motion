@@ -10,6 +10,12 @@ export function EditorInspector() {
           </span>
         </div>
         <div className='flex w-full flex-grow flex-col overflow-y-auto py-2'></div>
+        <div className='w-full flex-shrink-0 border-b-2 border-t-2 px-4 py-2'>
+          <span className='text-xl font-semibold tracking-tight'>
+            Animation
+          </span>
+        </div>
+        <div className='w-full flex-shrink-0 px-4 py-2'></div>
       </div>
     </div>
   )
