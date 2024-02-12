@@ -6,6 +6,7 @@ import { FileMenu } from './file-menu'
 import { ProjectName } from './project-name'
 import { ExportMenu } from './export-menu'
 import { LiveUsers } from './live-users'
+import { SocialLinks } from './social-links'
 
 import { EditorHeader } from './editor-header'
 import { EditorControls } from './editor-controls'
@@ -56,6 +57,7 @@ export function EditorView() {
         <div className='flex w-full flex-row items-center justify-end gap-4'>
           <LiveUsers />
           <ExportMenu />
+          <SocialLinks />
         </div>
       </EditorHeader>
       <div className='relative flex w-full flex-grow flex-col overflow-hidden'>
