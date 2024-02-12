@@ -55,9 +55,8 @@ export function EditorView() {
           />
         </div>
         <div className='flex w-full flex-row items-center justify-end gap-4'>
-          <LiveUsers />
           <ExportMenu />
-          <SocialLinks />
+          <LiveUsers />
         </div>
       </EditorHeader>
       <div className='relative flex w-full flex-grow flex-col overflow-hidden'>
@@ -69,6 +68,7 @@ export function EditorView() {
         />
         <EditorCanvas canvasRef={canvasRef} />
       </div>
+      <SocialLinks />
     </div>
   )
 }
