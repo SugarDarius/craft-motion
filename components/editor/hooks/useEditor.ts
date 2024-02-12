@@ -198,6 +198,22 @@ export function useEditor(): UseEditorReturnType {
     },
     []
   )
+  useHotkeys(
+    'mod+2',
+    (e) => {
+      e.preventDefault()
+      handleChangeActiveControl('rectangle')
+    },
+    []
+  )
+  useHotkeys(
+    'mod+3',
+    (e) => {
+      e.preventDefault()
+      handleChangeActiveControl('circle')
+    },
+    []
+  )
 
   useEffect(() => {
     const canvas = setupCanvas({ targetCanvasRef: canvasRef })
