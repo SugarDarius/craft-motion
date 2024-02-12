@@ -6,6 +6,7 @@ import { useEditor } from './hooks/useEditor'
 
 import { FileMenu } from './file-menu'
 import { ProjectName } from './project-name'
+import { ZoomInfo } from './zoom-info'
 import { ExportMenu } from './export-menu'
 import { LiveUsers } from './live-users'
 import { SocialLinks } from './social-links'
@@ -34,6 +35,7 @@ export function EditorView() {
     activeObjectId,
     canvasObjects,
     onSelectObject,
+    zoom,
   } = useEditor()
 
   return (
@@ -63,6 +65,7 @@ export function EditorView() {
           />
         </div>
         <div className='flex w-full flex-row items-center justify-end gap-4'>
+          <ZoomInfo zoom={zoom} />
           <ExportMenu />
           <LiveUsers />
         </div>
