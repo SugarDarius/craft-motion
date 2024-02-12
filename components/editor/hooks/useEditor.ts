@@ -22,6 +22,7 @@ import type {
   ExtendedFabricObject,
 } from '@/lib/codex/shape'
 import type { ActiveControl } from '@/lib/codex/control'
+import type { InspectedObject } from '@/lib/codex/inspector'
 import type { CanvasObjects } from '@/lib/codex/liveblocks'
 import {
   setupCanvas,
@@ -35,6 +36,7 @@ import {
   handleCanvasObjectModified,
   handleDeleteCanvasObjectById,
   handleDeleteAllCanvasObjects,
+  handleCanvasSelectionCreatedOrObjectScaled,
 } from '@/lib/fabric'
 
 type UseEditorReturnType = {
@@ -56,6 +58,7 @@ type UseEditorReturnType = {
   zoom: number
   duration: number
   onChangeDuration: (duration: number) => void
+  inspectedObject: InspectedObject | null
 }
 
 export function useEditor(): UseEditorReturnType {
@@ -76,6 +79,9 @@ export function useEditor(): UseEditorReturnType {
   )
 
   const [zoom, setZoom] = useState<number>(1)
+
+  const [inspectedObject, setInspectedObject] =
+    useState<InspectedObject | null>(null)
 
   const [duration, setDuration] = useState<number>(1)
 
@@ -309,10 +315,11 @@ export function useEditor(): UseEditorReturnType {
     })
 
     canvas.on('selection:created', (): void => {
-      const activeObject = canvas.getActiveObject()
-      if (activeObject) {
-        setActiveObjectId((activeObject as ExtendedFabricObject).objectId)
-      }
+      handleCanvasSelectionCreatedOrObjectScaled({
+        canvas,
+        setActiveObjectId,
+        setInspectedObject,
+      })
     })
 
     canvas.on('selection:updated', (): void => {
@@ -324,6 +331,15 @@ export function useEditor(): UseEditorReturnType {
 
     canvas.on('selection:cleared', (): void => {
       setActiveObjectId(null)
+      setInspectedObject(null)
+    })
+
+    canvas.on('object:scaling', (): void => {
+      handleCanvasSelectionCreatedOrObjectScaled({
+        canvas,
+        setActiveObjectId,
+        setInspectedObject,
+      })
     })
 
     return (): void => {
@@ -366,5 +382,6 @@ export function useEditor(): UseEditorReturnType {
     zoom,
     duration,
     onChangeDuration: handleChangeDuration,
+    inspectedObject,
   } as const
 }

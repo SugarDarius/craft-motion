@@ -7,6 +7,7 @@ import type {
   ExtendedFabricObject,
 } from './codex/shape'
 import type { ActiveControl } from './codex/control'
+import type { InspectedObject } from './codex/inspector'
 import type { CanvasObjects } from './codex/liveblocks'
 
 import { createSpecificShape } from './shapes'
@@ -61,6 +62,10 @@ export function renderCanvas({
       selectable: false,
       hoverCursor: 'default',
     })
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    workingBoxRect.set('objectId', '@working-box-rect')
 
     fabricCanvasRef.current.add(workingBoxRect)
 
@@ -378,4 +383,55 @@ export function handleDeleteAllCanvasObjects({
   canvas.clear()
 
   deleteAllCraftMotionObjectsInStorage()
+}
+
+export function handleCanvasSelectionCreatedOrObjectScaled({
+  canvas,
+  setActiveObjectId,
+  setInspectedObject,
+}: {
+  canvas: Canvas
+  setActiveObjectId: (value: React.SetStateAction<string | null>) => void
+  setInspectedObject: (
+    value: React.SetStateAction<InspectedObject | null>
+  ) => void
+}): void {
+  const activeObject = canvas.getActiveObject()
+  if (activeObject) {
+    const objectId = (activeObject as ExtendedFabricObject).objectId
+    const fill = activeObject.fill?.toString() ?? ''
+
+    const scaleX = activeObject.scaleX ?? 0
+    const scaleY = activeObject.scaleY ?? 0
+
+    if (activeObject instanceof fabric.Rect) {
+      const scaledWidth = scaleX
+        ? (activeObject.width ?? 0) * scaleX
+        : activeObject.width ?? 0
+
+      const scaledHeight = scaleY
+        ? (activeObject.height ?? 0) * scaleY
+        : activeObject.height ?? 0
+
+      setInspectedObject({
+        objectId,
+        type: 'rectangle',
+        width: scaledWidth,
+        height: scaledHeight,
+        fill,
+      })
+    } else if (activeObject instanceof fabric.Circle) {
+      const scaleFactor = (scaleX + scaleY) / 2
+      const radius = (activeObject.radius ?? 0) / scaleFactor
+
+      setInspectedObject({
+        objectId,
+        type: 'circle',
+        radius,
+        fill,
+      })
+    }
+
+    setActiveObjectId(objectId)
+  }
 }
