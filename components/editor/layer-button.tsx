@@ -32,7 +32,7 @@ export function LayerButton({
     >
       <Icon className='h-4 w-4' />
       {typeName}
-      <span className='text-sm'>{objectId.slice(0, 3)}</span>
+      <span className='text-sm'>{objectId.slice(0, 4)}</span>
     </Button>
   )
 }
