@@ -53,6 +53,7 @@ type UseEditorReturnType = {
   activeObjectId: string | null
   canvasObjects: CanvasObjects
   onSelectObject: (objectId: string) => void
+  zoom: number
 }
 
 export function useEditor(): UseEditorReturnType {
@@ -71,6 +72,8 @@ export function useEditor(): UseEditorReturnType {
   const [activeControl, setActiveControl] = useState<ActiveControl | null>(
     'select'
   )
+
+  const [zoom, setZoom] = useState<number>(1)
 
   const handleChangeActiveControl = useEvent((value: string) => {
     if (!value) {
@@ -248,7 +251,7 @@ export function useEditor(): UseEditorReturnType {
     window.addEventListener('resize', handleWindowResize)
 
     canvas.on('mouse:wheel', (options): void => {
-      handleCanvasZoom({ options, canvas })
+      handleCanvasZoom({ options, canvas, setZoom })
     })
 
     canvas.on('mouse:down', (options): void => {
@@ -352,5 +355,6 @@ export function useEditor(): UseEditorReturnType {
     activeObjectId,
     canvasObjects,
     onSelectObject: handleSelectObject,
+    zoom,
   } as const
 }

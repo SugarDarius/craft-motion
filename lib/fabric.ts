@@ -295,9 +295,11 @@ export function handleCanvasWindowResize({
 export function handleCanvasZoom({
   options,
   canvas,
+  setZoom,
 }: {
   options: IEvent<WheelEvent>
   canvas: Canvas
+  setZoom: (value: React.SetStateAction<number>) => void
 }): void {
   const delta = options.e?.deltaY
   const canvasZoom = canvas.getZoom()
@@ -319,6 +321,8 @@ export function handleCanvasZoom({
 
   options.e.preventDefault()
   options.e.stopPropagation()
+
+  setZoom(zoom)
 }
 
 export function handleDeleteCanvasObjectById({
