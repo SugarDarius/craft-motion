@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
+
 import useEvent from 'react-use-event-hook'
+import { useHotkeys } from 'react-hotkeys-hook'
+
 import { JsonObject } from '@liveblocks/client'
 import type { Canvas } from 'fabric/fabric-impl'
 
@@ -181,6 +184,9 @@ export function useEditor(): UseEditorReturnType {
       }
     }
   })
+
+  useHotkeys('meta+z', () => undo(), { enabled: canUndo })
+  useHotkeys('shift+meta+z', () => redo(), { enabled: canRedo })
 
   useEffect(() => {
     const canvas = setupCanvas({ targetCanvasRef: canvasRef })
