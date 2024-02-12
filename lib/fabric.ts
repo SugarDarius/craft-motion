@@ -358,3 +358,20 @@ export function handleDeleteCanvasObjectById({
 
   canvas.requestRenderAll()
 }
+
+export function handleDeleteAllCanvasObjects({
+  fabricCanvasRef,
+  deleteAllCraftMotionObjectsInStorage,
+}: {
+  fabricCanvasRef: React.MutableRefObject<Canvas | null>
+  deleteAllCraftMotionObjectsInStorage: () => void
+}): void {
+  if (!fabricCanvasRef.current) {
+    return
+  }
+
+  const canvas = fabricCanvasRef.current
+  canvas.clear()
+
+  deleteAllCraftMotionObjectsInStorage()
+}

@@ -34,6 +34,7 @@ import {
   handleCanvasObjectMoving,
   handleCanvasObjectModified,
   handleDeleteCanvasObjectById,
+  handleDeleteAllCanvasObjects,
 } from '@/lib/fabric'
 
 type UseEditorReturnType = {
@@ -48,6 +49,7 @@ type UseEditorReturnType = {
   onDeleteObject: () => void
   onDeleteObjectById: (objectId: string) => void
   canDeleteAll: boolean
+  onDeleteAllObjects: () => void
   activeObjectId: string | null
   canvasObjects: CanvasObjects
   onSelectObject: (objectId: string) => void
@@ -111,6 +113,18 @@ export function useEditor(): UseEditorReturnType {
     []
   )
 
+  const deleteAllCraftMotionObjectsInStorage = useMutation(
+    ({ storage }): void => {
+      const canvasObjects = storage.get('craftMotionData').get('canvasObjects')
+      if (canvasObjects.size > 0) {
+        for (const objectId of canvasObjects.keys()) {
+          canvasObjects.delete(objectId)
+        }
+      }
+    },
+    []
+  )
+
   const syncCraftMotionObjectsInStorage = useMutation(
     ({ storage }, craftMotionObject: CraftMotionObject | null): void => {
       if (!craftMotionObject) {
@@ -166,6 +180,13 @@ export function useEditor(): UseEditorReturnType {
       objectId,
       fabricCanvasRef,
       deleteCraftMotionObjectInStorage,
+    })
+  })
+
+  const handleDeleteAllObjects = useEvent((): void => {
+    handleDeleteAllCanvasObjects({
+      fabricCanvasRef,
+      deleteAllCraftMotionObjectsInStorage,
     })
   })
 
@@ -327,6 +348,7 @@ export function useEditor(): UseEditorReturnType {
     onDeleteObject: handleDeleteObject,
     onDeleteObjectById: handleDeleteObjectById,
     canDeleteAll,
+    onDeleteAllObjects: handleDeleteAllObjects,
     activeObjectId,
     canvasObjects,
     onSelectObject: handleSelectObject,

@@ -24,6 +24,7 @@ export function EditorControls({
   canDelete,
   onDeleteObject,
   canDeleteAll,
+  onDeleteAllObjects,
 }: {
   activeControl: string | null
   onChangeActiveControl: (value: string) => void
@@ -34,6 +35,7 @@ export function EditorControls({
   canDelete: boolean
   onDeleteObject: () => void
   canDeleteAll: boolean
+  onDeleteAllObjects: () => void
 }) {
   return (
     <div className='flex flex-row gap-1 rounded-2xl border-2 bg-background p-2'>
@@ -79,7 +81,12 @@ export function EditorControls({
         </Button>
       </ControlTooltip>
       <ControlTooltip text='Clear canvas'>
-        <Button variant='ghost' size='icon' disabled={!canDeleteAll}>
+        <Button
+          variant='ghost'
+          size='icon'
+          onClick={onDeleteAllObjects}
+          disabled={!canDeleteAll}
+        >
           <CircleBackslashIcon className='h-4 w-4' />
         </Button>
       </ControlTooltip>
