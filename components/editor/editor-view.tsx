@@ -1,5 +1,7 @@
 'use client'
 
+import { ToggleColorMode } from '@/components/ui/toggle-color-mode'
+
 import { useEditor } from './hooks/useEditor'
 
 import { FileMenu } from './file-menu'
@@ -70,6 +72,7 @@ export function EditorView() {
         <EditorCanvas canvasRef={canvasRef} />
       </div>
       <EditorFooter>
+        <ToggleColorMode />
         <SocialLinks />
       </EditorFooter>
     </div>
