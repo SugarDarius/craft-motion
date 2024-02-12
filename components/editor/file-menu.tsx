@@ -31,7 +31,7 @@ export function FileMenu({
           <CaretDownIcon className='ml-2 h-4 w-4' />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className='w-56' align='start' side='right'>
+      <DropdownMenuContent className='w-56' align='start' side='bottom'>
         <DropdownMenuGroup>
           <DropdownMenuItem onClick={onUndo} disabled={!canUndo}>
             Undo
