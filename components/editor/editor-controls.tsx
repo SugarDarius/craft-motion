@@ -40,17 +40,21 @@ export function EditorControls({
         value={activeControl ?? undefined}
         onValueChange={onChangeActiveControl}
       >
-        <ControlTooltip text='Select shape' sideOffset={16}>
+        <ControlTooltip text='Select shape' shortcutNumber={1} sideOffset={16}>
           <ToggleGroupItem value='select'>
             <CursorArrowIcon className='h-4 w-4' />
           </ToggleGroupItem>
         </ControlTooltip>
-        <ControlTooltip text='Create rectangle shape' sideOffset={16}>
+        <ControlTooltip
+          text='Create rectangle shape'
+          shortcutNumber={2}
+          sideOffset={16}
+        >
           <ToggleGroupItem value='rectangle'>
             <SquareIcon className='h-4 w-4' />
           </ToggleGroupItem>
         </ControlTooltip>
-        <ControlTooltip text='Create circle shape'>
+        <ControlTooltip text='Create circle shape' shortcutNumber={3}>
           <ToggleGroupItem value='circle'>
             <CircleIcon className='h-4 w-4' />
           </ToggleGroupItem>
