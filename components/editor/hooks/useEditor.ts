@@ -187,6 +187,9 @@ export function useEditor(): UseEditorReturnType {
 
   useHotkeys('mod+z', () => undo(), { enabled: canUndo })
   useHotkeys('shift+mod+z', () => redo(), { enabled: canRedo })
+  useHotkeys('backspace', () => handleDeleteObject(), {
+    enabled: activeObjectId !== null,
+  })
 
   useEffect(() => {
     const canvas = setupCanvas({ targetCanvasRef: canvasRef })
