@@ -28,6 +28,7 @@ export function EditorView() {
     canDelete,
     onDeleteObject,
     onDeleteObjectById,
+    canDeleteAll,
     activeObjectId,
     canvasObjects,
     onSelectObject,
@@ -55,6 +56,7 @@ export function EditorView() {
             onRedo={onRedo}
             canDelete={canDelete}
             onDeleteObject={onDeleteObject}
+            canDeleteAll={canDeleteAll}
           />
         </div>
         <div className='flex w-full flex-row items-center justify-end gap-4'>

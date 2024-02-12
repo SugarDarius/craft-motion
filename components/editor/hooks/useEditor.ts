@@ -47,6 +47,7 @@ type UseEditorReturnType = {
   canDelete: boolean
   onDeleteObject: () => void
   onDeleteObjectById: (objectId: string) => void
+  canDeleteAll: boolean
   activeObjectId: string | null
   canvasObjects: CanvasObjects
   onSelectObject: (objectId: string) => void
@@ -312,6 +313,7 @@ export function useEditor(): UseEditorReturnType {
   }, [canvasObjects])
 
   const canDelete = canvasObjects.size > 0 && activeObjectId !== null
+  const canDeleteAll = canvasObjects.size > 0
 
   return {
     canvasRef,
@@ -324,6 +326,7 @@ export function useEditor(): UseEditorReturnType {
     canDelete,
     onDeleteObject: handleDeleteObject,
     onDeleteObjectById: handleDeleteObjectById,
+    canDeleteAll,
     activeObjectId,
     canvasObjects,
     onSelectObject: handleSelectObject,
