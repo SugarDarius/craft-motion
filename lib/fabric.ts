@@ -321,26 +321,40 @@ export function handleCanvasZoom({
   options.e.stopPropagation()
 }
 
-export function handleDeleteCanvasObject({
-  canvas,
+export function handleDeleteCanvasObjectById({
+  objectId,
+  fabricCanvasRef,
   deleteCraftMotionObjectInStorage,
 }: {
-  canvas: Canvas
+  objectId: string
+  fabricCanvasRef: React.MutableRefObject<Canvas | null>
   deleteCraftMotionObjectInStorage: (objectId: string) => void
 }): void {
-  const activeObjects = canvas.getActiveObjects()
-  if (activeObjects.length === 0) {
+  if (!fabricCanvasRef.current) {
     return
   }
 
-  for (const activeObject of activeObjects) {
-    const objectId = (activeObject as ExtendedFabricObject).objectId
-    if (objectId) {
-      canvas.remove(activeObject)
-      deleteCraftMotionObjectInStorage(objectId)
-    }
+  const canvas = fabricCanvasRef.current
+  const allCanvasObjects = canvas.getObjects()
+
+  const activeObject = canvas.getActiveObject()
+  const activeObjectId =
+    (activeObject as ExtendedFabricObject)?.objectId ?? null
+
+  if (activeObjectId === objectId) {
+    canvas.discardActiveObject()
   }
 
-  canvas.discardActiveObject()
+  // TODO: update time and space complexity here
+  const correspondingCanvasObject = allCanvasObjects.find(
+    (canvasObject) =>
+      (canvasObject as ExtendedFabricObject).objectId === objectId
+  )
+
+  if (correspondingCanvasObject) {
+    canvas.remove(correspondingCanvasObject)
+    deleteCraftMotionObjectInStorage(objectId)
+  }
+
   canvas.requestRenderAll()
 }

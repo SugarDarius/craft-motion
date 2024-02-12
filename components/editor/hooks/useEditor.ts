@@ -30,7 +30,7 @@ import {
   handleCanvasMouseMove,
   handleCanvasObjectMoving,
   handleCanvasObjectModified,
-  handleDeleteCanvasObject,
+  handleDeleteCanvasObjectById,
 } from '@/lib/fabric'
 
 type UseEditorReturnType = {
@@ -43,6 +43,7 @@ type UseEditorReturnType = {
   onRedo: () => void
   canDelete: boolean
   onDeleteObject: () => void
+  onDeleteObjectById: (objectId: string) => void
   activeObjectId: string | null
   canvasObjects: CanvasObjects
   onSelectObject: (objectId: string) => void
@@ -147,12 +148,21 @@ export function useEditor(): UseEditorReturnType {
   )
 
   const handleDeleteObject = useEvent((): void => {
-    if (fabricCanvasRef.current) {
-      handleDeleteCanvasObject({
-        canvas: fabricCanvasRef.current,
+    if (activeObjectId !== null) {
+      handleDeleteCanvasObjectById({
+        objectId: activeObjectId,
+        fabricCanvasRef,
         deleteCraftMotionObjectInStorage,
       })
     }
+  })
+
+  const handleDeleteObjectById = useEvent((objectId: string): void => {
+    handleDeleteCanvasObjectById({
+      objectId,
+      fabricCanvasRef,
+      deleteCraftMotionObjectInStorage,
+    })
   })
 
   const handleSelectObject = useEvent((objectId: string) => {
@@ -174,6 +184,7 @@ export function useEditor(): UseEditorReturnType {
 
   useEffect(() => {
     const canvas = setupCanvas({ targetCanvasRef: canvasRef })
+    // We need to be able to work on the canvas outside this side effect
     fabricCanvasRef.current = canvas
 
     const handleWindowResize = throttle((): void => {
@@ -279,6 +290,7 @@ export function useEditor(): UseEditorReturnType {
     onRedo: redo,
     canDelete,
     onDeleteObject: handleDeleteObject,
+    onDeleteObjectById: handleDeleteObjectById,
     activeObjectId,
     canvasObjects,
     onSelectObject: handleSelectObject,
