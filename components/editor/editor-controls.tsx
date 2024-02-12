@@ -41,26 +41,32 @@ export function EditorControls({
         onValueChange={onChangeActiveControl}
       >
         <ControlTooltip text='Select shape' sideOffset={16} shortcut='⌘+1'>
-          <ToggleGroupItem value='select'>
-            <CursorArrowIcon className='h-4 w-4' />
-          </ToggleGroupItem>
+          <div className='h-fit w-fit'>
+            <ToggleGroupItem value='select'>
+              <CursorArrowIcon className='h-4 w-4' />
+            </ToggleGroupItem>
+          </div>
         </ControlTooltip>
         <ControlTooltip
           text='Create rectangle shape'
           shortcut='⌘+2'
           sideOffset={16}
         >
-          <ToggleGroupItem value='rectangle'>
-            <SquareIcon className='h-4 w-4' />
-          </ToggleGroupItem>
+          <div className='h-fit w-fit'>
+            <ToggleGroupItem value='rectangle'>
+              <SquareIcon className='h-4 w-4' />
+            </ToggleGroupItem>
+          </div>
         </ControlTooltip>
         <ControlTooltip text='Create circle shape' shortcut='⌘+3'>
-          <ToggleGroupItem value='circle'>
-            <CircleIcon className='h-4 w-4' />
-          </ToggleGroupItem>
+          <div className='h-fit w-fit'>
+            <ToggleGroupItem value='circle'>
+              <CircleIcon className='h-4 w-4' />
+            </ToggleGroupItem>
+          </div>
         </ControlTooltip>
       </ToggleGroup>
-      <ControlTooltip text='Delete shape'>
+      <ControlTooltip text='Delete shape' shortcut='⌫'>
         <Button
           variant='ghost'
           size='icon'
