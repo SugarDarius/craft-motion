@@ -9,10 +9,12 @@ export function EditorLayer({
   activeObjectId,
   canvasObjects,
   onLayerClick,
+  onLayerDelete,
 }: {
   activeObjectId: string | null
   canvasObjects: CanvasObjects
   onLayerClick: (objectId: string) => void
+  onLayerDelete: (objectId: string) => void
 }) {
   const layers = useMemo(
     () => Array.from(canvasObjects.values()),
@@ -32,6 +34,7 @@ export function EditorLayer({
               objectId={layer.objectId}
               type={layer.type}
               onClick={onLayerClick}
+              onDelete={onLayerDelete}
               isSelected={layer.objectId === activeObjectId}
             />
           ))}

@@ -23,6 +23,7 @@ export function EditorView() {
     onRedo,
     canDelete,
     onDeleteObject,
+    onDeleteObjectById,
     activeObjectId,
     canvasObjects,
     onSelectObject,
@@ -62,6 +63,7 @@ export function EditorView() {
           activeObjectId={activeObjectId}
           canvasObjects={canvasObjects}
           onLayerClick={onSelectObject}
+          onLayerDelete={onDeleteObjectById}
         />
         <EditorCanvas canvasRef={canvasRef} />
       </div>

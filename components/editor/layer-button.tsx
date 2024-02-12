@@ -18,15 +18,22 @@ export function LayerButton({
   type,
   isSelected,
   onClick,
+  onDelete,
 }: {
   objectId: string
   type: ShapeType
   isSelected: boolean
   onClick: (objectId: string) => void
+  onDelete: (objectId: string) => void
 }) {
   const handleClick = useEvent((): void => {
     onClick(objectId)
   })
+
+  const handleDelete = useEvent((): void => {
+    onDelete(objectId)
+  })
+
   const Icon = type === 'circle' ? CircleIcon : SquareIcon
   const typeName = type.charAt(0).toUpperCase() + type.slice(1)
 
@@ -49,7 +56,7 @@ export function LayerButton({
           Copy
           <ContextMenuShortcut>⌘+C</ContextMenuShortcut>
         </ContextMenuItem>
-        <ContextMenuItem>Delete</ContextMenuItem>
+        <ContextMenuItem onClick={handleDelete}>Delete</ContextMenuItem>
       </ContextMenuContent>
     </ContextMenu>
   )
