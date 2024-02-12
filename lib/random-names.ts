@@ -371,5 +371,5 @@ const pick = (arr: string[]): string => {
 const toUpperFirst = (str: string) => str[0].toUpperCase() + str.slice(1)
 
 export function getRandomUsername(): string {
-  return `${toUpperFirst(pick(animals))} ${pick(adjectives)}`
+  return `${toUpperFirst(pick(adjectives))} ${toUpperFirst(pick(animals))}`
 }
