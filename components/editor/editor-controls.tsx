@@ -40,21 +40,21 @@ export function EditorControls({
         value={activeControl ?? undefined}
         onValueChange={onChangeActiveControl}
       >
-        <ControlTooltip text='Select shape' shortcutNumber={1} sideOffset={16}>
+        <ControlTooltip text='Select shape' sideOffset={16} shortcut='⌘+1'>
           <ToggleGroupItem value='select'>
             <CursorArrowIcon className='h-4 w-4' />
           </ToggleGroupItem>
         </ControlTooltip>
         <ControlTooltip
           text='Create rectangle shape'
-          shortcutNumber={2}
+          shortcut='⌘+2'
           sideOffset={16}
         >
           <ToggleGroupItem value='rectangle'>
             <SquareIcon className='h-4 w-4' />
           </ToggleGroupItem>
         </ControlTooltip>
-        <ControlTooltip text='Create circle shape' shortcutNumber={3}>
+        <ControlTooltip text='Create circle shape' shortcut='⌘+3'>
           <ToggleGroupItem value='circle'>
             <CircleIcon className='h-4 w-4' />
           </ToggleGroupItem>
@@ -75,7 +75,7 @@ export function EditorControls({
           <CircleBackslashIcon className='h-4 w-4' />
         </Button>
       </ControlTooltip>
-      <ControlTooltip text='Undo'>
+      <ControlTooltip text='Undo' shortcut='⌘+Z'>
         <Button
           variant='ghost'
           size='icon'
@@ -85,7 +85,7 @@ export function EditorControls({
           <ChevronLeftIcon className='h-4 w-4' />
         </Button>
       </ControlTooltip>
-      <ControlTooltip text='Redo'>
+      <ControlTooltip text='Redo' shortcut='⇧+⌘+Z'>
         <Button
           variant='ghost'
           size='icon'
