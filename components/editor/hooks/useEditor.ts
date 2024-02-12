@@ -54,6 +54,8 @@ type UseEditorReturnType = {
   canvasObjects: CanvasObjects
   onSelectObject: (objectId: string) => void
   zoom: number
+  duration: number
+  onChangeDuration: (duration: number) => void
 }
 
 export function useEditor(): UseEditorReturnType {
@@ -74,6 +76,8 @@ export function useEditor(): UseEditorReturnType {
   )
 
   const [zoom, setZoom] = useState<number>(1)
+
+  const [duration, setDuration] = useState<number>(1)
 
   const handleChangeActiveControl = useEvent((value: string) => {
     if (!value) {
@@ -208,6 +212,10 @@ export function useEditor(): UseEditorReturnType {
         fabricCanvasRef.current.requestRenderAll()
       }
     }
+  })
+
+  const handleChangeDuration = useEvent((duration): void => {
+    setDuration(duration)
   })
 
   useHotkeys('mod+z', () => undo(), { enabled: canUndo })
@@ -356,5 +364,7 @@ export function useEditor(): UseEditorReturnType {
     canvasObjects,
     onSelectObject: handleSelectObject,
     zoom,
+    duration,
+    onChangeDuration: handleChangeDuration,
   } as const
 }

@@ -36,6 +36,8 @@ export function EditorView() {
     canvasObjects,
     onSelectObject,
     zoom,
+    duration,
+    onChangeDuration,
   } = useEditor()
 
   return (
@@ -78,7 +80,10 @@ export function EditorView() {
           onLayerDelete={onDeleteObjectById}
         />
         <EditorCanvas canvasRef={canvasRef} />
-        <EditorInspector />
+        <EditorInspector
+          duration={duration}
+          onChangeDuration={onChangeDuration}
+        />
       </div>
       <EditorFooter>
         <ToggleColorMode />
