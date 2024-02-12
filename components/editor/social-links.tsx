@@ -12,7 +12,7 @@ import { buttonVariants } from '@/components/ui/button'
 
 export function SocialLinks() {
   return (
-    <div className='absolute bottom-6 right-6 flex flex-row items-center gap-2'>
+    <div className='flex flex-row items-center gap-2'>
       <Link
         href={siteConfig.socialLinks.twitter}
         target='_blank'

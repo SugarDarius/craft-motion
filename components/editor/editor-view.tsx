@@ -12,6 +12,7 @@ import { EditorHeader } from './editor-header'
 import { EditorControls } from './editor-controls'
 import { EditorCanvas } from './editor-canvas'
 import { EditorLayer } from './editor-layers'
+import { EditorFooter } from './editor-footer'
 
 export function EditorView() {
   const {
@@ -68,7 +69,9 @@ export function EditorView() {
         />
         <EditorCanvas canvasRef={canvasRef} />
       </div>
-      <SocialLinks />
+      <EditorFooter>
+        <SocialLinks />
+      </EditorFooter>
     </div>
   )
 }
