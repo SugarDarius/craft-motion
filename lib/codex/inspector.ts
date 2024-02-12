@@ -1,6 +1,8 @@
 type InspectObjectCommonProps = {
   objectId: string
   fill: string
+  x: number
+  y: number
 }
 
 export type InspectedObject =

@@ -404,6 +404,9 @@ export function handleCanvasSelectionCreatedOrObjectScaled({
     const scaleX = activeObject.scaleX ?? 0
     const scaleY = activeObject.scaleY ?? 0
 
+    const x = activeObject.left ?? 0
+    const y = activeObject.top ?? 0
+
     if (activeObject instanceof fabric.Rect) {
       const scaledWidth = scaleX
         ? (activeObject.width ?? 0) * scaleX
@@ -419,6 +422,8 @@ export function handleCanvasSelectionCreatedOrObjectScaled({
         width: scaledWidth,
         height: scaledHeight,
         fill,
+        x,
+        y,
       })
     } else if (activeObject instanceof fabric.Circle) {
       const scaleFactor = (scaleX + scaleY) / 2
@@ -429,6 +434,8 @@ export function handleCanvasSelectionCreatedOrObjectScaled({
         type: 'circle',
         radius,
         fill,
+        x,
+        y,
       })
     }
 

@@ -26,6 +26,32 @@ export function InspectedOject({
       </div>
       <Separator />
       <div className='flex w-full flex-col  gap-1 px-4 py-2'>
+        <span className='text-[10px] font-semibold uppercase'>position</span>
+        <div className='flex w-full flex-col gap-1.5'>
+          <div className='flex w-full flex-row items-center justify-between gap-2'>
+            <Label htmlFor='left' className='shrink-0 text-[10px] font-bold'>
+              X (px)
+            </Label>
+            <Input
+              id='left'
+              className='input-ring h-6 w-[70%] px-2'
+              value={inspectedObject.x}
+            />
+          </div>
+          <div className='flex w-full flex-row items-center justify-between gap-2'>
+            <Label htmlFor='top' className='shrink-0 text-[10px] font-bold'>
+              Y (px)
+            </Label>
+            <Input
+              id='top'
+              className='input-ring h-6 w-[70%] px-2'
+              value={inspectedObject.y}
+            />
+          </div>
+        </div>
+      </div>
+      <Separator />
+      <div className='flex w-full flex-col  gap-1 px-4 py-2'>
         <span className='text-[10px] font-semibold uppercase'>sizes</span>
         <div className='flex w-full flex-col gap-1.5'>
           {type === 'rectangle' ? (
