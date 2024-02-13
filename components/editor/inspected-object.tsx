@@ -4,6 +4,7 @@ import { SquareIcon, CircleIcon } from '@radix-ui/react-icons'
 import useEvent from 'react-use-event-hook'
 
 import type { InspectedObject } from '@/lib/codex/inspector'
+import { validateHexCode } from '@/lib/colors'
 
 import { Separator } from '@/components/ui/separator'
 import { Label } from '@/components/ui/label'
@@ -20,7 +21,12 @@ export function InspectedOject({
   const Icon = type === 'circle' ? CircleIcon : SquareIcon
   const typeName = type.charAt(0).toUpperCase() + type.slice(1)
 
-  const handleColorChange = useEvent((value: string): void => {})
+  const handleColorChange = useEvent((value: string): void => {
+    const color = validateHexCode(value)
+    if (color) {
+      // modify object
+    }
+  })
 
   return (
     <div className='flex w-full flex-col'>
