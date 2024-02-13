@@ -1,6 +1,8 @@
 'use client'
 
 import { SquareIcon, CircleIcon } from '@radix-ui/react-icons'
+import useEvent from 'react-use-event-hook'
+
 import type { InspectedObject } from '@/lib/codex/inspector'
 
 import { Separator } from '@/components/ui/separator'
@@ -17,6 +19,9 @@ export function InspectedOject({
 
   const Icon = type === 'circle' ? CircleIcon : SquareIcon
   const typeName = type.charAt(0).toUpperCase() + type.slice(1)
+
+  const handleColorChange = useEvent((value: string): void => {})
+
   return (
     <div className='flex w-full flex-col'>
       <div className='flex w-full flex-row items-center gap-1 px-4 py-2'>
@@ -104,7 +109,7 @@ export function InspectedOject({
       <Separator />
       <div className='flex w-full flex-col  gap-1 px-4 py-2'>
         <span className='text-[10px] font-semibold uppercase'>color</span>
-        <ColorPicker value={fill} />
+        <ColorPicker value={fill} onChange={handleColorChange} />
       </div>
     </div>
   )

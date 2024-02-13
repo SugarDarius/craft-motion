@@ -1,5 +1,7 @@
 'use client'
 
+import useEvent from 'react-use-event-hook'
+
 import {
   PopoverTrigger,
   PopoverContent,
@@ -43,7 +45,23 @@ const solids = [
   '#8B008B', // DarkMagenta
 ]
 
-export function ColorPicker({ value }: { value: string }) {
+export function ColorPicker({
+  value,
+  onChange,
+}: {
+  value: string
+  onChange: (value: string) => void
+}) {
+  const handleInputChange = useEvent(
+    (e: React.ChangeEvent<HTMLInputElement>): void => {
+      onChange(e.target.value)
+    }
+  )
+
+  const handleSolidColorClick = useEvent((value: string): void => {
+    onChange(value)
+  })
+
   return (
     <div className='flex flex-row items-center gap-2'>
       <Popover>
@@ -62,12 +80,13 @@ export function ColorPicker({ value }: { value: string }) {
                 key={solid}
                 style={{ backgroundColor: solid }}
                 className='h-6 w-6 cursor-pointer rounded-md active:scale-105'
+                onClick={() => handleSolidColorClick(solid)}
               />
             ))}
           </div>
         </PopoverContent>
       </Popover>
-      <Input type='text' value={value} />
+      <Input type='text' value={value} onChange={handleInputChange} />
     </div>
   )
 }
