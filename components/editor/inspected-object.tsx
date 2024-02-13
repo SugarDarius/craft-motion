@@ -6,6 +6,7 @@ import type { InspectedObject } from '@/lib/codex/inspector'
 import { Separator } from '@/components/ui/separator'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
+import { ColorPicker } from '@/components/ui/color-picker'
 
 export function InspectedOject({
   inspectedObject,
@@ -103,6 +104,7 @@ export function InspectedOject({
       <Separator />
       <div className='flex w-full flex-col  gap-1 px-4 py-2'>
         <span className='text-[10px] font-semibold uppercase'>color</span>
+        <ColorPicker value={fill} />
       </div>
     </div>
   )
