@@ -37,7 +37,7 @@ import {
   handleDeleteCanvasObjectById,
   handleDeleteAllCanvasObjects,
   handleCanvasSelectionCreatedOrObjectScaled,
-} from '@/lib/fabric'
+} from '@/lib/factory'
 
 type UseEditorReturnType = {
   canvasRef: React.RefObject<HTMLCanvasElement>
