@@ -157,14 +157,19 @@ export function handleCanvasMouseUp({
   isCurrentUserDrawing.current = false
   syncCraftMotionObjectsInStorage(currentDrawnShapeRef.current)
 
+  if (
+    currentDrawnShapeRef.current !== null &&
+    currentDrawnShapeRef.current !== null
+  ) {
+    const allObjects = canvas.getObjects()
+    const activeObject = canvas.getActiveObject()
+    if (allObjects.length > 0 && activeObject === null) {
+      canvas.setActiveObject(allObjects[allObjects.length - 1])
+    }
+  }
+
   currentDrawnShapeRef.current = null
   currentSelectedShapeRef.current = null
-
-  const allObjects = canvas.getObjects()
-  const activeObject = canvas.getActiveObject()
-  if (allObjects.length > 0 && activeObject === null) {
-    canvas.setActiveObject(allObjects[allObjects.length - 1])
-  }
 
   if (!canvas.isDrawingMode) {
     setActiveControl('select')
