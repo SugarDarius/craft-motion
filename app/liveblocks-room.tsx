@@ -11,7 +11,7 @@ export function LiveblocksRoom({ children }: { children: React.ReactNode }) {
   return (
     <RoomProvider
       id={ROOM_ID}
-      initialPresence={{ cursor: null, cursorColor: null, editingText: null }}
+      initialPresence={{ cursor: null }}
       initialStorage={{
         craftMotionData: new LiveObject({ canvasObjects: new LiveMap() }),
       }}
