@@ -10,7 +10,8 @@ import {
   ContextMenuTrigger,
 } from '@/components/ui/context-menu'
 import { useUpdateMyPresence } from '@/liveblocks.config'
-import React from 'react'
+
+import { LiveCursors } from './live-cursors'
 
 export function EditorCanvas({
   canvasRef,
@@ -29,13 +30,15 @@ export function EditorCanvas({
 
   const handlePointerMove = useEvent((e: React.PointerEvent): void => {
     updateMyPresence({
-      x: Math.round(e.clientX),
-      y: Math.round(e.clientY),
+      cursor: {
+        x: Math.round(e.clientX),
+        y: Math.round(e.clientY),
+      },
     })
   })
 
   const handlePointerLeave = useEvent((): void => {
-    updateMyPresence({})
+    updateMyPresence({ cursor: null })
   })
 
   return (
@@ -43,11 +46,12 @@ export function EditorCanvas({
       <ContextMenuTrigger className='flex h-auto w-full flex-col'>
         <div
           id='canvas-box'
-          className='flex h-full w-full flex-col items-center justify-center overflow-hidden'
+          className='relative flex h-full w-full flex-col items-center justify-center overflow-hidden'
           onPointerMove={handlePointerMove}
           onPointerLeave={handlePointerLeave}
         >
           <canvas ref={canvasRef} id='canvas' className='h-full w-full' />
+          <LiveCursors />
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent className='w-[180px]'>
