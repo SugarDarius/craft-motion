@@ -53,7 +53,7 @@ export function InspectedRadius({
         <Input
           id='radius'
           className='input-ring h-6 w-[70%] px-2'
-          value={radius}
+          value={radiusValue}
           onChange={handleRadiusValueChange}
           onBlur={handleRadiusChange}
           onKeyDown={handleKeyDown}
