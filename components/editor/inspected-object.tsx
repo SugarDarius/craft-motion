@@ -9,11 +9,11 @@ import type {
 } from '@/lib/codex/inspector'
 
 import { Separator } from '@/components/ui/separator'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
 import { ColorPicker } from '@/components/ui/color-picker'
 
-import { InspectedPosition } from './inspected-positon'
+import { InspectedPosition } from './inspected-position'
+import { InspectedSizes } from './inspected-sizes'
+import { InspectedRadius } from './inspected-radius'
 
 export function InspectedOject({
   inspectedObject,
@@ -31,19 +31,17 @@ export function InspectedOject({
     onEditedObject({ ...inspectedObject, x, y })
   })
 
-  const handleChangeRadius = useEvent(
-    (e: React.ChangeEvent<HTMLInputElement>): void => {
-      const value = e.target.value
-      const valueAsNumber = parseFloat(value)
-      if (
-        !isNaN(valueAsNumber) &&
-        type === 'circle' &&
-        inspectedObject.radius !== valueAsNumber
-      ) {
-        onEditedObject({ ...inspectedObject, radius: valueAsNumber })
-      }
+  const handleSizesChange = useEvent((width: number, height: number): void => {
+    if (type === 'rectangle') {
+      onEditedObject({ ...inspectedObject, width, height })
     }
-  )
+  })
+
+  const handleRadiusChange = useEvent((radius: number): void => {
+    if (type === 'circle') {
+      onEditedObject({ ...inspectedObject, radius })
+    }
+  })
 
   const handleColorChange = useEvent((color: string): void => {
     if (color !== inspectedObject.fill) {
@@ -71,53 +69,18 @@ export function InspectedOject({
       <Separator />
       <div className='flex w-full flex-col  gap-1 px-4 py-2'>
         <span className='text-[10px] font-semibold uppercase'>sizes</span>
-        <div className='flex w-full flex-col gap-1.5'>
-          {type === 'rectangle' ? (
-            <>
-              <div className='flex w-full flex-row items-center justify-between gap-2'>
-                <Label
-                  htmlFor='width'
-                  className='shrink-0 text-[10px] font-bold'
-                >
-                  Width (px)
-                </Label>
-                <Input
-                  id='width'
-                  className='input-ring h-6 w-[70%] px-2'
-                  value={inspectedObject.width}
-                />
-              </div>
-              <div className='flex w-full flex-row items-center justify-between gap-2'>
-                <Label
-                  htmlFor='height'
-                  className='shrink-0 text-[10px] font-bold'
-                >
-                  Height (px)
-                </Label>
-                <Input
-                  id='height'
-                  className='input-ring h-6 w-[70%] px-2 '
-                  value={inspectedObject.height}
-                />
-              </div>
-            </>
-          ) : type === 'circle' ? (
-            <div className='flex w-full flex-row items-center justify-between gap-2'>
-              <Label
-                htmlFor='radius'
-                className='shrink-0 text-[10px] font-bold'
-              >
-                Radius (px)
-              </Label>
-              <Input
-                id='radius'
-                className='input-ring h-6 w-[70%] px-2'
-                value={inspectedObject.radius}
-                onChange={handleChangeRadius}
-              />
-            </div>
-          ) : null}
-        </div>
+        {type === 'rectangle' ? (
+          <InspectedSizes
+            width={inspectedObject.width}
+            height={inspectedObject.height}
+            onSizesChange={handleSizesChange}
+          />
+        ) : type === 'circle' ? (
+          <InspectedRadius
+            radius={inspectedObject.radius}
+            onRadiusChange={handleRadiusChange}
+          />
+        ) : null}
       </div>
       <Separator />
       <div className='flex w-full flex-col  gap-1 px-4 py-2'>
