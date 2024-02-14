@@ -1,9 +1,11 @@
 'use client'
 
 import useEvent from 'react-use-event-hook'
+import { PlayIcon } from '@radix-ui/react-icons'
 
 import { Label } from '@/components/ui/label'
 import { Slider } from '@/components/ui/slider'
+import { Button } from '@/components/ui/button'
 
 import { EaseComboBox } from './ease-combo-box'
 
@@ -63,6 +65,12 @@ export function EditorInspector({
             <Label>Ease</Label>
             <EaseComboBox value={ease} onSelect={onSelectEase} />
           </div>
+        </div>
+        <div className='w-full flex-shrink-0 border-t-2 px-4 py-2'>
+          <Button className='w-full'>
+            <PlayIcon className='mr-2 h-4 w-4' />
+            Play
+          </Button>
         </div>
       </div>
     </div>
