@@ -5,13 +5,19 @@ import useEvent from 'react-use-event-hook'
 import { Label } from '@/components/ui/label'
 import { Slider } from '@/components/ui/slider'
 
+import { EaseComboBox } from './ease-combox-box'
+
 export function EditorInspector({
   duration,
   onChangeDuration,
+  ease,
+  onSelectEase,
   children,
 }: {
   duration: number
   onChangeDuration: (duration: number) => void
+  ease: string
+  onSelectEase: (ease: string) => void
   children: React.ReactNode
 }) {
   const handleValueChange = useEvent((values: number[]): void => {
@@ -33,7 +39,7 @@ export function EditorInspector({
             Animation
           </span>
         </div>
-        <div className='w-full flex-shrink-0 gap-2 px-4 pb-4 pt-2'>
+        <div className='flex w-full flex-shrink-0 flex-col gap-2 px-4 pb-4 pt-2'>
           <div className='grid gap-2'>
             <div className='flex items-center justify-between'>
               <Label htmlFor='duration'>Duration</Label>
@@ -52,6 +58,10 @@ export function EditorInspector({
               className='[&_[role=slider]]:h-4 [&_[role=slider]]:w-4'
               aria-label='Duration'
             />
+          </div>
+          <div className='mt-1.5 flex w-full flex-col gap-2'>
+            <Label>Ease</Label>
+            <EaseComboBox value={ease} onSelect={onSelectEase} />
           </div>
         </div>
       </div>

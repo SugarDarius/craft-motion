@@ -62,6 +62,8 @@ type UseEditorReturnType = {
   zoom: number
   duration: number
   onChangeDuration: (duration: number) => void
+  ease: string
+  onSelectEase: (ease: string) => void
   inspectedObject: InspectedObject | null
   onEditedObject: (editedInspectedProperties: EditedInspectedProperties) => void
 }
@@ -89,6 +91,7 @@ export function useEditor(): UseEditorReturnType {
     useState<InspectedObject | null>(null)
 
   const [duration, setDuration] = useState<number>(1)
+  const [ease, setEase] = useState<string>('linear')
 
   const handleChangeActiveControl = useEvent((value: string) => {
     if (!value) {
@@ -237,8 +240,12 @@ export function useEditor(): UseEditorReturnType {
     }
   )
 
-  const handleChangeDuration = useEvent((duration): void => {
+  const handleChangeDuration = useEvent((duration: number): void => {
     setDuration(duration)
+  })
+
+  const handleSelectEase = useEvent((ease: string): void => {
+    setEase(ease)
   })
 
   useHotkeys('mod+z', () => undo(), { enabled: canUndo })
@@ -400,6 +407,8 @@ export function useEditor(): UseEditorReturnType {
     zoom,
     duration,
     onChangeDuration: handleChangeDuration,
+    ease,
+    onSelectEase: handleSelectEase,
     inspectedObject,
     onEditedObject: handleEditedObject,
   } as const

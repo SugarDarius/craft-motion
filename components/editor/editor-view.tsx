@@ -39,6 +39,8 @@ export function EditorView() {
     zoom,
     duration,
     onChangeDuration,
+    ease,
+    onSelectEase,
     inspectedObject,
     onEditedObject,
   } = useEditor()
@@ -92,6 +94,8 @@ export function EditorView() {
         <EditorInspector
           duration={duration}
           onChangeDuration={onChangeDuration}
+          ease={ease}
+          onSelectEase={onSelectEase}
         >
           {inspectedObject ? (
             <InspectedOject
