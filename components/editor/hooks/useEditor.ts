@@ -94,7 +94,7 @@ export function useEditor(): UseEditorReturnType {
 
   const [duration, setDuration] = useState<number>(1)
   const [ease, setEase] = useState<string>('linear')
-  const [isPlaying, setPlayingState] = useState<boolean>(false)
+  const [isPlaying, _setPlayingState] = useState<boolean>(false)
 
   const handleChangeActiveControl = useEvent((value: string) => {
     if (!value) {
