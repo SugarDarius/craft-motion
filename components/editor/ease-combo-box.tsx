@@ -24,9 +24,11 @@ import { eases } from '@/lib/animations'
 export function EaseComboBox({
   value,
   onSelect,
+  isDisabled,
 }: {
   value: string
   onSelect: (ease: string) => void
+  isDisabled: boolean
 }) {
   const [isOpen, setOpenState] = useState<boolean>(false)
 
@@ -43,6 +45,7 @@ export function EaseComboBox({
           role='combobox'
           aria-expanded={isOpen}
           className='w-full justify-between'
+          disabled={isDisabled}
         >
           {value ?? 'Select ease...'}
           <CaretSortIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />

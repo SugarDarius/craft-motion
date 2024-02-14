@@ -68,7 +68,11 @@ export function EditorInspector({
           </div>
           <div className='mt-1.5 flex w-full flex-col gap-2'>
             <Label>Ease</Label>
-            <EaseComboBox value={ease} onSelect={onSelectEase} />
+            <EaseComboBox
+              value={ease}
+              onSelect={onSelectEase}
+              isDisabled={isPlaying}
+            />
           </div>
         </div>
         <div className='w-full flex-shrink-0 border-t-2 px-4 py-2'>
