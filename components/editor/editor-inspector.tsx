@@ -10,16 +10,20 @@ import { Button } from '@/components/ui/button'
 import { EaseComboBox } from './ease-combo-box'
 
 export function EditorInspector({
+  isPlaying,
   duration,
   onChangeDuration,
   ease,
   onSelectEase,
+  onPlay,
   children,
 }: {
+  isPlaying: boolean
   duration: number
   onChangeDuration: (duration: number) => void
   ease: string
   onSelectEase: (ease: string) => void
+  onPlay: () => void
   children: React.ReactNode
 }) {
   const handleValueChange = useEvent((values: number[]): void => {
@@ -34,7 +38,7 @@ export function EditorInspector({
           </span>
         </div>
         <div className='flex w-full flex-grow flex-col overflow-y-auto'>
-          {children}
+          {!isPlaying ? children : null}
         </div>
         <div className='w-full flex-shrink-0 border-b-2 border-t-2 px-4 py-2'>
           <span className='text-xl font-semibold tracking-tight'>
@@ -59,6 +63,7 @@ export function EditorInspector({
               onValueChange={handleValueChange}
               className='[&_[role=slider]]:h-4 [&_[role=slider]]:w-4'
               aria-label='Duration'
+              disabled={isPlaying}
             />
           </div>
           <div className='mt-1.5 flex w-full flex-col gap-2'>
@@ -67,8 +72,10 @@ export function EditorInspector({
           </div>
         </div>
         <div className='w-full flex-shrink-0 border-t-2 px-4 py-2'>
-          <Button className='w-full'>
-            <PlayIcon className='mr-2 h-4 w-4' />
+          <Button className='w-full' disabled={isPlaying} onClick={onPlay}>
+            <PlayIcon
+              className={`${isPlaying ? 'animate-shake' : ''} mr-2 h-4 w-4`}
+            />
             Play
           </Button>
         </div>

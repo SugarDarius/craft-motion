@@ -44,6 +44,7 @@ export function EditorView() {
     inspectedObject,
     onEditedObject,
     isPlaying,
+    onPlay,
   } = useEditor()
 
   return (
@@ -95,10 +96,12 @@ export function EditorView() {
           onRedo={onRedo}
         />
         <EditorInspector
+          isPlaying={isPlaying}
           duration={duration}
           onChangeDuration={onChangeDuration}
           ease={ease}
           onSelectEase={onSelectEase}
+          onPlay={onPlay}
         >
           {inspectedObject ? (
             <InspectedOject
