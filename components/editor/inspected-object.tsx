@@ -7,7 +7,6 @@ import type {
   InspectedObject,
   EditedInspectedProperties,
 } from '@/lib/codex/inspector'
-import { validateHexCode } from '@/lib/colors'
 
 import { Separator } from '@/components/ui/separator'
 import { Label } from '@/components/ui/label'
@@ -40,9 +39,8 @@ export function InspectedOject({
     }
   )
 
-  const handleColorChange = useEvent((value: string): void => {
-    const color = validateHexCode(value)
-    if (color && color !== inspectedObject.fill) {
+  const handleColorChange = useEvent((color: string): void => {
+    if (color !== inspectedObject.fill) {
       onEditedObject({ ...inspectedObject, fill: color })
     }
   })
@@ -135,7 +133,7 @@ export function InspectedOject({
       <Separator />
       <div className='flex w-full flex-col  gap-1 px-4 py-2'>
         <span className='text-[10px] font-semibold uppercase'>color</span>
-        <ColorPicker value={fill} onChange={handleColorChange} />
+        <ColorPicker color={fill} onChange={handleColorChange} />
       </div>
     </div>
   )

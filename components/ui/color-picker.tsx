@@ -1,7 +1,9 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import useEvent from 'react-use-event-hook'
 
+import { validateHexCode } from '@/lib/colors'
 import {
   PopoverTrigger,
   PopoverContent,
@@ -46,21 +48,32 @@ const solids = [
 ]
 
 export function ColorPicker({
-  value,
+  color,
   onChange,
 }: {
-  value: string
-  onChange: (value: string) => void
+  color: string
+  onChange: (color: string) => void
 }) {
+  const [value, setValue] = useState<string>(color)
+
   const handleInputChange = useEvent(
     (e: React.ChangeEvent<HTMLInputElement>): void => {
-      onChange(e.target.value)
+      const value = e.target.value
+      setValue(value)
+      const color = validateHexCode(value)
+      if (color) {
+        onChange(color)
+      }
     }
   )
 
   const handleSolidColorClick = useEvent((value: string): void => {
     onChange(value)
   })
+
+  useEffect(() => {
+    setValue(color)
+  }, [color])
 
   return (
     <div className='flex flex-row items-center gap-2'>
@@ -69,7 +82,7 @@ export function ColorPicker({
           <Button size='icon' variant='outline' className='shrink-0 p-2'>
             <div
               className='h-full w-full rounded-sm'
-              style={{ backgroundColor: value }}
+              style={{ backgroundColor: color }}
             ></div>
           </Button>
         </PopoverTrigger>
