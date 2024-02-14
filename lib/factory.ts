@@ -7,7 +7,10 @@ import type {
   ExtendedFabricObject,
 } from './codex/shape'
 import type { ActiveControl } from './codex/control'
-import type { InspectedObject } from './codex/inspector'
+import type {
+  InspectedObject,
+  EditedInspectedProperties,
+} from './codex/inspector'
 import type { CanvasObjects } from './codex/liveblocks'
 
 import { createSpecificShape } from './shapes'
@@ -441,4 +444,57 @@ export function handleCanvasSelectionCreatedOrObjectScaled({
 
     setActiveObjectId(objectId)
   }
+}
+
+export function handleCanvasEditedShape({
+  canvas,
+  editedInspectedProperties,
+  setActiveObjectId,
+  setInspectedObject,
+  findAndSyncCraftMotionObjectInStorage,
+}: {
+  canvas: Canvas
+  editedInspectedProperties: EditedInspectedProperties
+  setActiveObjectId: (value: React.SetStateAction<string | null>) => void
+  setInspectedObject: (
+    value: React.SetStateAction<InspectedObject | null>
+  ) => void
+  findAndSyncCraftMotionObjectInStorage: (
+    fabricObject: ExtendedFabricObject
+  ) => void
+}): void {
+  const activeObject = canvas.getActiveObject()
+  if (!activeObject) {
+    return
+  }
+
+  const objectId = (activeObject as ExtendedFabricObject).objectId
+  if (objectId !== editedInspectedProperties.objectId) {
+    // @note we should throw an error here
+    return
+  }
+
+  if (
+    activeObject instanceof fabric.Rect &&
+    editedInspectedProperties.type === 'rectangle'
+  ) {
+    activeObject.set('scaleX', 1)
+    activeObject.set('scaleY', 1)
+
+    activeObject.set('width', editedInspectedProperties.width)
+    activeObject.set('height', editedInspectedProperties.height)
+  } else if (
+    activeObject instanceof fabric.Circle &&
+    editedInspectedProperties.type === 'circle'
+  ) {
+    activeObject.setRadius(editedInspectedProperties.radius)
+  }
+
+  activeObject.set('left', editedInspectedProperties.x)
+  activeObject.set('top', editedInspectedProperties.y)
+  activeObject.set('fill', editedInspectedProperties.fill)
+
+  setActiveObjectId(objectId)
+  setInspectedObject(editedInspectedProperties)
+  findAndSyncCraftMotionObjectInStorage(activeObject as ExtendedFabricObject)
 }
