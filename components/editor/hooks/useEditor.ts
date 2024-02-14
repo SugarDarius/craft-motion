@@ -393,16 +393,17 @@ export function useEditor(): UseEditorReturnType {
     })
   }, [canvasObjects])
 
-  const canDelete = canvasObjects.size > 0 && activeObjectId !== null
-  const canDeleteAll = canvasObjects.size > 0
+  const canDelete =
+    canvasObjects.size > 0 && activeObjectId !== null && !isPlaying
+  const canDeleteAll = canvasObjects.size > 0 && !isPlaying
 
   return {
     canvasRef,
     activeControl,
     onChangeActiveControl: handleChangeActiveControl,
-    canUndo,
+    canUndo: canUndo && !isPlaying,
     onUndo: undo,
-    canRedo,
+    canRedo: canRedo && !isPlaying,
     onRedo: redo,
     canDelete,
     onDeleteObject: handleDeleteObject,

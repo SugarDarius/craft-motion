@@ -43,6 +43,7 @@ export function EditorView() {
     onSelectEase,
     inspectedObject,
     onEditedObject,
+    isPlaying,
   } = useEditor()
 
   return (
@@ -83,6 +84,7 @@ export function EditorView() {
           canvasObjects={canvasObjects}
           onLayerClick={onSelectObject}
           onLayerDelete={onDeleteObjectById}
+          isDisabled={isPlaying}
         />
         <EditorCanvas
           canvasRef={canvasRef}

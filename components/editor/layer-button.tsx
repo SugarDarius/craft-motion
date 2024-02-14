@@ -19,12 +19,14 @@ export function LayerButton({
   isSelected,
   onClick,
   onDelete,
+  isDisabled,
 }: {
   objectId: string
   type: ShapeType
   isSelected: boolean
   onClick: (objectId: string) => void
   onDelete: (objectId: string) => void
+  isDisabled: boolean
 }) {
   const handleClick = useEvent((): void => {
     onClick(objectId)
@@ -44,7 +46,8 @@ export function LayerButton({
           variant='ghost'
           className='w-full items-center justify-start gap-2 rounded-none data-[selected=""]:bg-accent'
           onClick={handleClick}
-          data-selected={isSelected ? '' : undefined}
+          data-selected={isSelected && !isDisabled ? '' : undefined}
+          disabled={isDisabled}
         >
           <Icon className='h-4 w-4' />
           {typeName}

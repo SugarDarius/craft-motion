@@ -10,11 +10,13 @@ export function EditorLayer({
   canvasObjects,
   onLayerClick,
   onLayerDelete,
+  isDisabled,
 }: {
   activeObjectId: string | null
   canvasObjects: CanvasObjects
   onLayerClick: (objectId: string) => void
   onLayerDelete: (objectId: string) => void
+  isDisabled: boolean
 }) {
   const layers = useMemo(
     () => Array.from(canvasObjects.values()),
@@ -36,6 +38,7 @@ export function EditorLayer({
               onClick={onLayerClick}
               onDelete={onLayerDelete}
               isSelected={layer.objectId === activeObjectId}
+              isDisabled={isDisabled}
             />
           ))}
         </div>
