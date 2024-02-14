@@ -160,6 +160,11 @@ export function handleCanvasMouseUp({
   currentDrawnShapeRef.current = null
   currentSelectedShapeRef.current = null
 
+  const allObjects = canvas.getObjects()
+  if (allObjects.length > 0) {
+    canvas.setActiveObject(allObjects[allObjects.length - 1])
+  }
+
   if (!canvas.isDrawingMode) {
     setActiveControl('select')
   }
