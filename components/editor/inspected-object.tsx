@@ -26,6 +26,20 @@ export function InspectedOject({
   const Icon = type === 'circle' ? CircleIcon : SquareIcon
   const typeName = type.charAt(0).toUpperCase() + type.slice(1)
 
+  const handleChangeRadius = useEvent(
+    (e: React.ChangeEvent<HTMLInputElement>): void => {
+      const value = e.target.value
+      const valueAsNumber = parseFloat(value)
+      if (
+        !isNaN(valueAsNumber) &&
+        type === 'circle' &&
+        inspectedObject.radius !== valueAsNumber
+      ) {
+        onEditedObject({ ...inspectedObject, radius: valueAsNumber })
+      }
+    }
+  )
+
   const handleColorChange = useEvent((value: string): void => {
     const color = validateHexCode(value)
     if (color && color !== inspectedObject.fill) {
@@ -112,6 +126,7 @@ export function InspectedOject({
                 id='radius'
                 className='input-ring h-6 w-[70%] px-2'
                 value={inspectedObject.radius}
+                onChange={handleChangeRadius}
               />
             </div>
           ) : null}
