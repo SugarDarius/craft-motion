@@ -446,14 +446,14 @@ export function handleCanvasSelectionCreatedOrObjectScaled({
   }
 }
 
-export function handleCanvasEditedShape({
-  canvas,
+export function handleCanvasEditedObject({
+  fabricCanvasRef,
   editedInspectedProperties,
   setActiveObjectId,
   setInspectedObject,
   findAndSyncCraftMotionObjectInStorage,
 }: {
-  canvas: Canvas
+  fabricCanvasRef: React.MutableRefObject<Canvas | null>
   editedInspectedProperties: EditedInspectedProperties
   setActiveObjectId: (value: React.SetStateAction<string | null>) => void
   setInspectedObject: (
@@ -463,7 +463,13 @@ export function handleCanvasEditedShape({
     fabricObject: ExtendedFabricObject
   ) => void
 }): void {
+  if (!fabricCanvasRef.current) {
+    return
+  }
+
+  const canvas = fabricCanvasRef.current
   const activeObject = canvas.getActiveObject()
+
   if (!activeObject) {
     return
   }
@@ -479,9 +485,9 @@ export function handleCanvasEditedShape({
     editedInspectedProperties.type === 'rectangle'
   ) {
     activeObject.set('scaleX', 1)
-    activeObject.set('scaleY', 1)
-
     activeObject.set('width', editedInspectedProperties.width)
+
+    activeObject.set('scaleY', 1)
     activeObject.set('height', editedInspectedProperties.height)
   } else if (
     activeObject instanceof fabric.Circle &&

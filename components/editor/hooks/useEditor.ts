@@ -22,7 +22,10 @@ import type {
   ExtendedFabricObject,
 } from '@/lib/codex/shape'
 import type { ActiveControl } from '@/lib/codex/control'
-import type { InspectedObject } from '@/lib/codex/inspector'
+import type {
+  InspectedObject,
+  EditedInspectedProperties,
+} from '@/lib/codex/inspector'
 import type { CanvasObjects } from '@/lib/codex/liveblocks'
 import {
   setupCanvas,
@@ -37,6 +40,7 @@ import {
   handleDeleteCanvasObjectById,
   handleDeleteAllCanvasObjects,
   handleCanvasSelectionCreatedOrObjectScaled,
+  handleCanvasEditedObject,
 } from '@/lib/factory'
 
 type UseEditorReturnType = {
@@ -59,6 +63,7 @@ type UseEditorReturnType = {
   duration: number
   onChangeDuration: (duration: number) => void
   inspectedObject: InspectedObject | null
+  onEditedObject: (editedInspectedProperties: EditedInspectedProperties) => void
 }
 
 export function useEditor(): UseEditorReturnType {
@@ -219,6 +224,18 @@ export function useEditor(): UseEditorReturnType {
       }
     }
   })
+
+  const handleEditedObject = useEvent(
+    (editedInspectedProperties: EditedInspectedProperties): void => {
+      handleCanvasEditedObject({
+        fabricCanvasRef,
+        editedInspectedProperties,
+        setActiveObjectId,
+        setInspectedObject,
+        findAndSyncCraftMotionObjectInStorage,
+      })
+    }
+  )
 
   const handleChangeDuration = useEvent((duration): void => {
     setDuration(duration)
@@ -384,5 +401,6 @@ export function useEditor(): UseEditorReturnType {
     duration,
     onChangeDuration: handleChangeDuration,
     inspectedObject,
+    onEditedObject: handleEditedObject,
   } as const
 }
