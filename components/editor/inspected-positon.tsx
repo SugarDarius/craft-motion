@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react'
 import useEvent from 'react-use-event-hook'
 
+import { inputValuesFixer } from '@/lib/inspector'
+
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 
@@ -20,22 +22,30 @@ export function InspectedPosition({
 
   const handleXChange = useEvent(
     (e: React.ChangeEvent<HTMLInputElement>): void => {
-      const valueAsNumber = parseFloat(e.target.value)
-      const yValueAsNumber = parseFloat(yValue)
-
-      if (!isNaN(valueAsNumber) && !isNaN(yValueAsNumber)) {
-        onPositionChange(valueAsNumber, yValueAsNumber)
-      }
+      setXValue(e.target.value)
     }
   )
 
   const handleYChange = useEvent(
     (e: React.ChangeEvent<HTMLInputElement>): void => {
-      const valueAsNumber = parseFloat(e.target.value)
-      const xValueAsNumber = parseFloat(xValue)
+      setYValue(e.target.value)
+    }
+  )
 
-      if (!isNaN(valueAsNumber) && !isNaN(xValueAsNumber)) {
-        onPositionChange(xValueAsNumber, valueAsNumber)
+  const handlePositionChange = useEvent((): void => {
+    const xValueAsNumber = parseFloat(xValue)
+    const yValueAsNumber = parseFloat(yValue)
+
+    const [fixedX, fixedY] = inputValuesFixer([xValueAsNumber, yValueAsNumber])
+
+    onPositionChange(fixedX, fixedY)
+  })
+
+  const handleKeyDown = useEvent(
+    (e: React.KeyboardEvent<HTMLInputElement>): void => {
+      if (e.key === 'Enter') {
+        e.preventDefault()
+        handlePositionChange()
       }
     }
   )
@@ -59,6 +69,8 @@ export function InspectedPosition({
           className='input-ring h-6 w-[70%] px-2'
           value={xValue}
           onChange={handleXChange}
+          onBlur={handlePositionChange}
+          onKeyDown={handleKeyDown}
         />
       </div>
       <div className='flex w-full flex-row items-center justify-between gap-2'>
@@ -70,6 +82,8 @@ export function InspectedPosition({
           className='input-ring h-6 w-[70%] px-2'
           value={yValue}
           onChange={handleYChange}
+          onBlur={handlePositionChange}
+          onKeyDown={handleKeyDown}
         />
       </div>
     </div>
