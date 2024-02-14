@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button'
 import { ControlTooltip } from './control-tooltip'
 
 export function EditorControls({
+  canControl,
   activeControl,
   onChangeActiveControl,
   canUndo,
@@ -26,6 +27,7 @@ export function EditorControls({
   canDeleteAll,
   onDeleteAllObjects,
 }: {
+  canControl: boolean
   activeControl: string | null
   onChangeActiveControl: (value: string) => void
   canUndo: boolean
@@ -46,7 +48,7 @@ export function EditorControls({
       >
         <ControlTooltip text='Select shape' sideOffset={16} shortcut='⌘+1'>
           <div className='h-fit w-fit'>
-            <ToggleGroupItem value='select'>
+            <ToggleGroupItem value='select' disabled={!canControl}>
               <CursorArrowIcon className='h-4 w-4' />
             </ToggleGroupItem>
           </div>
@@ -57,14 +59,14 @@ export function EditorControls({
           sideOffset={16}
         >
           <div className='h-fit w-fit'>
-            <ToggleGroupItem value='rectangle'>
+            <ToggleGroupItem value='rectangle' disabled={!canControl}>
               <SquareIcon className='h-4 w-4' />
             </ToggleGroupItem>
           </div>
         </ControlTooltip>
         <ControlTooltip text='Create circle shape' shortcut='⌘+3'>
           <div className='h-fit w-fit'>
-            <ToggleGroupItem value='circle'>
+            <ToggleGroupItem value='circle' disabled={!canControl}>
               <CircleIcon className='h-4 w-4' />
             </ToggleGroupItem>
           </div>

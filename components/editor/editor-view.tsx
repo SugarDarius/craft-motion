@@ -60,6 +60,7 @@ export function EditorView() {
         </div>
         <div className='flex w-full flex-row items-center justify-center'>
           <EditorControls
+            canControl={!isPlaying}
             activeControl={activeControl}
             onChangeActiveControl={onChangeActiveControl}
             canUndo={canUndo}
