@@ -82,7 +82,13 @@ export function EditorView() {
           onLayerClick={onSelectObject}
           onLayerDelete={onDeleteObjectById}
         />
-        <EditorCanvas canvasRef={canvasRef} />
+        <EditorCanvas
+          canvasRef={canvasRef}
+          canUndo={canUndo}
+          onUndo={onUndo}
+          canRedo={canRedo}
+          onRedo={onRedo}
+        />
         <EditorInspector
           duration={duration}
           onChangeDuration={onChangeDuration}
