@@ -5,7 +5,7 @@ import useEvent from 'react-use-event-hook'
 import { Label } from '@/components/ui/label'
 import { Slider } from '@/components/ui/slider'
 
-import { EaseComboBox } from './ease-combox-box'
+import { EaseComboBox } from './ease-combo-box'
 
 export function EditorInspector({
   duration,
