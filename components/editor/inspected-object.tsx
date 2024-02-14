@@ -13,6 +13,8 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { ColorPicker } from '@/components/ui/color-picker'
 
+import { InspectedPosition } from './inspected-positon'
+
 export function InspectedOject({
   inspectedObject,
   onEditedObject,
@@ -24,6 +26,10 @@ export function InspectedOject({
 
   const Icon = type === 'circle' ? CircleIcon : SquareIcon
   const typeName = type.charAt(0).toUpperCase() + type.slice(1)
+
+  const handlePositionChange = useEvent((x: number, y: number): void => {
+    onEditedObject({ ...inspectedObject, x, y })
+  })
 
   const handleChangeRadius = useEvent(
     (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -56,28 +62,11 @@ export function InspectedOject({
       <Separator />
       <div className='flex w-full flex-col  gap-1 px-4 py-2'>
         <span className='text-[10px] font-semibold uppercase'>position</span>
-        <div className='flex w-full flex-col gap-1.5'>
-          <div className='flex w-full flex-row items-center justify-between gap-2'>
-            <Label htmlFor='left' className='shrink-0 text-[10px] font-bold'>
-              X (px)
-            </Label>
-            <Input
-              id='left'
-              className='input-ring h-6 w-[70%] px-2'
-              value={inspectedObject.x}
-            />
-          </div>
-          <div className='flex w-full flex-row items-center justify-between gap-2'>
-            <Label htmlFor='top' className='shrink-0 text-[10px] font-bold'>
-              Y (px)
-            </Label>
-            <Input
-              id='top'
-              className='input-ring h-6 w-[70%] px-2'
-              value={inspectedObject.y}
-            />
-          </div>
-        </div>
+        <InspectedPosition
+          x={inspectedObject.x}
+          y={inspectedObject.y}
+          onPositionChange={handlePositionChange}
+        />
       </div>
       <Separator />
       <div className='flex w-full flex-col  gap-1 px-4 py-2'>
