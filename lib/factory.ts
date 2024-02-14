@@ -161,7 +161,8 @@ export function handleCanvasMouseUp({
   currentSelectedShapeRef.current = null
 
   const allObjects = canvas.getObjects()
-  if (allObjects.length > 0) {
+  const activeObject = canvas.getActiveObject()
+  if (allObjects.length > 0 && activeObject === null) {
     canvas.setActiveObject(allObjects[allObjects.length - 1])
   }
 
