@@ -40,6 +40,7 @@ export function EditorView() {
     duration,
     onChangeDuration,
     inspectedObject,
+    onEditedObject,
   } = useEditor()
 
   return (
@@ -87,7 +88,10 @@ export function EditorView() {
           onChangeDuration={onChangeDuration}
         >
           {inspectedObject ? (
-            <InspectedOject inspectedObject={inspectedObject} />
+            <InspectedOject
+              inspectedObject={inspectedObject}
+              onEditedObject={onEditedObject}
+            />
           ) : null}
         </EditorInspector>
       </div>

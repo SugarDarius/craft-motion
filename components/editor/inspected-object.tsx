@@ -3,7 +3,10 @@
 import { SquareIcon, CircleIcon } from '@radix-ui/react-icons'
 import useEvent from 'react-use-event-hook'
 
-import type { InspectedObject } from '@/lib/codex/inspector'
+import type {
+  InspectedObject,
+  EditedInspectedProperties,
+} from '@/lib/codex/inspector'
 import { validateHexCode } from '@/lib/colors'
 
 import { Separator } from '@/components/ui/separator'
@@ -13,8 +16,10 @@ import { ColorPicker } from '@/components/ui/color-picker'
 
 export function InspectedOject({
   inspectedObject,
+  onEditedObject,
 }: {
   inspectedObject: InspectedObject
+  onEditedObject: (editedInspectedProperties: EditedInspectedProperties) => void
 }) {
   const { type, objectId, fill } = inspectedObject
 
@@ -23,8 +28,8 @@ export function InspectedOject({
 
   const handleColorChange = useEvent((value: string): void => {
     const color = validateHexCode(value)
-    if (color) {
-      // modify object
+    if (color && color !== inspectedObject.fill) {
+      onEditedObject({ ...inspectedObject, fill: color })
     }
   })
 
