@@ -16,6 +16,7 @@ import type { CanvasObjects } from './codex/liveblocks'
 import { createSpecificShape } from './shapes'
 
 const CANVAS_BOX_ID = 'canvas-box'
+const WORKING_BOX_ID = '@working-box-rect'
 
 export function setupCanvas({
   targetCanvasRef,
@@ -68,7 +69,7 @@ export function renderCanvas({
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    workingBoxRect.set('objectId', '@working-box-rect')
+    workingBoxRect.set('objectId', WORKING_BOX_ID)
 
     fabricCanvasRef.current.add(workingBoxRect)
 
