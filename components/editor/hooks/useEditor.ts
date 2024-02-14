@@ -66,6 +66,8 @@ type UseEditorReturnType = {
   onSelectEase: (ease: string) => void
   inspectedObject: InspectedObject | null
   onEditedObject: (editedInspectedProperties: EditedInspectedProperties) => void
+  isPlaying: boolean
+  onPlay: () => void
 }
 
 export function useEditor(): UseEditorReturnType {
@@ -92,6 +94,7 @@ export function useEditor(): UseEditorReturnType {
 
   const [duration, setDuration] = useState<number>(1)
   const [ease, setEase] = useState<string>('linear')
+  const [isPlaying, setPlayingState] = useState<boolean>(false)
 
   const handleChangeActiveControl = useEvent((value: string) => {
     if (!value) {
@@ -246,6 +249,11 @@ export function useEditor(): UseEditorReturnType {
 
   const handleSelectEase = useEvent((ease: string): void => {
     setEase(ease)
+  })
+
+  const handlePlay = useEvent((): void => {
+    if (!isPlaying) {
+    }
   })
 
   useHotkeys('mod+z', () => undo(), { enabled: canUndo })
@@ -411,5 +419,7 @@ export function useEditor(): UseEditorReturnType {
     onSelectEase: handleSelectEase,
     inspectedObject,
     onEditedObject: handleEditedObject,
+    isPlaying,
+    onPlay: handlePlay,
   } as const
 }
