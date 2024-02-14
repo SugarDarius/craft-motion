@@ -41,6 +41,7 @@ import {
   handleDeleteAllCanvasObjects,
   handleCanvasSelectionCreatedOrObjectScaled,
   handleCanvasEditedObject,
+  runAnimation,
 } from '@/lib/factory'
 
 type UseEditorReturnType = {
@@ -94,7 +95,7 @@ export function useEditor(): UseEditorReturnType {
 
   const [duration, setDuration] = useState<number>(1)
   const [ease, setEase] = useState<string>('linear')
-  const [isPlaying, _setPlayingState] = useState<boolean>(false)
+  const [isPlaying, setPlayingState] = useState<boolean>(false)
 
   const handleChangeActiveControl = useEvent((value: string) => {
     if (!value) {
@@ -253,6 +254,7 @@ export function useEditor(): UseEditorReturnType {
 
   const handlePlay = useEvent((): void => {
     if (!isPlaying) {
+      runAnimation({ fabricCanvasRef, setPlayingState })
     }
   })
 

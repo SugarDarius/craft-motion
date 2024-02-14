@@ -515,3 +515,17 @@ export function handleCanvasEditedObject({
   setInspectedObject(editedInspectedProperties)
   findAndSyncCraftMotionObjectInStorage(activeObject as ExtendedFabricObject)
 }
+
+export function runAnimation({
+  fabricCanvasRef,
+  setPlayingState,
+}: {
+  fabricCanvasRef: React.MutableRefObject<Canvas | null>
+  setPlayingState: (value: React.SetStateAction<boolean>) => void
+}): void {
+  if (!fabricCanvasRef.current) {
+    return
+  }
+
+  setPlayingState(true)
+}
