@@ -386,12 +386,16 @@ export function useEditor(): UseEditorReturnType {
   ])
 
   useEffect(() => {
-    renderCanvas({
-      canvasObjects,
-      fabricCanvasRef,
-      activeObjectIdRef,
-    })
-  }, [canvasObjects])
+    // Note: it would be better with a waiting promise
+    // to redraw once a playing has finished
+    if (!isPlaying) {
+      renderCanvas({
+        canvasObjects,
+        fabricCanvasRef,
+        activeObjectIdRef,
+      })
+    }
+  }, [canvasObjects, isPlaying])
 
   const canDelete =
     canvasObjects.size > 0 && activeObjectId !== null && !isPlaying
