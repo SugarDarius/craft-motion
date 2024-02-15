@@ -41,6 +41,7 @@ import {
   handleDeleteAllCanvasObjects,
   handleCanvasSelectionCreatedOrObjectScaled,
   handleCanvasEditedObject,
+  handleReCenterCanvas,
   runAnimation,
 } from '@/lib/factory'
 
@@ -57,6 +58,7 @@ type UseEditorReturnType = {
   onDeleteObjectById: (objectId: string) => void
   canDeleteAll: boolean
   onDeleteAllObjects: () => void
+  onReCenter: () => void
   activeObjectId: string | null
   canvasObjects: CanvasObjects
   onSelectObject: (objectId: string) => void
@@ -213,6 +215,10 @@ export function useEditor(): UseEditorReturnType {
       fabricCanvasRef,
       deleteAllCraftMotionObjectsInStorage,
     })
+  })
+
+  const handleReCenter = useEvent((): void => {
+    handleReCenterCanvas({ fabricCanvasRef, setZoom })
   })
 
   const handleSelectObject = useEvent((objectId: string) => {
@@ -416,6 +422,7 @@ export function useEditor(): UseEditorReturnType {
     onDeleteObjectById: handleDeleteObjectById,
     canDeleteAll,
     onDeleteAllObjects: handleDeleteAllObjects,
+    onReCenter: handleReCenter,
     activeObjectId,
     canvasObjects,
     onSelectObject: handleSelectObject,
