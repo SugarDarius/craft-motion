@@ -341,6 +341,16 @@ export function handleCanvasZoom({
     )
 
     setZoom(zoom)
+  } else if (options.e.altKey) {
+    options.e.preventDefault()
+    options.e.stopPropagation()
+
+    const delta = options.e.deltaY
+
+    if (canvas.viewportTransform) {
+      canvas.viewportTransform[4] = canvas.viewportTransform[4] + delta / 10
+      canvas.renderAll()
+    }
   }
 }
 
