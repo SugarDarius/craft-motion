@@ -18,10 +18,12 @@ export function createRect({
 }): CraftMotionObject {
   const id = nanoid(16)
   const rect = new fabric.Rect({
-    left: pointer.x - 50,
-    top: pointer.y - 50,
+    left: pointer.x,
+    top: pointer.y,
     width: 100,
     height: 100,
+    originX: 'center',
+    originY: 'center',
     fill: generateRandomHexColor(),
   })
 
@@ -43,9 +45,11 @@ export function createCircle({
 }): CraftMotionObject {
   const id = nanoid(16)
   const circle = new fabric.Circle({
-    left: pointer.x - 50,
-    top: pointer.y - 50,
+    left: pointer.x,
+    top: pointer.y,
     radius: 50,
+    originX: 'center',
+    originY: 'center',
     fill: generateRandomHexColor(),
   })
 

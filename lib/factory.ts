@@ -1,4 +1,4 @@
-import type { Canvas, IEvent } from 'fabric/fabric-impl'
+import type { Canvas, IEvent, IAnimationOptions } from 'fabric/fabric-impl'
 import { fabric } from 'fabric'
 
 import type {
@@ -55,7 +55,7 @@ export function renderCanvas({
       top: fabricCanvasRef.current.getHeight() / 2,
       width: 1720,
       height: 1080,
-      fill: 'white',
+      fill: '#fafafa',
       shadow: new fabric.Shadow({
         color: '#333333',
         blur: 12,
@@ -553,6 +553,8 @@ export function handleReCenterCanvas({
 
 export function runAnimation({
   fabricCanvasRef,
+  duration,
+  ease,
   setPlayingState,
 }: {
   fabricCanvasRef: React.MutableRefObject<Canvas | null>
@@ -565,4 +567,37 @@ export function runAnimation({
   }
 
   setPlayingState(true)
+
+  const canvas = fabricCanvasRef.current
+  const animations: Promise<void>[] = []
+
+  for (const canvasObject of canvas.getObjects()) {
+    const objectId = (canvasObject as ExtendedFabricObject).objectId
+    if (objectId !== WORKING_BOX_ID) {
+      const animation = new Promise<void>((resolve) => {
+        const options: IAnimationOptions = {
+          duration: duration * 1000, // milliseconds
+          onChange: canvas.renderAll.bind(canvas),
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
+          easing: ease === 'linear' ? undefined : fabric.util.ease[ease],
+          onComplete: resolve,
+        }
+
+        if (canvasObject instanceof fabric.Rect) {
+          canvasObject.animate('angle', 360, options)
+        } else if (canvasObject instanceof fabric.Circle) {
+          canvasObject.animate('left', (canvasObject.left ?? 0) + 100, options)
+        }
+      })
+
+      animations.push(animation)
+    }
+  }
+
+  canvas.discardActiveObject()
+
+  Promise.all(animations).finally(() => {
+    setPlayingState(false)
+  })
 }

@@ -21,6 +21,11 @@ import {
 import { cn } from '@/lib/utils'
 import { eases } from '@/lib/animations'
 
+const remap = (ease: string): string => {
+  const corresponding = eases.find((easeKey) => easeKey.toLowerCase() === ease)
+  return corresponding ?? 'linear'
+}
+
 export function EaseComboBox({
   value,
   onSelect,
@@ -33,7 +38,7 @@ export function EaseComboBox({
   const [isOpen, setOpenState] = useState<boolean>(false)
 
   const handleSelect = useEvent((ease: string): void => {
-    onSelect(ease)
+    onSelect(remap(ease))
     setOpenState(false)
   })
 
@@ -62,7 +67,7 @@ export function EaseComboBox({
                 <CheckIcon
                   className={cn(
                     'ml-auto h-4 w-4',
-                    value === ease.toLowerCase() ? 'opacity-100' : 'opacity-0'
+                    value === ease ? 'opacity-100' : 'opacity-0'
                   )}
                 />
               </CommandItem>
