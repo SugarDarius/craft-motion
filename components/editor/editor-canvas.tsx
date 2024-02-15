@@ -43,7 +43,7 @@ export function EditorCanvas({
 
   return (
     <ContextMenu>
-      <ContextMenuTrigger className='flex h-auto w-full flex-col'>
+      <ContextMenuTrigger asChild>
         <div
           id='canvas-box'
           className='relative flex h-full w-full flex-col items-center justify-center overflow-hidden'
