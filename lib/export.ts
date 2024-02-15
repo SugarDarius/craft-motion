@@ -35,7 +35,7 @@ export function exportJSON({
 
     anchor.addEventListener('click', (): void => {
       document.body.removeChild(anchor)
-      URL.revokeObjectURL(objectURL)
+
       resolve()
     })
 

@@ -45,6 +45,7 @@ import {
   runAnimation,
 } from '@/lib/factory'
 import { exportJSON } from '@/lib/export'
+import { useToast } from '@/components/ui/use-toast'
 
 type UseEditorReturnType = {
   canvasRef: React.RefObject<HTMLCanvasElement>
@@ -101,6 +102,8 @@ export function useEditor(): UseEditorReturnType {
   const [duration, setDuration] = useState<number>(1)
   const [ease, setEase] = useState<string>('linear')
   const [isPlaying, setPlayingState] = useState<boolean>(false)
+
+  const { toast } = useToast()
 
   const handleChangeActiveControl = useEvent((value: string) => {
     if (!value) {
@@ -268,8 +271,12 @@ export function useEditor(): UseEditorReturnType {
   })
 
   const handleExportJSON = useEvent((): void => {
-    console.log('exporting json')
-    exportJSON({ fabricCanvasRef, duration, ease }).then((): void => {})
+    exportJSON({ fabricCanvasRef, duration, ease }).then((): void => {
+      toast({
+        title: 'You export JSON is ready!',
+        description: 'The exported file is currently downloading...',
+      })
+    })
   })
 
   useHotkeys('mod+z', () => undo(), { enabled: canUndo })
