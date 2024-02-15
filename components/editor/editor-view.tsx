@@ -33,6 +33,7 @@ export function EditorView() {
     onDeleteObjectById,
     canDeleteAll,
     onDeleteAllObjects,
+    onReCenter,
     activeObjectId,
     canvasObjects,
     onSelectObject,
@@ -72,6 +73,7 @@ export function EditorView() {
             onDeleteObject={onDeleteObject}
             canDeleteAll={canDeleteAll}
             onDeleteAllObjects={onDeleteAllObjects}
+            onReCenter={onReCenter}
           />
         </div>
         <div className='flex w-full flex-row items-center justify-end gap-4'>

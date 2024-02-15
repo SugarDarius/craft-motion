@@ -27,6 +27,7 @@ export function EditorControls({
   onDeleteObject,
   canDeleteAll,
   onDeleteAllObjects,
+  onReCenter,
 }: {
   canControl: boolean
   activeControl: string | null
@@ -39,6 +40,7 @@ export function EditorControls({
   onDeleteObject: () => void
   canDeleteAll: boolean
   onDeleteAllObjects: () => void
+  onReCenter: () => void
 }) {
   return (
     <div className='flex flex-row gap-1 rounded-2xl border-2 bg-background p-2'>
@@ -94,7 +96,12 @@ export function EditorControls({
         </Button>
       </ControlTooltip>
       <ControlTooltip text='Re-center canvas'>
-        <Button variant='ghost' size='icon' disabled={!canControl}>
+        <Button
+          variant='ghost'
+          size='icon'
+          onClick={onReCenter}
+          disabled={!canControl}
+        >
           <Crosshair1Icon className='h-4 w-4' />
         </Button>
       </ControlTooltip>
