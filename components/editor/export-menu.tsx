@@ -1,5 +1,7 @@
 'use client'
 
+import { DownloadIcon } from '@radix-ui/react-icons'
+
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -20,6 +22,7 @@ export function ExportMenu({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant='outline' size='sm'>
+          <DownloadIcon className='mr-2 h-4 w-4' />
           Export
         </Button>
       </DropdownMenuTrigger>

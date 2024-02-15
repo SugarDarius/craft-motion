@@ -44,6 +44,7 @@ import {
   handleReCenterCanvas,
   runAnimation,
 } from '@/lib/factory'
+import { exportJSON } from '@/lib/export'
 
 type UseEditorReturnType = {
   canvasRef: React.RefObject<HTMLCanvasElement>
@@ -266,7 +267,10 @@ export function useEditor(): UseEditorReturnType {
     }
   })
 
-  const handleExportJSON = useEvent((): void => {})
+  const handleExportJSON = useEvent((): void => {
+    console.log('exporting json')
+    exportJSON({ fabricCanvasRef, duration, ease }).then((): void => {})
+  })
 
   useHotkeys('mod+z', () => undo(), { enabled: canUndo })
   useHotkeys('shift+mod+z', () => redo(), { enabled: canRedo })
