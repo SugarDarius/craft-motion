@@ -318,28 +318,30 @@ export function handleCanvasZoom({
   canvas: Canvas
   setZoom: (value: React.SetStateAction<number>) => void
 }): void {
-  const delta = options.e?.deltaY
-  const canvasZoom = canvas.getZoom()
+  if (options.e.metaKey) {
+    options.e.preventDefault()
+    options.e.stopPropagation()
 
-  const minZoom = 0.2 // min of 20% of zoom
-  const maxZoom = 1.8 // max of 180% of zoom
+    const delta = options.e.deltaY
+    const canvasZoom = canvas.getZoom()
 
-  const zoomStep = 0.01
+    const minZoom = 0.2 // min of 20% of zoom
+    const maxZoom = 1.8 // max of 180% of zoom
 
-  const zoom = Math.min(
-    Math.max(minZoom, canvasZoom + delta * zoomStep),
-    maxZoom
-  )
+    const zoomStep = 0.01
 
-  canvas.zoomToPoint(
-    { x: canvas.getWidth() / 2, y: canvas.getHeight() / 2 },
-    zoom
-  )
+    const zoom = Math.min(
+      Math.max(minZoom, canvasZoom + delta * zoomStep),
+      maxZoom
+    )
 
-  options.e.preventDefault()
-  options.e.stopPropagation()
+    canvas.zoomToPoint(
+      { x: canvas.getWidth() / 2, y: canvas.getHeight() / 2 },
+      zoom
+    )
 
-  setZoom(zoom)
+    setZoom(zoom)
+  }
 }
 
 export function handleDeleteCanvasObjectById({
