@@ -18,7 +18,12 @@ export function exportJSON({
     const canvas = fabricCanvasRef.current
     const exportedCanvasJSON = canvas.toJSON(['objectId'])
 
-    const craftMotionJSON = { duration, ease, canvas: exportedCanvasJSON }
+    const craftMotionJSON = {
+      version: '1.0.0',
+      duration,
+      ease,
+      canvas: exportedCanvasJSON,
+    }
 
     const blobContent = JSON.stringify(craftMotionJSON, null, 2)
     const blob = new Blob([blobContent], { type: 'application/json' })
