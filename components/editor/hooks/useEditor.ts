@@ -71,6 +71,8 @@ type UseEditorReturnType = {
   onEditedObject: (editedInspectedProperties: EditedInspectedProperties) => void
   isPlaying: boolean
   onPlay: () => void
+  canExport: boolean
+  onExportJSON: () => void
 }
 
 export function useEditor(): UseEditorReturnType {
@@ -264,6 +266,8 @@ export function useEditor(): UseEditorReturnType {
     }
   })
 
+  const handleExportJSON = useEvent((): void => {})
+
   useHotkeys('mod+z', () => undo(), { enabled: canUndo })
   useHotkeys('shift+mod+z', () => redo(), { enabled: canRedo })
   useHotkeys('backspace', () => handleDeleteObject(), {
@@ -407,7 +411,7 @@ export function useEditor(): UseEditorReturnType {
 
   const canDelete =
     canvasObjects.size > 0 && activeObjectId !== null && !isPlaying
-  const canDeleteAll = canvasObjects.size > 0 && !isPlaying
+  const canDeleteAllOrExport = canvasObjects.size > 0 && !isPlaying
 
   return {
     canvasRef,
@@ -420,7 +424,7 @@ export function useEditor(): UseEditorReturnType {
     canDelete,
     onDeleteObject: handleDeleteObject,
     onDeleteObjectById: handleDeleteObjectById,
-    canDeleteAll,
+    canDeleteAll: canDeleteAllOrExport,
     onDeleteAllObjects: handleDeleteAllObjects,
     onReCenter: handleReCenter,
     activeObjectId,
@@ -435,5 +439,7 @@ export function useEditor(): UseEditorReturnType {
     onEditedObject: handleEditedObject,
     isPlaying,
     onPlay: handlePlay,
+    canExport: canDeleteAllOrExport,
+    onExportJSON: handleExportJSON,
   } as const
 }

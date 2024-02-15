@@ -46,6 +46,8 @@ export function EditorView() {
     onEditedObject,
     isPlaying,
     onPlay,
+    canExport,
+    onExportJSON,
   } = useEditor()
 
   return (
@@ -80,7 +82,7 @@ export function EditorView() {
         </div>
         <div className='flex w-full flex-row items-center justify-end gap-4'>
           <ZoomInfo zoom={zoom} />
-          <ExportMenu />
+          <ExportMenu canExport={canExport} onExportJSON={onExportJSON} />
           <LiveUsers />
         </div>
       </EditorHeader>

@@ -9,7 +9,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-export function ExportMenu() {
+export function ExportMenu({
+  canExport,
+  onExportJSON,
+}: {
+  canExport: boolean
+  onExportJSON: () => void
+}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -19,7 +25,9 @@ export function ExportMenu() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-56' align='end' side='bottom'>
         <DropdownMenuGroup>
-          <DropdownMenuItem>Download JSON</DropdownMenuItem>
+          <DropdownMenuItem onClick={onExportJSON} disabled={!canExport}>
+            Download JSON
+          </DropdownMenuItem>
           <DropdownMenuItem disabled>Export to .GIF</DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
