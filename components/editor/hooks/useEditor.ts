@@ -43,6 +43,7 @@ import {
   handleCanvasEditedObject,
   handleReCenterCanvas,
   runAnimation,
+  handleCopyCanvasObject,
 } from '@/lib/factory'
 import { exportJSON } from '@/lib/export'
 import { useToast } from '@/components/ui/use-toast'
@@ -279,6 +280,12 @@ export function useEditor(): UseEditorReturnType {
     })
   })
 
+  const handleCopy = useEvent((): void => {
+    handleCopyCanvasObject({ fabricCanvasRef }).then((): void => {
+      toast({ description: 'Copied to clipboard!' })
+    })
+  })
+
   useHotkeys('mod+z', () => undo(), { enabled: canUndo })
   useHotkeys('shift+mod+z', () => redo(), { enabled: canRedo })
   useHotkeys('backspace', () => handleDeleteObject(), {
@@ -308,6 +315,7 @@ export function useEditor(): UseEditorReturnType {
     },
     []
   )
+  useHotkeys('mod+c', () => handleCopy(), { enabled: activeObjectId !== null })
 
   useEffect(() => {
     const canvas = setupCanvas({ targetCanvasRef: canvasRef })

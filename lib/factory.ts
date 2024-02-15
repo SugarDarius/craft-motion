@@ -601,3 +601,23 @@ export function runAnimation({
     setPlayingState(false)
   })
 }
+
+export function handleCopyCanvasObject({
+  fabricCanvasRef,
+}: {
+  fabricCanvasRef: React.MutableRefObject<Canvas | null>
+}): Promise<void> {
+  if (!fabricCanvasRef.current) {
+    return Promise.resolve()
+  }
+
+  const canvas = fabricCanvasRef.current
+  const activeObject = canvas.getActiveObject()
+  if (!activeObject) {
+    return Promise.resolve()
+  }
+
+  return navigator.clipboard.writeText(
+    JSON.stringify(activeObject.toJSON(['objectId']))
+  )
+}
