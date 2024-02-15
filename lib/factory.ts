@@ -318,11 +318,12 @@ export function handleCanvasZoom({
   canvas: Canvas
   setZoom: (value: React.SetStateAction<number>) => void
 }): void {
-  if (options.e.metaKey) {
-    options.e.preventDefault()
-    options.e.stopPropagation()
+  options.e.preventDefault()
+  options.e.stopPropagation()
 
-    const delta = options.e.deltaY
+  const delta = options.e.deltaY
+
+  if (options.e.metaKey) {
     const canvasZoom = canvas.getZoom()
 
     const minZoom = 0.2 // min of 20% of zoom
@@ -342,13 +343,13 @@ export function handleCanvasZoom({
 
     setZoom(zoom)
   } else if (options.e.altKey) {
-    options.e.preventDefault()
-    options.e.stopPropagation()
-
-    const delta = options.e.deltaY
-
     if (canvas.viewportTransform) {
       canvas.viewportTransform[4] = canvas.viewportTransform[4] + delta / 10
+      canvas.renderAll()
+    }
+  } else {
+    if (canvas.viewportTransform) {
+      canvas.viewportTransform[5] = canvas.viewportTransform[5] + delta / 10
       canvas.renderAll()
     }
   }
