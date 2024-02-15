@@ -21,7 +21,7 @@
   },
   "overrides": [
     {
-      "files": ["*.tsx"],
+      "files": ["*.tsx", "./components/ui/*.ts"],
       "rules": {
         // so components return type doesn't need to be typed
         // it's a tradeoff for DX convenience matters
