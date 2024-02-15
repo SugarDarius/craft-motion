@@ -82,7 +82,6 @@ export function EditorInspector({
             </div>
             <Input
               value={durationValue}
-              defaultValue={1}
               onChange={handleDurationValueChange}
               onBlur={handleDurationChange}
               onKeyDown={handleKeyDown}
