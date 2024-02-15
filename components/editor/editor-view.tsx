@@ -57,6 +57,8 @@ export function EditorView() {
             onUndo={onUndo}
             canRedo={canRedo}
             onRedo={onRedo}
+            canDeleteAll={canDeleteAll}
+            onDeleteAllObjects={onDeleteAllObjects}
           />
           <ProjectName />
         </div>

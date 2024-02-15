@@ -17,11 +17,15 @@ export function FileMenu({
   onUndo,
   canRedo,
   onRedo,
+  canDeleteAll,
+  onDeleteAllObjects,
 }: {
   canUndo: boolean
   onUndo: () => void
   canRedo: boolean
   onRedo: () => void
+  canDeleteAll: boolean
+  onDeleteAllObjects: () => void
 }) {
   return (
     <DropdownMenu>
@@ -32,6 +36,15 @@ export function FileMenu({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-56' align='start' side='bottom'>
+        <DropdownMenuGroup>
+          <DropdownMenuItem
+            onClick={onDeleteAllObjects}
+            disabled={!canDeleteAll}
+          >
+            Clear canvas
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem onClick={onUndo} disabled={!canUndo}>
             Undo
