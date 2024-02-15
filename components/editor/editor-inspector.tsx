@@ -86,6 +86,7 @@ export function EditorInspector({
               onBlur={handleDurationChange}
               onKeyDown={handleKeyDown}
               className='input-ring h-6 w-full px-2'
+              disabled={isPlaying}
             />
           </div>
           <div className='mt-1.5 flex w-full flex-col gap-2'>
