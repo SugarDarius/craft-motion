@@ -1,12 +1,14 @@
 'use client'
 
-import useEvent from 'react-use-event-hook'
+import { useEffect, useState } from 'react'
 import { PlayIcon } from '@radix-ui/react-icons'
+import useEvent from 'react-use-event-hook'
 
 import { Label } from '@/components/ui/label'
-import { Slider } from '@/components/ui/slider'
+import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
+import { inputValuesFixer } from '@/lib/inspector'
 import { EaseComboBox } from './ease-combo-box'
 
 export function EditorInspector({
@@ -26,9 +28,34 @@ export function EditorInspector({
   onPlay: () => void
   children: React.ReactNode
 }) {
-  const handleValueChange = useEvent((values: number[]): void => {
-    onChangeDuration(values[0])
+  const [durationValue, setDurationValue] = useState<string>(String(duration))
+
+  const handleDurationValueChange = useEvent(
+    (e: React.ChangeEvent<HTMLInputElement>): void => {
+      setDurationValue(e.target.value)
+    }
+  )
+
+  const handleDurationChange = useEvent((): void => {
+    const durationAsNumber = parseInt(durationValue)
+    const [fixedDuration] = inputValuesFixer([durationAsNumber])
+
+    onChangeDuration(fixedDuration)
   })
+
+  const handleKeyDown = useEvent(
+    (e: React.KeyboardEvent<HTMLInputElement>): void => {
+      if (e.key === 'Enter') {
+        e.preventDefault()
+        handleDurationChange()
+      }
+    }
+  )
+
+  useEffect(() => {
+    setDurationValue(String(duration))
+  }, [duration])
+
   return (
     <div className='absolute bottom-0 right-8 top-0 z-10 mx-0 my-auto h-[80%] w-72'>
       <div className='flex h-full w-full flex-col overflow-hidden rounded-2xl border-2 bg-background'>
@@ -48,22 +75,18 @@ export function EditorInspector({
         <div className='flex w-full flex-shrink-0 flex-col gap-2 px-4 pb-4 pt-2'>
           <div className='grid gap-2'>
             <div className='flex items-center justify-between'>
-              <Label htmlFor='duration'>Duration</Label>
-              <span className='w-12 rounded-md border border-transparent px-2 py-0.5 text-right text-sm text-muted-foreground'>
-                {duration}s
-              </span>
+              <Label htmlFor='duration'>
+                Duration{' '}
+                <span className='text-xs text-slate-500'>(seconds)</span>
+              </Label>
             </div>
-            <Slider
-              id='duration'
-              max={10}
-              min={1}
-              defaultValue={[1]}
-              value={[duration]}
-              step={1}
-              onValueChange={handleValueChange}
-              className='[&_[role=slider]]:h-4 [&_[role=slider]]:w-4'
-              aria-label='Duration'
-              disabled={isPlaying}
+            <Input
+              value={durationValue}
+              defaultValue={1}
+              onChange={handleDurationValueChange}
+              onBlur={handleDurationChange}
+              onKeyDown={handleKeyDown}
+              className='input-ring h-6 w-full px-2'
             />
           </div>
           <div className='mt-1.5 flex w-full flex-col gap-2'>
