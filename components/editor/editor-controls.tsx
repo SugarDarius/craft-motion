@@ -8,6 +8,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   CircleBackslashIcon,
+  Crosshair1Icon,
 } from '@radix-ui/react-icons'
 
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
@@ -90,6 +91,11 @@ export function EditorControls({
           disabled={!canDeleteAll}
         >
           <CircleBackslashIcon className='h-4 w-4' />
+        </Button>
+      </ControlTooltip>
+      <ControlTooltip text='Re-center'>
+        <Button variant='ghost' size='icon' disabled={!canControl}>
+          <Crosshair1Icon className='h-4 w-4' />
         </Button>
       </ControlTooltip>
       <ControlTooltip text='Undo' shortcut='⌘+Z'>
