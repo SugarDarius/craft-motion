@@ -16,5 +16,7 @@
   },
   "typescript.tsdk": "node_modules/typescript/lib",
   "editor.rulers": [110],
-  "prettier.printWidth": 110
-} 
+  "prettier.printWidth": 110,
+  "css.lint.unknownAtRules": "ignore",
+  "css.customData": [".vscode/css_custom_data.json"]
+}
