@@ -529,8 +529,10 @@ export function handleCanvasEditedObject({
 
 export function reCenterCanvas({
   fabricCanvasRef,
+  setZoom,
 }: {
   fabricCanvasRef: React.MutableRefObject<Canvas | null>
+  setZoom: (value: React.SetStateAction<number>) => void
 }): void {
   if (!fabricCanvasRef.current) {
     return
@@ -540,6 +542,8 @@ export function reCenterCanvas({
 
   canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
   canvas.renderAll()
+
+  setZoom(1)
 }
 
 export function runAnimation({
