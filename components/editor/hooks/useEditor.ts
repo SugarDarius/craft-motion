@@ -260,7 +260,7 @@ export function useEditor(): UseEditorReturnType {
 
   const handlePlay = useEvent((): void => {
     if (!isPlaying) {
-      runAnimation({ fabricCanvasRef, setPlayingState })
+      runAnimation({ fabricCanvasRef, setPlayingState, duration, ease })
     }
   })
 

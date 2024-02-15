@@ -556,6 +556,8 @@ export function runAnimation({
   setPlayingState,
 }: {
   fabricCanvasRef: React.MutableRefObject<Canvas | null>
+  duration: number
+  ease: string
   setPlayingState: (value: React.SetStateAction<boolean>) => void
 }): void {
   if (!fabricCanvasRef.current) {
