@@ -527,6 +527,21 @@ export function handleCanvasEditedObject({
   findAndSyncCraftMotionObjectInStorage(activeObject as ExtendedFabricObject)
 }
 
+export function reCenterCanvas({
+  fabricCanvasRef,
+}: {
+  fabricCanvasRef: React.MutableRefObject<Canvas | null>
+}): void {
+  if (!fabricCanvasRef.current) {
+    return
+  }
+
+  const canvas = fabricCanvasRef.current
+
+  canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
+  canvas.renderAll()
+}
+
 export function runAnimation({
   fabricCanvasRef,
   setPlayingState,
