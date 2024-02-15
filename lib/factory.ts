@@ -47,17 +47,14 @@ export function renderCanvas({
     fabricCanvasRef.current.clear()
 
     // @note: working box
-    const width = Math.round(fabricCanvasRef.current.getWidth()) * 0.6
-    const height = width / (16 / 9)
-
     const workingBoxRect = new fabric.Rect({
       name: 'Working box',
       originX: 'center',
       originY: 'center',
       left: fabricCanvasRef.current.getWidth() / 2,
       top: fabricCanvasRef.current.getHeight() / 2,
-      width,
-      height,
+      width: 1720,
+      height: 1080,
       fill: 'white',
       shadow: new fabric.Shadow({
         color: '#333333',
