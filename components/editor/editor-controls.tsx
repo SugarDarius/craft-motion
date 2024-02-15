@@ -93,7 +93,7 @@ export function EditorControls({
           <CircleBackslashIcon className='h-4 w-4' />
         </Button>
       </ControlTooltip>
-      <ControlTooltip text='Re-center'>
+      <ControlTooltip text='Re-center canvas'>
         <Button variant='ghost' size='icon' disabled={!canControl}>
           <Crosshair1Icon className='h-4 w-4' />
         </Button>
