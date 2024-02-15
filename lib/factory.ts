@@ -527,7 +527,7 @@ export function handleCanvasEditedObject({
   findAndSyncCraftMotionObjectInStorage(activeObject as ExtendedFabricObject)
 }
 
-export function reCenterCanvas({
+export function handleReCenterCanvas({
   fabricCanvasRef,
   setZoom,
 }: {
