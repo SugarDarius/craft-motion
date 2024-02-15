@@ -44,6 +44,7 @@ import {
   handleReCenterCanvas,
   runAnimation,
   handleCopyCanvasObject,
+  handlePasteCanvasObjects,
 } from '@/lib/factory'
 import { exportJSON } from '@/lib/export'
 import { useToast } from '@/components/ui/use-toast'
@@ -286,6 +287,17 @@ export function useEditor(): UseEditorReturnType {
     })
   })
 
+  const handlePaste = useEvent((): void => {
+    handlePasteCanvasObjects({
+      fabricCanvasRef,
+      syncCraftMotionObjectsInStorage,
+    }).then((pasted: boolean): void => {
+      if (pasted) {
+        toast({ description: 'Pasted from clipboard!' })
+      }
+    })
+  })
+
   useHotkeys('mod+z', () => undo(), { enabled: canUndo })
   useHotkeys('shift+mod+z', () => redo(), { enabled: canRedo })
   useHotkeys('backspace', () => handleDeleteObject(), {
@@ -316,6 +328,7 @@ export function useEditor(): UseEditorReturnType {
     []
   )
   useHotkeys('mod+c', () => handleCopy(), { enabled: activeObjectId !== null })
+  useHotkeys('mod+v', () => handlePaste(), { enabled: !isPlaying })
 
   useEffect(() => {
     const canvas = setupCanvas({ targetCanvasRef: canvasRef })

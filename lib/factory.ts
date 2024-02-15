@@ -1,5 +1,6 @@
 import type { Canvas, IEvent, IAnimationOptions } from 'fabric/fabric-impl'
 import { fabric } from 'fabric'
+import { nanoid } from 'nanoid'
 
 import type {
   ShapeType,
@@ -14,6 +15,7 @@ import type {
 import type { CanvasObjects } from './codex/liveblocks'
 
 import { createSpecificShape } from './shapes'
+import { generateRandomHexColor } from './colors'
 
 const CANVAS_BOX_ID = 'canvas-box'
 const WORKING_BOX_ID = '@working-box-rect'
@@ -620,4 +622,61 @@ export function handleCopyCanvasObject({
   return navigator.clipboard.writeText(
     JSON.stringify(activeObject.toJSON(['objectId']))
   )
+}
+
+export async function handlePasteCanvasObjects({
+  fabricCanvasRef,
+  syncCraftMotionObjectsInStorage,
+}: {
+  fabricCanvasRef: React.MutableRefObject<Canvas | null>
+  syncCraftMotionObjectsInStorage: (
+    craftMotionObject: CraftMotionObject | null
+  ) => void
+}): Promise<boolean> {
+  if (!fabricCanvasRef.current) {
+    return false
+  }
+
+  try {
+    const data = await navigator.clipboard.readText()
+    if (!data) {
+      return false
+    }
+
+    const canvas = fabricCanvasRef.current
+    const canvasObjectJSON = JSON.parse(data)
+
+    fabric.util.enlivenObjects(
+      [canvasObjectJSON],
+      (enlivenObjects: fabric.Object[]): void => {
+        for (const enlivenObject of enlivenObjects) {
+          const objectId = nanoid(16)
+
+          enlivenObject.left = (enlivenObject.left ?? 0) + 100
+          enlivenObject.top = (enlivenObject.top ?? 0) + 100
+          enlivenObject.fill = generateRandomHexColor()
+
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          enlivenObject.set('objectId', objectId)
+
+          const isRect = enlivenObject instanceof fabric.Rect
+
+          canvas.add(enlivenObject)
+          canvas.setActiveObject(enlivenObject)
+          syncCraftMotionObjectsInStorage({
+            objectId,
+            type: isRect ? 'rectangle' : 'circle',
+            fabricObject: enlivenObject as ExtendedFabricObject,
+          })
+        }
+      },
+      'fabric'
+    )
+
+    canvas.renderAll()
+    return true
+  } catch {
+    return false
+  }
 }
