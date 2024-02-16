@@ -258,6 +258,7 @@ export function handleCanvasObjectMoving({
   setInspectedObject,
 }: {
   canvas: Canvas
+  workingBoxRectRef: React.MutableRefObject<fabric.Rect | null>
   setActiveObjectId: (value: React.SetStateAction<string | null>) => void
   setInspectedObject: (
     value: React.SetStateAction<InspectedObject | null>

@@ -23,6 +23,7 @@ export function listenOnCanvasEvents({
   isCurrentUserDrawing,
   currentDrawnShapeRef,
   currentSelectedShapeRef,
+  workingBoxRectRef,
   setZoom,
   setActiveControl,
   setActiveObjectId,
@@ -93,6 +94,7 @@ export function listenOnCanvasEvents({
   canvas.on('object:moving', (): void => {
     handleCanvasObjectMoving({
       canvas,
+      workingBoxRectRef,
       setActiveObjectId,
       setInspectedObject,
     })
