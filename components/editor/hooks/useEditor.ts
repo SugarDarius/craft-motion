@@ -373,6 +373,8 @@ export function useEditor(): UseEditorReturnType {
 
     return (): void => {
       fabricCanvasRef.current?.dispose()
+      fabricCanvasRef.current = null
+
       window.removeEventListener('resize', handleWindowResize)
       disposeClipboardListener()
     }
