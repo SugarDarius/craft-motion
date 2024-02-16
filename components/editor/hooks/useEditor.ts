@@ -348,6 +348,7 @@ export function useEditor(): UseEditorReturnType {
     }, 200)
 
     window.addEventListener('resize', handleWindowResize)
+
     listenOnCanvasEvents({
       fabricCanvasRef,
       isCurrentUserDrawing,
