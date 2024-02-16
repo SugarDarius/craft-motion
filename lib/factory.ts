@@ -488,8 +488,8 @@ export function handleCanvasSelectionCreatedOrObjectScaled({
         y,
       })
     } else if (activeObject instanceof fabric.Circle) {
-      const scaleFactor = (scaleX + scaleY) / 2
-      const radius = (activeObject.radius ?? 0) / scaleFactor
+      const radius =
+        (activeObject.radius ?? 0) * activeObject.getObjectScaling().scaleX
 
       setInspectedObject({
         objectId,
@@ -552,6 +552,8 @@ export function handleCanvasEditedObject({
     activeObject instanceof fabric.Circle &&
     editedInspectedProperties.type === 'circle'
   ) {
+    activeObject.set('scaleX', 1)
+    activeObject.set('scaleY', 1)
     activeObject.setRadius(editedInspectedProperties.radius)
   }
 
