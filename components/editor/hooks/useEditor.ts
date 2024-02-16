@@ -31,21 +31,15 @@ import {
   setupCanvas,
   renderCanvas,
   handleCanvasWindowResize,
-  handleCanvasZoom,
-  handleCanvasMouseDown,
-  handleCanvasMouseUp,
-  handleCanvasMouseMove,
-  handleCanvasObjectMoving,
-  handleCanvasObjectModified,
   handleDeleteCanvasObjectById,
   handleDeleteAllCanvasObjects,
-  handleCanvasSelectionCreatedOrObjectScaled,
   handleCanvasEditedObject,
   handleReCenterCanvas,
   runAnimation,
   handleCopyCanvasObject,
   handlePasteCanvasObjects,
 } from '@/lib/factory'
+import { listenOnCanvasEvents } from '@/lib/canvas-event-listener'
 import { exportJSON } from '@/lib/export'
 import { useToast } from '@/components/ui/use-toast'
 
@@ -331,96 +325,28 @@ export function useEditor(): UseEditorReturnType {
   useHotkeys('mod+v', () => handlePaste(), { enabled: !isPlaying })
 
   useEffect(() => {
-    const canvas = setupCanvas({ targetCanvasRef: canvasRef })
-    // We need to be able to work on the canvas outside this side effect
-    fabricCanvasRef.current = canvas
+    fabricCanvasRef.current = setupCanvas({ targetCanvasRef: canvasRef })
 
     const handleWindowResize = throttle((): void => {
       handleCanvasWindowResize({ fabricCanvasRef })
     }, 200)
+
     window.addEventListener('resize', handleWindowResize)
-
-    canvas.on('mouse:wheel', (options): void => {
-      handleCanvasZoom({ options, canvas, setZoom })
-    })
-
-    canvas.on('mouse:down', (options): void => {
-      handleCanvasMouseDown({
-        options,
-        canvas,
-        isCurrentUserDrawing,
-        currentDrawnShapeRef,
-        currentSelectedShapeRef,
-      })
-    })
-
-    canvas.on('mouse:up', (): void => {
-      handleCanvasMouseUp({
-        canvas,
-        isCurrentUserDrawing,
-        currentDrawnShapeRef,
-        currentSelectedShapeRef,
-        syncCraftMotionObjectsInStorage,
-        setActiveControl,
-      })
-    })
-
-    canvas.on('mouse:move', (options): void => {
-      handleCanvasMouseMove({
-        options,
-        canvas,
-        isCurrentUserDrawing,
-        currentDrawnShapeRef,
-        currentSelectedShapeRef,
-        syncCraftMotionObjectsInStorage,
-      })
-    })
-
-    canvas.on('object:moving', (options): void => {
-      handleCanvasObjectMoving({
-        options,
-        canvas,
-      })
-    })
-
-    canvas.on('object:modified', (options): void => {
-      handleCanvasObjectModified({
-        options,
-        findAndSyncCraftMotionObjectInStorage,
-      })
-    })
-
-    canvas.on('selection:created', (): void => {
-      handleCanvasSelectionCreatedOrObjectScaled({
-        canvas,
-        setActiveObjectId,
-        setInspectedObject,
-      })
-    })
-
-    canvas.on('selection:updated', (): void => {
-      handleCanvasSelectionCreatedOrObjectScaled({
-        canvas,
-        setActiveObjectId,
-        setInspectedObject,
-      })
-    })
-
-    canvas.on('selection:cleared', (): void => {
-      setActiveObjectId(null)
-      setInspectedObject(null)
-    })
-
-    canvas.on('object:scaling', (): void => {
-      handleCanvasSelectionCreatedOrObjectScaled({
-        canvas,
-        setActiveObjectId,
-        setInspectedObject,
-      })
+    listenOnCanvasEvents({
+      fabricCanvasRef,
+      isCurrentUserDrawing,
+      currentDrawnShapeRef,
+      currentSelectedShapeRef,
+      setZoom,
+      setActiveControl,
+      setActiveObjectId,
+      setInspectedObject,
+      syncCraftMotionObjectsInStorage,
+      findAndSyncCraftMotionObjectInStorage,
     })
 
     return (): void => {
-      canvas.dispose()
+      fabricCanvasRef.current?.dispose()
       window.removeEventListener('resize', handleWindowResize)
     }
   }, [
