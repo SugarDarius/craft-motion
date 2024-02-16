@@ -44,6 +44,7 @@ export function runAnimations({
             if (canvasObject instanceof fabric.Rect) {
               canvasObject.angle = 0
             }
+            canvas.renderAll()
             findAndSyncCraftMotionObjectInStorage(
               canvasObject as ExtendedFabricObject
             )
