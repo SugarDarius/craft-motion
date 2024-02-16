@@ -360,6 +360,7 @@ export function useEditor(): UseEditorReturnType {
       isCurrentUserDrawing,
       currentDrawnShapeRef,
       currentSelectedShapeRef,
+      workingBoxRectRef,
       setZoom,
       setActiveControl,
       setActiveObjectId,

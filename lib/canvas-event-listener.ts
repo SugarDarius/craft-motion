@@ -1,4 +1,4 @@
-import type { Canvas } from 'fabric/fabric-impl'
+import type { Canvas, Rect } from 'fabric/fabric-impl'
 
 import type {
   CraftMotionObject,
@@ -34,6 +34,7 @@ export function listenOnCanvasEvents({
   isCurrentUserDrawing: React.MutableRefObject<boolean>
   currentDrawnShapeRef: React.MutableRefObject<CraftMotionObject | null>
   currentSelectedShapeRef: React.MutableRefObject<ShapeType | null>
+  workingBoxRectRef: React.MutableRefObject<Rect | null>
   setZoom: (value: React.SetStateAction<number>) => void
   setActiveControl: (value: React.SetStateAction<ActiveControl | null>) => void
   setActiveObjectId: (value: React.SetStateAction<string | null>) => void
