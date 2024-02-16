@@ -121,8 +121,6 @@ export function handleCanvasMouseDown({
   ) {
     isCurrentUserDrawing.current = false
     canvas.setActiveObject(target)
-
-    target.setCoords()
   } else if (currentSelectedShapeRef.current) {
     isCurrentUserDrawing.current = true
 
