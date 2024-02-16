@@ -338,6 +338,7 @@ export function useEditor(): UseEditorReturnType {
   })
   useHotkeys('mod+c', () => handleCopy(), { enabled: activeObjectId !== null })
   useHotkeys('mod+v', () => handlePaste(), { enabled: canPaste && !isPlaying })
+  useHotkeys('space', () => handlePlay(), { enabled: canvasObjects.size > 0 })
 
   useEffect(() => {
     fabricCanvasRef.current = setupCanvas({ targetCanvasRef: canvasRef })
