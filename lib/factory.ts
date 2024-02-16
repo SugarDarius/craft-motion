@@ -61,7 +61,7 @@ export function renderCanvas({
       fill: '#fafafa',
       shadow: new fabric.Shadow({
         color: '#333333',
-        blur: 12,
+        blur: 4,
       }),
       selectable: false,
       hoverCursor: 'default',
