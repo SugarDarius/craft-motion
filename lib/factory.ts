@@ -155,22 +155,23 @@ export function handleCanvasMouseUp({
   ) => void
   setActiveControl: (value: React.SetStateAction<ActiveControl | null>) => void
 }): void {
-  isCurrentUserDrawing.current = false
-  syncCraftMotionObjectsInStorage(currentDrawnShapeRef.current)
-
   if (
-    currentDrawnShapeRef.current !== null &&
+    isCurrentUserDrawing.current === true &&
     currentDrawnShapeRef.current !== null
   ) {
+    isCurrentUserDrawing.current = false
+
     const allObjects = canvas.getObjects()
     const activeObject = canvas.getActiveObject()
     if (allObjects.length > 0 && activeObject === null) {
       canvas.setActiveObject(allObjects[allObjects.length - 1])
     }
-  }
 
-  currentDrawnShapeRef.current = null
-  currentSelectedShapeRef.current = null
+    syncCraftMotionObjectsInStorage(currentDrawnShapeRef.current)
+
+    currentDrawnShapeRef.current = null
+    currentSelectedShapeRef.current = null
+  }
 
   if (!canvas.isDrawingMode) {
     setActiveControl('select')
