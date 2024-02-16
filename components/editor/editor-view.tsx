@@ -28,6 +28,7 @@ export function EditorView() {
     onUndo,
     canRedo,
     onRedo,
+    onCopyObject,
     canDelete,
     onDeleteObject,
     onDeleteObjectById,
@@ -92,6 +93,7 @@ export function EditorView() {
           canvasObjects={canvasObjects}
           onLayerClick={onSelectObject}
           onLayerDelete={onDeleteObjectById}
+          onLayerCopy={onCopyObject}
           isDisabled={isPlaying}
         />
         <EditorCanvas

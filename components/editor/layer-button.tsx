@@ -18,6 +18,7 @@ export function LayerButton({
   type,
   isSelected,
   onClick,
+  onCopy,
   onDelete,
   isDisabled,
 }: {
@@ -25,6 +26,7 @@ export function LayerButton({
   type: ShapeType
   isSelected: boolean
   onClick: (objectId: string) => void
+  onCopy: () => void
   onDelete: (objectId: string) => void
   isDisabled: boolean
 }) {
@@ -41,7 +43,7 @@ export function LayerButton({
 
   return (
     <ContextMenu>
-      <ContextMenuTrigger className='flex h-auto w-full flex-col'>
+      <ContextMenuTrigger asChild>
         <Button
           variant='ghost'
           className='w-full items-center justify-start gap-2 rounded-none data-[selected=""]:bg-accent'
@@ -55,7 +57,7 @@ export function LayerButton({
         </Button>
       </ContextMenuTrigger>
       <ContextMenuContent>
-        <ContextMenuItem disabled>
+        <ContextMenuItem onClick={onCopy} disabled={!isSelected}>
           Copy
           <ContextMenuShortcut>⌘+C</ContextMenuShortcut>
         </ContextMenuItem>

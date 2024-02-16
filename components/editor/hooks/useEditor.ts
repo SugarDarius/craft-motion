@@ -56,6 +56,7 @@ type UseEditorReturnType = {
   onUndo: () => void
   canRedo: boolean
   onRedo: () => void
+  onCopyObject: () => void
   canDelete: boolean
   onDeleteObject: () => void
   onDeleteObjectById: (objectId: string) => void
@@ -382,6 +383,7 @@ export function useEditor(): UseEditorReturnType {
     onUndo: undo,
     canRedo: canRedo && !isPlaying,
     onRedo: redo,
+    onCopyObject: handleCopy,
     canDelete,
     onDeleteObject: handleDeleteObject,
     onDeleteObjectById: handleDeleteObjectById,
