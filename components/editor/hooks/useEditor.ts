@@ -38,6 +38,7 @@ import {
   runAnimation,
   handleCopyCanvasObject,
   handlePasteCanvasObjects,
+  handleSelectCanvasObject,
 } from '@/lib/factory'
 import { listenOnCanvasEvents } from '@/lib/canvas-event-listener'
 import { exportJSON } from '@/lib/export'
@@ -224,20 +225,11 @@ export function useEditor(): UseEditorReturnType {
   })
 
   const handleSelectObject = useEvent((objectId: string) => {
-    if (fabricCanvasRef.current) {
-      const canvasObjects = fabricCanvasRef.current.getObjects()
-      const objectToSelect = canvasObjects.find(
-        (canvasObject): boolean =>
-          (canvasObject as ExtendedFabricObject).objectId === objectId
-      )
-
-      if (objectToSelect) {
-        fabricCanvasRef.current.setActiveObject(objectToSelect)
-        setActiveObjectId((objectToSelect as ExtendedFabricObject).objectId)
-
-        fabricCanvasRef.current.requestRenderAll()
-      }
-    }
+    handleSelectCanvasObject({
+      fabricCanvasRef,
+      targetObjectId: objectId,
+      setActiveObjectId,
+    })
   })
 
   const handleEditedObject = useEvent(

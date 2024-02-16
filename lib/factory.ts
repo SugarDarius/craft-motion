@@ -585,6 +585,34 @@ export function handleReCenterCanvas({
   setZoom(1)
 }
 
+export function handleSelectCanvasObject({
+  fabricCanvasRef,
+  targetObjectId,
+  setActiveObjectId,
+}: {
+  fabricCanvasRef: React.MutableRefObject<Canvas | null>
+  targetObjectId: string
+  setActiveObjectId: (value: React.SetStateAction<string | null>) => void
+}): void {
+  if (!fabricCanvasRef.current) {
+    return
+  }
+
+  const canvas = fabricCanvasRef.current
+  const canvasObjects = canvas.getObjects()
+  const objectToSelect = canvasObjects.find(
+    (canvasObject): boolean =>
+      (canvasObject as ExtendedFabricObject).objectId === targetObjectId
+  )
+
+  if (objectToSelect) {
+    canvas.setActiveObject(objectToSelect)
+    setActiveObjectId((objectToSelect as ExtendedFabricObject).objectId)
+
+    fabricCanvasRef.current.requestRenderAll()
+  }
+}
+
 export function runAnimation({
   fabricCanvasRef,
   duration,
