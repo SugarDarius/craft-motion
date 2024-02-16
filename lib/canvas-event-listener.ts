@@ -15,7 +15,7 @@ import {
   handleCanvasObjectModified,
   handleCanvasObjectMoving,
   handleCanvasSelectionCreatedOrObjectScaled,
-  handleCanvasZoom,
+  handleCanvasZoomAndScroll,
 } from './factory'
 
 export function listenOnCanvasEvents({
@@ -54,7 +54,7 @@ export function listenOnCanvasEvents({
   const canvas = fabricCanvasRef.current
 
   canvas.on('mouse:wheel', (options): void => {
-    handleCanvasZoom({ options, canvas, setZoom })
+    handleCanvasZoomAndScroll({ options, canvas, setZoom })
   })
 
   canvas.on('mouse:down', (options): void => {

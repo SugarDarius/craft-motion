@@ -345,7 +345,7 @@ export function handleCanvasWindowResize({
   }
 }
 
-export function handleCanvasZoom({
+export function handleCanvasZoomAndScroll({
   options,
   canvas,
   setZoom,
