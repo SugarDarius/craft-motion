@@ -1,4 +1,4 @@
-import type { Canvas, IEvent, IAnimationOptions } from 'fabric/fabric-impl'
+import type { Canvas, IEvent } from 'fabric/fabric-impl'
 import { fabric } from 'fabric'
 import { nanoid } from 'nanoid'
 
@@ -17,8 +17,7 @@ import type { CanvasObjects } from './codex/liveblocks'
 import { createSpecificShape } from './shapes'
 import { generateRandomHexColor } from './colors'
 
-const CANVAS_BOX_ID = 'canvas-box'
-const WORKING_BOX_ID = '@working-box-rect'
+import { CANVAS_BOX_ID, WORKING_BOX_ID } from './constants'
 
 export function setupCanvas({
   targetCanvasRef,
@@ -625,57 +624,6 @@ export function handleDiscardSelectedCanvasObject({
   const canvas = fabricCanvasRef.current
   canvas.discardActiveObject()
   canvas.requestRenderAll()
-}
-
-export function runAnimation({
-  fabricCanvasRef,
-  duration,
-  ease,
-  setPlayingState,
-}: {
-  fabricCanvasRef: React.MutableRefObject<Canvas | null>
-  duration: number
-  ease: string
-  setPlayingState: (value: React.SetStateAction<boolean>) => void
-}): void {
-  if (!fabricCanvasRef.current) {
-    return
-  }
-
-  setPlayingState(true)
-
-  const canvas = fabricCanvasRef.current
-  const animations: Promise<void>[] = []
-
-  for (const canvasObject of canvas.getObjects()) {
-    const objectId = (canvasObject as ExtendedFabricObject).objectId
-    if (objectId !== WORKING_BOX_ID) {
-      const animation = new Promise<void>((resolve) => {
-        const options: IAnimationOptions = {
-          duration: duration * 1000, // milliseconds
-          onChange: canvas.renderAll.bind(canvas),
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          easing: ease === 'linear' ? undefined : fabric.util.ease[ease],
-          onComplete: resolve,
-        }
-
-        if (canvasObject instanceof fabric.Rect) {
-          canvasObject.animate('angle', 360, options)
-        } else if (canvasObject instanceof fabric.Circle) {
-          canvasObject.animate('left', (canvasObject.left ?? 0) + 100, options)
-        }
-      })
-
-      animations.push(animation)
-    }
-  }
-
-  canvas.discardActiveObject()
-
-  Promise.all(animations).finally(() => {
-    setPlayingState(false)
-  })
 }
 
 export function handleCopyCanvasObject({

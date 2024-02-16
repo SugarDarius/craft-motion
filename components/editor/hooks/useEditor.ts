@@ -37,13 +37,13 @@ import {
   handleDeleteAllCanvasObjects,
   handleCanvasEditedObject,
   handleReCenterCanvas,
-  runAnimation,
   handleCopyCanvasObject,
   handlePasteCanvasObjects,
   handleSelectCanvasObject,
   handleDiscardSelectedCanvasObject,
 } from '@/lib/factory'
 import { listenOnCanvasEvents } from '@/lib/canvas-event-listener'
+import { runAnimations } from '@/lib/animations'
 import { exportJSON } from '@/lib/export'
 
 import { useToast } from '@/components/ui/use-toast'
@@ -258,7 +258,7 @@ export function useEditor(): UseEditorReturnType {
 
   const handlePlay = useEvent((): void => {
     if (!isPlaying) {
-      runAnimation({ fabricCanvasRef, setPlayingState, duration, ease })
+      runAnimations({ fabricCanvasRef, setPlayingState, duration, ease })
     }
   })
 
