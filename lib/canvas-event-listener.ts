@@ -89,10 +89,19 @@ export function listenOnCanvasEvents({
     })
   })
 
-  canvas.on('object:moving', (options): void => {
+  canvas.on('object:moving', (): void => {
     handleCanvasObjectMoving({
-      options,
       canvas,
+      setActiveObjectId,
+      setInspectedObject,
+    })
+  })
+
+  canvas.on('object:scaling', (): void => {
+    handleCanvasSelectionCreatedOrObjectScaled({
+      canvas,
+      setActiveObjectId,
+      setInspectedObject,
     })
   })
 
@@ -122,13 +131,5 @@ export function listenOnCanvasEvents({
   canvas.on('selection:cleared', (): void => {
     setActiveObjectId(null)
     setInspectedObject(null)
-  })
-
-  canvas.on('object:scaling', (): void => {
-    handleCanvasSelectionCreatedOrObjectScaled({
-      canvas,
-      setActiveObjectId,
-      setInspectedObject,
-    })
   })
 }
