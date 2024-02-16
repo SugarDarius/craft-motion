@@ -29,6 +29,8 @@ export function EditorView() {
     canRedo,
     onRedo,
     onCopyObject,
+    canPaste,
+    onPasteObject,
     canDelete,
     onDeleteObject,
     onDeleteObjectById,
@@ -102,6 +104,8 @@ export function EditorView() {
           onUndo={onUndo}
           canRedo={canRedo}
           onRedo={onRedo}
+          canPaste={canPaste}
+          onPaste={onPasteObject}
         />
         <EditorInspector
           isPlaying={isPlaying}

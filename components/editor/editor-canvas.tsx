@@ -6,6 +6,7 @@ import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
+  ContextMenuSeparator,
   ContextMenuShortcut,
   ContextMenuTrigger,
 } from '@/components/ui/context-menu'
@@ -19,12 +20,16 @@ export function EditorCanvas({
   onUndo,
   canRedo,
   onRedo,
+  canPaste,
+  onPaste,
 }: {
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>
   canUndo: boolean
   onUndo: () => void
   canRedo: boolean
   onRedo: () => void
+  canPaste: boolean
+  onPaste: () => void
 }) {
   const updateMyPresence = useUpdateMyPresence()
 
@@ -55,6 +60,15 @@ export function EditorCanvas({
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent className='w-[180px]'>
+        {canPaste ? (
+          <>
+            <ContextMenuItem onClick={onPaste} disabled={!canPaste}>
+              Paste
+              <ContextMenuShortcut>⌘+V</ContextMenuShortcut>
+            </ContextMenuItem>
+            <ContextMenuSeparator />
+          </>
+        ) : null}
         <ContextMenuItem onClick={onUndo} disabled={!canUndo}>
           Undo
           <ContextMenuShortcut>⌘+Z</ContextMenuShortcut>

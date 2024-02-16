@@ -58,6 +58,7 @@ type UseEditorReturnType = {
   canRedo: boolean
   onRedo: () => void
   onCopyObject: () => void
+  onPasteObject: () => void
   canPaste: boolean
   canDelete: boolean
   onDeleteObject: () => void
@@ -330,7 +331,7 @@ export function useEditor(): UseEditorReturnType {
     enabled: activeObjectId !== null,
   })
   useHotkeys('mod+c', () => handleCopy(), { enabled: activeObjectId !== null })
-  useHotkeys('mod+v', () => handlePaste(), { enabled: !isPlaying })
+  useHotkeys('mod+v', () => handlePaste(), { enabled: canPaste && !isPlaying })
 
   useEffect(() => {
     fabricCanvasRef.current = setupCanvas({ targetCanvasRef: canvasRef })
@@ -393,7 +394,8 @@ export function useEditor(): UseEditorReturnType {
     canRedo: canRedo && !isPlaying,
     onRedo: redo,
     onCopyObject: handleCopy,
-    canPaste,
+    canPaste: canPaste && !isPlaying,
+    onPasteObject: handlePaste,
     canDelete,
     onDeleteObject: handleDeleteObject,
     onDeleteObjectById: handleDeleteObjectById,
