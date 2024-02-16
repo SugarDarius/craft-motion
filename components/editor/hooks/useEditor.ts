@@ -16,6 +16,7 @@ import {
   useStorage,
   useUndo,
 } from '@/liveblocks.config'
+
 import type {
   ShapeType,
   CraftMotionObject,
@@ -27,6 +28,7 @@ import type {
   EditedInspectedProperties,
 } from '@/lib/codex/inspector'
 import type { CanvasObjects } from '@/lib/codex/liveblocks'
+
 import {
   setupCanvas,
   renderCanvas,
@@ -39,9 +41,11 @@ import {
   handleCopyCanvasObject,
   handlePasteCanvasObjects,
   handleSelectCanvasObject,
+  handleDiscardSelectedCanvasObject,
 } from '@/lib/factory'
 import { listenOnCanvasEvents } from '@/lib/canvas-event-listener'
 import { exportJSON } from '@/lib/export'
+
 import { useToast } from '@/components/ui/use-toast'
 
 type UseEditorReturnType = {
@@ -284,6 +288,10 @@ export function useEditor(): UseEditorReturnType {
     })
   })
 
+  const handleDiscardSelectedObject = useEvent((): void => {
+    handleDiscardSelectedCanvasObject({ fabricCanvasRef })
+  })
+
   useHotkeys('mod+z', () => undo(), { enabled: canUndo })
   useHotkeys('shift+mod+z', () => redo(), { enabled: canRedo })
   useHotkeys('backspace', () => handleDeleteObject(), {
@@ -313,6 +321,9 @@ export function useEditor(): UseEditorReturnType {
     },
     []
   )
+  useHotkeys('escape', () => handleDiscardSelectedObject(), {
+    enabled: activeObjectId !== null,
+  })
   useHotkeys('mod+c', () => handleCopy(), { enabled: activeObjectId !== null })
   useHotkeys('mod+v', () => handlePaste(), { enabled: !isPlaying })
 

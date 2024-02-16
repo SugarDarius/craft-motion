@@ -613,6 +613,20 @@ export function handleSelectCanvasObject({
   }
 }
 
+export function handleDiscardSelectedCanvasObject({
+  fabricCanvasRef,
+}: {
+  fabricCanvasRef: React.MutableRefObject<Canvas | null>
+}): void {
+  if (!fabricCanvasRef.current) {
+    return
+  }
+
+  const canvas = fabricCanvasRef.current
+  canvas.discardActiveObject()
+  canvas.requestRenderAll()
+}
+
 export function runAnimation({
   fabricCanvasRef,
   duration,
