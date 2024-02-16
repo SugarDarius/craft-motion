@@ -11,11 +11,15 @@ export function runAnimations({
   duration,
   ease,
   setPlayingState,
+  findAndSyncCraftMotionObjectInStorage,
 }: {
   fabricCanvasRef: React.MutableRefObject<Canvas | null>
   duration: number
   ease: string
   setPlayingState: (value: React.SetStateAction<boolean>) => void
+  findAndSyncCraftMotionObjectInStorage: (
+    fabricObject: ExtendedFabricObject
+  ) => void
 }): void {
   if (!fabricCanvasRef.current) {
     return
@@ -36,7 +40,15 @@ export function runAnimations({
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           easing: ease === 'linear' ? undefined : fabric.util.ease[ease],
-          onComplete: resolve,
+          onComplete: (): void => {
+            if (canvasObject instanceof fabric.Rect) {
+              canvasObject.angle = 0
+            }
+            findAndSyncCraftMotionObjectInStorage(
+              canvasObject as ExtendedFabricObject
+            )
+            resolve()
+          },
         }
 
         if (canvasObject instanceof fabric.Rect) {

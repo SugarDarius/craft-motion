@@ -264,7 +264,13 @@ export function useEditor(): UseEditorReturnType {
 
   const handlePlay = useEvent((): void => {
     if (!isPlaying) {
-      runAnimations({ fabricCanvasRef, setPlayingState, duration, ease })
+      runAnimations({
+        fabricCanvasRef,
+        duration,
+        ease,
+        setPlayingState,
+        findAndSyncCraftMotionObjectInStorage,
+      })
     }
   })
 
