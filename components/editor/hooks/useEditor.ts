@@ -283,9 +283,12 @@ export function useEditor(): UseEditorReturnType {
     })
   })
 
-  const handleCopy = useEvent((): void => {
+  const handleCopy = useEvent((dispatchEvent: boolean = true): void => {
     handleCopyCanvasObject({ fabricCanvasRef }).then((): void => {
       toast({ description: 'Copied to clipboard!' })
+      if (dispatchEvent) {
+        window.dispatchEvent(new Event('copy'))
+      }
     })
   })
 
@@ -336,7 +339,9 @@ export function useEditor(): UseEditorReturnType {
   useHotkeys('escape', () => handleDiscardSelectedObject(), {
     enabled: activeObjectId !== null,
   })
-  useHotkeys('mod+c', () => handleCopy(), { enabled: activeObjectId !== null })
+  useHotkeys('mod+c', () => handleCopy(false), {
+    enabled: activeObjectId !== null,
+  })
   useHotkeys('mod+v', () => handlePaste(), { enabled: canPaste && !isPlaying })
   useHotkeys('space', () => handlePlay(), { enabled: canvasObjects.size > 0 })
 
