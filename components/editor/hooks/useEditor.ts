@@ -4,7 +4,7 @@ import useEvent from 'react-use-event-hook'
 import { useHotkeys } from 'react-hotkeys-hook'
 
 import { JsonObject } from '@liveblocks/client'
-import type { Canvas } from 'fabric/fabric-impl'
+import type { Canvas, Rect } from 'fabric/fabric-impl'
 
 import throttle from 'lodash/throttle'
 
@@ -85,6 +85,7 @@ type UseEditorReturnType = {
 export function useEditor(): UseEditorReturnType {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const fabricCanvasRef = useRef<Canvas | null>(null)
+  const workingBoxRectRef = useRef<Rect | null>(null)
 
   const isCurrentUserDrawing = useRef<boolean>(false)
   const currentDrawnShapeRef = useRef<CraftMotionObject | null>(null)
@@ -388,11 +389,12 @@ export function useEditor(): UseEditorReturnType {
     // Note: it would be better with a waiting promise
     // to redraw once a playing has finished
     if (!isPlaying) {
-      renderCanvas({
+      const { workingBoxRect } = renderCanvas({
         canvasObjects,
         fabricCanvasRef,
         activeObjectIdRef,
       })
+      workingBoxRectRef.current = workingBoxRect
     }
   }, [canvasObjects, isPlaying])
 

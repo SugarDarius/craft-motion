@@ -45,54 +45,58 @@ export function renderCanvas({
   canvasObjects: CanvasObjects
   fabricCanvasRef: React.MutableRefObject<Canvas | null>
   activeObjectIdRef: React.MutableRefObject<string | null>
-}): void {
-  if (fabricCanvasRef.current) {
-    fabricCanvasRef.current.clear()
-
-    // @note: working box
-    const workingBoxRect = new fabric.Rect({
-      name: 'Working box',
-      originX: 'center',
-      originY: 'center',
-      left: fabricCanvasRef.current.getWidth() / 2,
-      top: fabricCanvasRef.current.getHeight() / 2,
-      width: 1720,
-      height: 1080,
-      fill: '#fafafa',
-      shadow: new fabric.Shadow({
-        color: '#333333',
-        blur: 4,
-      }),
-      selectable: false,
-      hoverCursor: 'default',
-    })
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    workingBoxRect.set('objectId', WORKING_BOX_ID)
-
-    fabricCanvasRef.current.add(workingBoxRect)
-
-    for (const [objectId, canvasObject] of canvasObjects) {
-      const fabricObjectData = canvasObject.fabricObjectData
-
-      fabric.util.enlivenObjects(
-        [fabricObjectData],
-        (enlivenObjects: fabric.Object[]): void => {
-          for (const enlivenObject of enlivenObjects) {
-            if (activeObjectIdRef.current === objectId) {
-              fabricCanvasRef.current?.setActiveObject(enlivenObject)
-            }
-
-            fabricCanvasRef.current?.add(enlivenObject)
-          }
-        },
-        'fabric'
-      )
-    }
-
-    fabricCanvasRef.current.renderAll()
+}): { workingBoxRect: fabric.Rect | null } {
+  if (!fabricCanvasRef.current) {
+    return { workingBoxRect: null }
   }
+
+  fabricCanvasRef.current.clear()
+
+  // @note: working box
+  const workingBoxRect = new fabric.Rect({
+    name: 'Working box',
+    originX: 'center',
+    originY: 'center',
+    left: fabricCanvasRef.current.getWidth() / 2,
+    top: fabricCanvasRef.current.getHeight() / 2,
+    width: 1720,
+    height: 1080,
+    fill: '#fafafa',
+    shadow: new fabric.Shadow({
+      color: '#333333',
+      blur: 4,
+    }),
+    selectable: false,
+    hoverCursor: 'default',
+  })
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  workingBoxRect.set('objectId', WORKING_BOX_ID)
+
+  fabricCanvasRef.current.add(workingBoxRect)
+
+  for (const [objectId, canvasObject] of canvasObjects) {
+    const fabricObjectData = canvasObject.fabricObjectData
+
+    fabric.util.enlivenObjects(
+      [fabricObjectData],
+      (enlivenObjects: fabric.Object[]): void => {
+        for (const enlivenObject of enlivenObjects) {
+          if (activeObjectIdRef.current === objectId) {
+            fabricCanvasRef.current?.setActiveObject(enlivenObject)
+          }
+
+          fabricCanvasRef.current?.add(enlivenObject)
+        }
+      },
+      'fabric'
+    )
+  }
+
+  fabricCanvasRef.current.renderAll()
+
+  return { workingBoxRect }
 }
 
 export function handleCanvasMouseDown({
