@@ -30,6 +30,11 @@ export function LayerButton({
   onDelete: (objectId: string) => void
   isDisabled: boolean
 }) {
+  const handleOpenChange = useEvent((open: boolean): void => {
+    if (open) {
+      onClick(objectId)
+    }
+  })
   const handleClick = useEvent((): void => {
     onClick(objectId)
   })
@@ -42,7 +47,7 @@ export function LayerButton({
   const typeName = type.charAt(0).toUpperCase() + type.slice(1)
 
   return (
-    <ContextMenu>
+    <ContextMenu onOpenChange={handleOpenChange}>
       <ContextMenuTrigger asChild>
         <Button
           variant='ghost'
@@ -61,7 +66,10 @@ export function LayerButton({
           Copy
           <ContextMenuShortcut>⌘+C</ContextMenuShortcut>
         </ContextMenuItem>
-        <ContextMenuItem onClick={handleDelete}>Delete</ContextMenuItem>
+        <ContextMenuItem onClick={handleDelete}>
+          Delete
+          <ContextMenuShortcut>⌫</ContextMenuShortcut>
+        </ContextMenuItem>
       </ContextMenuContent>
     </ContextMenu>
   )
