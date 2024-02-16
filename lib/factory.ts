@@ -14,6 +14,8 @@ import type {
 } from './codex/inspector'
 import type { CanvasObjects } from './codex/liveblocks'
 
+import { getStringOrUndef } from './fabric-checkers'
+
 import { createSpecificShape } from './shapes'
 import { generateRandomHexColor } from './colors'
 
@@ -667,6 +669,15 @@ export async function handlePasteCanvasObjects({
 
     const canvas = fabricCanvasRef.current
     const canvasObjectJSON = JSON.parse(data)
+
+    const version = getStringOrUndef(canvasObjectJSON, 'version')
+    const objectId = getStringOrUndef(canvasObjectJSON, 'objectId')
+
+    // Clipboard data isn't a fabric object
+    // Pretty low as checker for now
+    if (!version || !objectId) {
+      return false
+    }
 
     fabric.util.enlivenObjects(
       [canvasObjectJSON],
