@@ -43,6 +43,7 @@ import {
   handleDiscardSelectedCanvasObject,
 } from '@/lib/factory'
 import { listenOnCanvasEvents } from '@/lib/canvas-event-listener'
+import { listenOnClipboardEvents } from '@/lib/clipboard-event-listener'
 import { runAnimations } from '@/lib/animations'
 import { exportJSON } from '@/lib/export'
 
@@ -57,6 +58,7 @@ type UseEditorReturnType = {
   canRedo: boolean
   onRedo: () => void
   onCopyObject: () => void
+  canPaste: boolean
   canDelete: boolean
   onDeleteObject: () => void
   onDeleteObjectById: (objectId: string) => void
@@ -100,6 +102,8 @@ export function useEditor(): UseEditorReturnType {
 
   const [inspectedObject, setInspectedObject] =
     useState<InspectedObject | null>(null)
+
+  const [canPaste, setCanPasteState] = useState<boolean>(false)
 
   const [duration, setDuration] = useState<number>(1)
   const [ease, setEase] = useState<string>('linear')
@@ -349,9 +353,14 @@ export function useEditor(): UseEditorReturnType {
       findAndSyncCraftMotionObjectInStorage,
     })
 
+    const disposeClipboardListener = listenOnClipboardEvents({
+      setCanPaste: setCanPasteState,
+    })
+
     return (): void => {
       fabricCanvasRef.current?.dispose()
       window.removeEventListener('resize', handleWindowResize)
+      disposeClipboardListener()
     }
   }, [
     canvasRef,
@@ -384,6 +393,7 @@ export function useEditor(): UseEditorReturnType {
     canRedo: canRedo && !isPlaying,
     onRedo: redo,
     onCopyObject: handleCopy,
+    canPaste,
     canDelete,
     onDeleteObject: handleDeleteObject,
     onDeleteObjectById: handleDeleteObjectById,
