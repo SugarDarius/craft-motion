@@ -571,6 +571,7 @@ export function handleCanvasSelectionCreatedOrObjectScaled({
       })
     }
 
+    canvas.requestRenderAll()
     setActiveObjectId(objectId)
   }
 }

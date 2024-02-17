@@ -51,13 +51,13 @@ export function createCircle({
     originX: 'center',
     originY: 'center',
     fill: generateRandomHexColor(),
+    lockSkewingX: true,
+    lockSkewingY: true,
   })
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   circle.set('objectId', id)
-  circle.set('lockScalingX', true)
-  circle.set('lockScalingY', true)
 
   return {
     objectId: id,
@@ -86,8 +86,8 @@ export function createSpecificShape({
 export type DimensionsBox = { width: number; height: number }
 
 export function getDimensionsBox(obj: fabric.Object): DimensionsBox {
-  const width = obj.width ?? 0
-  const height = obj.height ?? 0
+  const width = obj.getScaledWidth()
+  const height = obj.getScaledHeight()
 
   return { width, height }
 }
@@ -113,5 +113,5 @@ export function getBoundingBoxByOriginCenter(
 }
 
 export function getCircleRadius(circle: fabric.Circle): number {
-  return circle.radius ?? 0
+  return (circle.radius ?? 0) * circle.getObjectScaling().scaleX
 }
