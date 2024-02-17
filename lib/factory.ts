@@ -138,14 +138,20 @@ export function handleCanvasMouseDown({
     isCurrentUserDrawing.current = true
 
     // TODO: update based working box bounds
-    currentDrawnShapeRef.current = createSpecificShape({
+    const craftMotionObject = createSpecificShape({
       type: currentSelectedShapeRef.current,
       pointer: pointer as PointerEvent,
     })
 
-    if (currentDrawnShapeRef.current) {
-      canvas.add(currentDrawnShapeRef.current.fabricObject)
+    canvas.add(craftMotionObject.fabricObject)
+    // @note: lock skew and rotations for circle
+    if (craftMotionObject.fabricObject.type === 'circle') {
+      craftMotionObject.fabricObject.lockSkewingX = true
+      craftMotionObject.fabricObject.lockSkewingY = true
+      craftMotionObject.fabricObject.lockRotation = true
     }
+
+    currentDrawnShapeRef.current = craftMotionObject
   }
 }
 

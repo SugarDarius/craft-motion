@@ -51,8 +51,6 @@ export function createCircle({
     originX: 'center',
     originY: 'center',
     fill: generateRandomHexColor(),
-    lockSkewingX: true,
-    lockSkewingY: true,
   })
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
