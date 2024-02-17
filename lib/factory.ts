@@ -181,7 +181,6 @@ export function handleCanvasMouseDown({
   } else if (currentSelectedShapeRef.current) {
     isCurrentUserDrawing.current = true
 
-    // TODO: update based working box bounds
     const craftMotionObject = createSpecificShape({
       type: currentSelectedShapeRef.current,
       pointer,
