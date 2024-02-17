@@ -20,6 +20,7 @@ import type { BoundingBoxByOriginCenter } from './shapes'
 import {
   createSpecificShape,
   getBoundingBoxByOriginCenter,
+  getCircleRadius,
   getDimensionsBox,
 } from './shapes'
 import { generateRandomHexColor } from './colors'
@@ -323,6 +324,32 @@ export function handleCanvasObjectMoving({
       if (top + height > workingBoxBounding.top + workingBoxDimensions.height) {
         activeObject.top =
           workingBoxBounding.top + workingBoxDimensions.height - height / 2
+      }
+    } else if (activeObject instanceof fabric.Circle) {
+      const radius = getCircleRadius(activeObject)
+
+      if (left < workingBoxBounding.left) {
+        activeObject.left = workingBoxBounding.left + radius
+      }
+
+      if (top < workingBoxBounding.top) {
+        activeObject.top = workingBoxBounding.top + radius
+      }
+
+      if (
+        left + radius * 2 >
+        workingBoxBounding.left + workingBoxDimensions.width
+      ) {
+        activeObject.left =
+          workingBoxBounding.left + workingBoxDimensions.width - radius
+      }
+
+      if (
+        top + radius * 2 >
+        workingBoxBounding.top + workingBoxDimensions.height
+      ) {
+        activeObject.top =
+          workingBoxBounding.top + workingBoxDimensions.height - radius
       }
     }
   }
