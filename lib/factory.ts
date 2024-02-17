@@ -14,9 +14,14 @@ import type {
 } from './codex/inspector'
 import type { CanvasObjects } from './codex/liveblocks'
 
-import { getStringOrUndef } from './fabric-checkers'
+import { getStringOrUndef } from './fabric-json-checkers'
 
-import { createSpecificShape } from './shapes'
+import type { BoundingBoxByOriginCenter } from './shapes'
+import {
+  createSpecificShape,
+  getBoundingBoxByOriginCenter,
+  getDimensionsBox,
+} from './shapes'
 import { generateRandomHexColor } from './colors'
 
 import { CANVAS_BOX_ID, WORKING_BOX_ID } from './constants'
@@ -252,8 +257,24 @@ export function handleCanvasObjectModified({
   }
 }
 
+function isInsideWorkingBoxRect({
+  workingBoxBounding,
+  activeObjectBounding,
+}: {
+  workingBoxBounding: BoundingBoxByOriginCenter
+  activeObjectBounding: BoundingBoxByOriginCenter
+}): boolean {
+  return (
+    activeObjectBounding.left >= workingBoxBounding.left &&
+    activeObjectBounding.top >= workingBoxBounding.top &&
+    activeObjectBounding.right <= workingBoxBounding.right &&
+    activeObjectBounding.bottom <= workingBoxBounding.bottom
+  )
+}
+
 export function handleCanvasObjectMoving({
   canvas,
+  workingBoxRectRef,
   setActiveObjectId,
   setInspectedObject,
 }: {
@@ -265,52 +286,69 @@ export function handleCanvasObjectMoving({
   ) => void
 }): void {
   const activeObject = canvas.getActiveObject()
-  if (activeObject) {
-    const objectId = (activeObject as ExtendedFabricObject).objectId
-    const fill = activeObject.fill?.toString() ?? ''
+  if (!workingBoxRectRef.current || !activeObject) {
+    return
+  }
 
+  const workingBoxRect = workingBoxRectRef.current
+  const objectId = (activeObject as ExtendedFabricObject).objectId
+  const fill = activeObject.fill?.toString() ?? ''
+
+  const workingBoxBounding = getBoundingBoxByOriginCenter(workingBoxRect)
+  const workingBoxDimensions = getDimensionsBox(workingBoxRect)
+
+  const activeObjectBounding = getBoundingBoxByOriginCenter(activeObject)
+  const activeObjectDimensions = getDimensionsBox(activeObject)
+
+  if (!isInsideWorkingBoxRect({ workingBoxBounding, activeObjectBounding })) {
     activeObject.setCoords()
-    // TODO: update based working box bounds
-    activeObject.left = Math.max(
-      0,
-      Math.min(
-        activeObject.left ?? 0,
-        (canvas.width ?? 0) -
-          (activeObject.getScaledWidth() ?? activeObject.width ?? 0)
-      )
-    )
-    activeObject.top = Math.max(
-      0,
-      Math.min(
-        activeObject.top ?? 0,
-        (canvas.height ?? 0) -
-          (activeObject.getScaledHeight() ?? activeObject.height ?? 0)
-      )
-    )
+
+    const { left, top } = activeObjectBounding
+    const { width, height } = activeObjectDimensions
 
     if (activeObject instanceof fabric.Rect) {
-      setInspectedObject({
-        objectId,
-        type: 'rectangle',
-        width: activeObject.width ?? 0,
-        height: activeObject.height ?? 0,
-        fill,
-        x: activeObject.left,
-        y: activeObject.top,
-      })
-    } else if (activeObject instanceof fabric.Circle) {
-      setInspectedObject({
-        objectId,
-        type: 'circle',
-        radius: activeObject.radius ?? 0,
-        fill,
-        x: activeObject.left,
-        y: activeObject.top,
-      })
-    }
+      if (left < workingBoxBounding.left) {
+        activeObject.left = workingBoxBounding.left + width / 2
+      }
 
-    setActiveObjectId(objectId)
+      if (top < workingBoxBounding.top) {
+        activeObject.top = workingBoxBounding.top + height / 2
+      }
+
+      if (left + width > workingBoxBounding.left + workingBoxDimensions.width) {
+        activeObject.left =
+          workingBoxBounding.left + workingBoxDimensions.width - width / 2
+      }
+
+      if (top + height > workingBoxBounding.top + workingBoxDimensions.height) {
+        activeObject.top =
+          workingBoxBounding.top + workingBoxDimensions.height - height / 2
+      }
+    }
   }
+
+  if (activeObject instanceof fabric.Rect) {
+    setInspectedObject({
+      objectId,
+      type: 'rectangle',
+      width: activeObject.width ?? 0,
+      height: activeObject.height ?? 0,
+      fill,
+      x: activeObject.left ?? 0,
+      y: activeObject.top ?? 0,
+    })
+  } else if (activeObject instanceof fabric.Circle) {
+    setInspectedObject({
+      objectId,
+      type: 'circle',
+      radius: activeObject.radius ?? 0,
+      fill,
+      x: activeObject.left ?? 0,
+      y: activeObject.top ?? 0,
+    })
+  }
+
+  setActiveObjectId(objectId)
 }
 
 export function handleCanvasWindowResize({

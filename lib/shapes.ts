@@ -80,3 +80,36 @@ export function createSpecificShape({
       throw new Error('unsupported shape type: ' + type)
   }
 }
+
+export type DimensionsBox = { width: number; height: number }
+
+export function getDimensionsBox(obj: fabric.Object): DimensionsBox {
+  const width = obj.width ?? 0
+  const height = obj.height ?? 0
+
+  return { width, height }
+}
+
+export type BoundingBoxByOriginCenter = {
+  left: number
+  top: number
+  right: number
+  bottom: number
+}
+
+export function getBoundingBoxByOriginCenter(
+  obj: fabric.Object
+): BoundingBoxByOriginCenter {
+  const { width, height } = getDimensionsBox(obj)
+
+  const left = (obj.left ?? 0) - width / 2
+  const top = (obj.top ?? 0) - height / 2
+  const right = left + width
+  const bottom = top + height
+
+  return { left, top, right, bottom }
+}
+
+export function getCircleRadius(circle: fabric.Circle): number {
+  return circle.radius ?? 0
+}

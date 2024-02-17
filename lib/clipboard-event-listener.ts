@@ -1,4 +1,4 @@
-import { getStringOrUndef } from './fabric-checkers'
+import { getStringOrUndef } from './fabric-json-checkers'
 
 type DisposeFn = () => void
 export function listenOnClipboardEvents({
