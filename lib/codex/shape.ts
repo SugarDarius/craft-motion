@@ -21,3 +21,13 @@ export type CraftMotionObject = {
   type: ShapeType
   fabricObject: ExtendedFabricObject
 }
+
+export type Pointer = { x: number; y: number }
+export type DimensionsBox = { width: number; height: number }
+export type BoundingBoxByOriginCenter = {
+  left: number
+  top: number
+  right: number
+  bottom: number
+}
+export type RelativePosition = { x: number; y: number }

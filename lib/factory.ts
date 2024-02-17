@@ -6,6 +6,9 @@ import type {
   ShapeType,
   CraftMotionObject,
   ExtendedFabricObject,
+  BoundingBoxByOriginCenter,
+  DimensionsBox,
+  Pointer,
 } from './codex/shape'
 import type { ActiveControl } from './codex/control'
 import type {
@@ -15,8 +18,6 @@ import type {
 import type { CanvasObjects } from './codex/liveblocks'
 
 import { getStringOrUndef } from './fabric-json-checkers'
-
-import type { BoundingBoxByOriginCenter } from './shapes'
 import {
   createSpecificShape,
   getBoundingBoxByOriginCenter,
@@ -108,20 +109,63 @@ export function renderCanvas({
   return { workingBoxRect }
 }
 
+function isPointerInsideWorkingBoxRect({
+  workingBoxBounding,
+  workingBoxDimensions,
+  pointer,
+}: {
+  workingBoxBounding: BoundingBoxByOriginCenter
+  workingBoxDimensions: DimensionsBox
+  pointer: Pointer
+}): boolean {
+  const { left, top } = workingBoxBounding
+  const { width, height } = workingBoxDimensions
+
+  return (
+    pointer.x >= left &&
+    pointer.x <= left + width &&
+    pointer.y >= top &&
+    pointer.y <= top + height
+  )
+}
+
 export function handleCanvasMouseDown({
   options,
   canvas,
+  workingBoxRectRef,
   isCurrentUserDrawing,
   currentDrawnShapeRef,
   currentSelectedShapeRef,
 }: {
   options: IEvent<MouseEvent>
   canvas: Canvas
+  workingBoxRectRef: React.MutableRefObject<fabric.Rect | null>
   isCurrentUserDrawing: React.MutableRefObject<boolean>
   currentDrawnShapeRef: React.MutableRefObject<CraftMotionObject | null>
   currentSelectedShapeRef: React.MutableRefObject<ShapeType | null>
 }): void {
+  if (!workingBoxRectRef.current) {
+    return
+  }
+
+  const workingBoxRect = workingBoxRectRef.current
+  const workingBoxBounding = getBoundingBoxByOriginCenter(workingBoxRect)
+  const workingBoxDimensions = getDimensionsBox(workingBoxRect)
+
   const pointer = canvas.getPointer(options.e)
+
+  const isPointerInsideWorkingBox = isPointerInsideWorkingBoxRect({
+    workingBoxBounding,
+    workingBoxDimensions,
+    pointer,
+  })
+
+  // Do nothing if we're outside the working box
+  if (!isPointerInsideWorkingBox) {
+    currentSelectedShapeRef.current = null
+    return
+  }
+
   const target = canvas.findTarget(options.e, false)
 
   canvas.isDrawingMode = false
@@ -140,11 +184,11 @@ export function handleCanvasMouseDown({
     // TODO: update based working box bounds
     const craftMotionObject = createSpecificShape({
       type: currentSelectedShapeRef.current,
-      pointer: pointer as PointerEvent,
+      pointer,
     })
 
     canvas.add(craftMotionObject.fabricObject)
-    // @note: lock skew and rotations for circle
+    // Lock skew and rotations for circle
     if (craftMotionObject.fabricObject.type === 'circle') {
       craftMotionObject.fabricObject.lockSkewingX = true
       craftMotionObject.fabricObject.lockSkewingY = true
@@ -310,7 +354,12 @@ export function handleCanvasObjectMoving({
   const activeObjectBounding = getBoundingBoxByOriginCenter(activeObject)
   const activeObjectDimensions = getDimensionsBox(activeObject)
 
-  if (!isInsideWorkingBoxRect({ workingBoxBounding, activeObjectBounding })) {
+  const isInsideWorkingBox = isInsideWorkingBoxRect({
+    workingBoxBounding,
+    activeObjectBounding,
+  })
+
+  if (!isInsideWorkingBox) {
     activeObject.setCoords()
 
     const { left, top } = activeObjectBounding

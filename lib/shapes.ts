@@ -5,6 +5,10 @@ import type {
   ShapeType,
   CraftMotionObject,
   ExtendedFabricObject,
+  Pointer,
+  DimensionsBox,
+  BoundingBoxByOriginCenter,
+  RelativePosition,
 } from './codex/shape'
 import { generateRandomHexColor } from './colors'
 
@@ -14,7 +18,7 @@ fabric.Object.prototype.borderColor = '#8b5cf6'
 export function createRect({
   pointer,
 }: {
-  pointer: PointerEvent
+  pointer: Pointer
 }): CraftMotionObject {
   const id = nanoid(16)
   const rect = new fabric.Rect({
@@ -41,7 +45,7 @@ export function createRect({
 export function createCircle({
   pointer,
 }: {
-  pointer: PointerEvent
+  pointer: Pointer
 }): CraftMotionObject {
   const id = nanoid(16)
   const circle = new fabric.Circle({
@@ -69,7 +73,7 @@ export function createSpecificShape({
   pointer,
 }: {
   type: ShapeType
-  pointer: PointerEvent
+  pointer: Pointer
 }): CraftMotionObject {
   switch (type) {
     case 'rectangle':
@@ -81,20 +85,12 @@ export function createSpecificShape({
   }
 }
 
-type DimensionsBox = { width: number; height: number }
 export function getDimensionsBox(obj: fabric.Object): DimensionsBox {
   const scaling = obj.getObjectScaling()
   const width = (obj.width ?? 0) * scaling.scaleX
   const height = (obj.height ?? 0) * scaling.scaleY
 
   return { width, height }
-}
-
-export type BoundingBoxByOriginCenter = {
-  left: number
-  top: number
-  right: number
-  bottom: number
 }
 
 export function getBoundingBoxByOriginCenter(
@@ -114,7 +110,6 @@ export function getCircleRadius(circle: fabric.Circle): number {
   return (circle.radius ?? 0) * circle.getObjectScaling().scaleX
 }
 
-type RelativePosition = { x: number; y: number }
 export function getRelativePosition(
   parent: fabric.Object,
   child: fabric.Object

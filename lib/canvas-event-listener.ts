@@ -63,6 +63,7 @@ export function listenOnCanvasEvents({
     handleCanvasMouseDown({
       options,
       canvas,
+      workingBoxRectRef,
       isCurrentUserDrawing,
       currentDrawnShapeRef,
       currentSelectedShapeRef,
