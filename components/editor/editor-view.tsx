@@ -41,6 +41,7 @@ export function EditorView() {
     canvasObjects,
     onSelectObject,
     zoom,
+    onResetZoom,
     duration,
     onChangeDuration,
     ease,
@@ -106,6 +107,8 @@ export function EditorView() {
           onRedo={onRedo}
           canPaste={canPaste}
           onPaste={onPasteObject}
+          zoom={zoom}
+          onResetZoom={onResetZoom}
         />
         <EditorInspector
           isPlaying={isPlaying}

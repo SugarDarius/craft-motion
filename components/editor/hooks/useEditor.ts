@@ -41,6 +41,7 @@ import {
   handlePasteCanvasObjects,
   handleSelectCanvasObject,
   handleDiscardSelectedCanvasObject,
+  handleCanvasResetZoom,
 } from '@/lib/factory'
 import { listenOnCanvasEvents } from '@/lib/canvas-event-listener'
 import { listenOnClipboardEvents } from '@/lib/clipboard-event-listener'
@@ -70,6 +71,7 @@ type UseEditorReturnType = {
   canvasObjects: CanvasObjects
   onSelectObject: (objectId: string) => void
   zoom: number
+  onResetZoom: () => void
   duration: number
   onChangeDuration: (duration: number) => void
   ease: string
@@ -233,6 +235,10 @@ export function useEditor(): UseEditorReturnType {
 
   const handleReCenter = useEvent((): void => {
     handleReCenterCanvas({ fabricCanvasRef, setZoom })
+  })
+
+  const handleResetZoom = useEvent((): void => {
+    handleCanvasResetZoom({ fabricCanvasRef, setZoom })
   })
 
   const handleSelectObject = useEvent((objectId: string) => {
@@ -425,6 +431,7 @@ export function useEditor(): UseEditorReturnType {
     canvasObjects,
     onSelectObject: handleSelectObject,
     zoom,
+    onResetZoom: handleResetZoom,
     duration,
     onChangeDuration: handleChangeDuration,
     ease,

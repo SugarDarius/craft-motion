@@ -6,8 +6,12 @@ import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
+  ContextMenuLabel,
   ContextMenuSeparator,
   ContextMenuShortcut,
+  ContextMenuSub,
+  ContextMenuSubContent,
+  ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from '@/components/ui/context-menu'
 import { useUpdateMyPresence } from '@/liveblocks.config'
@@ -22,6 +26,8 @@ export function EditorCanvas({
   onRedo,
   canPaste,
   onPaste,
+  zoom,
+  onResetZoom,
 }: {
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>
   canUndo: boolean
@@ -30,6 +36,8 @@ export function EditorCanvas({
   onRedo: () => void
   canPaste: boolean
   onPaste: () => void
+  zoom: number
+  onResetZoom: () => void
 }) {
   const updateMyPresence = useUpdateMyPresence()
 
@@ -46,6 +54,8 @@ export function EditorCanvas({
     updateMyPresence({ cursor: null })
   })
 
+  const zoomPercent = Math.round(zoom * 100)
+
   return (
     <ContextMenu>
       <ContextMenuTrigger asChild>
@@ -60,6 +70,22 @@ export function EditorCanvas({
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent className='w-[180px]'>
+        <ContextMenuSub>
+          <ContextMenuSubTrigger>Zoom</ContextMenuSubTrigger>
+          <ContextMenuSubContent className='w-[180px]'>
+            <ContextMenuLabel className='text-zinc-500'>
+              {zoomPercent}%
+            </ContextMenuLabel>
+            <ContextMenuSeparator />
+            <ContextMenuItem
+              onClick={onResetZoom}
+              disabled={zoomPercent === 100}
+            >
+              Reset zoom
+            </ContextMenuItem>
+          </ContextMenuSubContent>
+        </ContextMenuSub>
+        <ContextMenuSeparator />
         {canPaste ? (
           <>
             <ContextMenuItem onClick={onPaste} disabled={!canPaste}>

@@ -723,6 +723,23 @@ export function handleReCenterCanvas({
   setZoom(1)
 }
 
+export function handleCanvasResetZoom({
+  fabricCanvasRef,
+  setZoom,
+}: {
+  fabricCanvasRef: React.MutableRefObject<Canvas | null>
+  setZoom: (value: React.SetStateAction<number>) => void
+}): void {
+  if (!fabricCanvasRef.current) {
+    return
+  }
+
+  const canvas = fabricCanvasRef.current
+  canvas.zoomToPoint({ x: canvas.getWidth() / 2, y: canvas.getHeight() / 2 }, 1)
+
+  setZoom(1)
+}
+
 export function handleSelectCanvasObject({
   fabricCanvasRef,
   targetObjectId,
