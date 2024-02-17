@@ -83,8 +83,7 @@ export function createSpecificShape({
   }
 }
 
-export type DimensionsBox = { width: number; height: number }
-
+type DimensionsBox = { width: number; height: number }
 export function getDimensionsBox(obj: fabric.Object): DimensionsBox {
   const width = obj.getScaledWidth()
   const height = obj.getScaledHeight()
@@ -114,4 +113,56 @@ export function getBoundingBoxByOriginCenter(
 
 export function getCircleRadius(circle: fabric.Circle): number {
   return (circle.radius ?? 0) * circle.getObjectScaling().scaleX
+}
+
+type RelativePosition = { x: number; y: number }
+export function getRelativePosition(
+  parent: fabric.Object,
+  child: fabric.Object
+): RelativePosition {
+  const parentBoundingBox = getBoundingBoxByOriginCenter(parent)
+  const childBoundingBox = getBoundingBoxByOriginCenter(child)
+
+  const x = Math.abs(childBoundingBox.left - parentBoundingBox.left)
+  const y = Math.abs(childBoundingBox.top - parentBoundingBox.top)
+
+  return { x, y }
+}
+
+export function setXRelativePosition(
+  parent: fabric.Object,
+  child: fabric.Object,
+  targetX: number
+): number {
+  const parentBoundingBox = getBoundingBoxByOriginCenter(parent)
+  const parentDimensions = getDimensionsBox(parent)
+
+  const childDimensions = getDimensionsBox(child)
+
+  const x = Math.min(
+    parentBoundingBox.left + parentDimensions.width - childDimensions.width / 2,
+    parentBoundingBox.left + targetX + childDimensions.width / 2
+  )
+
+  return x
+}
+
+export function setYRelativePosition(
+  parent: fabric.Object,
+  child: fabric.Object,
+  targetY: number
+): number {
+  const parentBoundingBox = getBoundingBoxByOriginCenter(parent)
+  const parentDimensions = getDimensionsBox(parent)
+
+  const childDimensions = getDimensionsBox(child)
+
+  const y = Math.min(
+    parentBoundingBox.top +
+      parentDimensions.height -
+      childDimensions.height / 2,
+    parentBoundingBox.top + targetY + childDimensions.height / 2
+  )
+
+  return y
 }

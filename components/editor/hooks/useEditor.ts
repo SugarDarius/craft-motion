@@ -247,6 +247,7 @@ export function useEditor(): UseEditorReturnType {
     (editedInspectedProperties: EditedInspectedProperties): void => {
       handleCanvasEditedObject({
         fabricCanvasRef,
+        workingBoxRectRef,
         editedInspectedProperties,
         setActiveObjectId,
         setInspectedObject,

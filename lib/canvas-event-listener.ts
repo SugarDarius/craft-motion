@@ -103,6 +103,7 @@ export function listenOnCanvasEvents({
   canvas.on('object:scaling', (): void => {
     handleCanvasSelectionCreatedOrObjectScaled({
       canvas,
+      workingBoxRectRef,
       setActiveObjectId,
       setInspectedObject,
     })
@@ -118,6 +119,7 @@ export function listenOnCanvasEvents({
   canvas.on('selection:created', (): void => {
     handleCanvasSelectionCreatedOrObjectScaled({
       canvas,
+      workingBoxRectRef,
       setActiveObjectId,
       setInspectedObject,
     })
@@ -126,6 +128,7 @@ export function listenOnCanvasEvents({
   canvas.on('selection:updated', (): void => {
     handleCanvasSelectionCreatedOrObjectScaled({
       canvas,
+      workingBoxRectRef,
       setActiveObjectId,
       setInspectedObject,
     })

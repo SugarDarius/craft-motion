@@ -22,6 +22,9 @@ import {
   getBoundingBoxByOriginCenter,
   getCircleRadius,
   getDimensionsBox,
+  getRelativePosition,
+  setXRelativePosition,
+  setYRelativePosition,
 } from './shapes'
 import { generateRandomHexColor } from './colors'
 
@@ -354,24 +357,28 @@ export function handleCanvasObjectMoving({
     }
   }
 
+  const { x, y } = getRelativePosition(workingBoxRect, activeObject)
+
   if (activeObject instanceof fabric.Rect) {
+    const { width, height } = getDimensionsBox(activeObject)
     setInspectedObject({
       objectId,
       type: 'rectangle',
-      width: activeObject.width ?? 0,
-      height: activeObject.height ?? 0,
+      width,
+      height,
       fill,
-      x: activeObject.left ?? 0,
-      y: activeObject.top ?? 0,
+      x,
+      y,
     })
   } else if (activeObject instanceof fabric.Circle) {
+    const radius = getCircleRadius(activeObject)
     setInspectedObject({
       objectId,
       type: 'circle',
-      radius: activeObject.radius ?? 0,
+      radius,
       fill,
-      x: activeObject.left ?? 0,
-      y: activeObject.top ?? 0,
+      x,
+      y,
     })
   }
 
@@ -392,10 +399,8 @@ export function handleCanvasWindowResize({
     const scaleMultiplierY = nextHeight / fabricCanvasRef.current.getHeight()
 
     for (const canvasObject of fabricCanvasRef.current.getObjects()) {
-      canvasObject.width =
-        (canvasObject.width ?? 0) * (canvasObject.scaleX ?? 0)
-      canvasObject.height =
-        (canvasObject.height ?? 0) * (canvasObject.scaleY ?? 0)
+      canvasObject.width = canvasObject.getScaledWidth()
+      canvasObject.height = canvasObject.getScaledHeight()
 
       canvasObject.scaleX = 1
       canvasObject.scaleY = 1
@@ -519,71 +524,67 @@ export function handleDeleteAllCanvasObjects({
 
 export function handleCanvasSelectionCreatedOrObjectScaled({
   canvas,
+  workingBoxRectRef,
   setActiveObjectId,
   setInspectedObject,
 }: {
   canvas: Canvas
+  workingBoxRectRef: React.MutableRefObject<fabric.Rect | null>
   setActiveObjectId: (value: React.SetStateAction<string | null>) => void
   setInspectedObject: (
     value: React.SetStateAction<InspectedObject | null>
   ) => void
 }): void {
   const activeObject = canvas.getActiveObject()
-  if (activeObject) {
-    const objectId = (activeObject as ExtendedFabricObject).objectId
-    const fill = activeObject.fill?.toString() ?? ''
-
-    const scaleX = activeObject.scaleX ?? 0
-    const scaleY = activeObject.scaleY ?? 0
-
-    const x = activeObject.left ?? 0
-    const y = activeObject.top ?? 0
-
-    if (activeObject instanceof fabric.Rect) {
-      const scaledWidth = scaleX
-        ? (activeObject.width ?? 0) * scaleX
-        : activeObject.width ?? 0
-
-      const scaledHeight = scaleY
-        ? (activeObject.height ?? 0) * scaleY
-        : activeObject.height ?? 0
-
-      setInspectedObject({
-        objectId,
-        type: 'rectangle',
-        width: scaledWidth,
-        height: scaledHeight,
-        fill,
-        x,
-        y,
-      })
-    } else if (activeObject instanceof fabric.Circle) {
-      const radius =
-        (activeObject.radius ?? 0) * activeObject.getObjectScaling().scaleX
-
-      setInspectedObject({
-        objectId,
-        type: 'circle',
-        radius,
-        fill,
-        x,
-        y,
-      })
-    }
-
-    canvas.requestRenderAll()
-    setActiveObjectId(objectId)
+  if (!workingBoxRectRef.current || !activeObject) {
+    return
   }
+
+  const workingBoxRect = workingBoxRectRef.current
+  const objectId = (activeObject as ExtendedFabricObject).objectId
+  const fill = activeObject.fill?.toString() ?? ''
+
+  const { x, y } = getRelativePosition(workingBoxRect, activeObject)
+
+  if (activeObject instanceof fabric.Rect) {
+    const { width, height } = getDimensionsBox(activeObject)
+
+    setInspectedObject({
+      objectId,
+      type: 'rectangle',
+      width,
+      height,
+      fill,
+      x,
+      y,
+    })
+  } else if (activeObject instanceof fabric.Circle) {
+    const radius = getCircleRadius(activeObject)
+
+    setInspectedObject({
+      objectId,
+      type: 'circle',
+      radius,
+      fill,
+      x,
+      y,
+    })
+  }
+
+  canvas.requestRenderAll()
+  setActiveObjectId(objectId)
 }
 
 export function handleCanvasEditedObject({
   fabricCanvasRef,
+  workingBoxRectRef,
   editedInspectedProperties,
   setActiveObjectId,
   setInspectedObject,
   findAndSyncCraftMotionObjectInStorage,
 }: {
   fabricCanvasRef: React.MutableRefObject<Canvas | null>
+  workingBoxRectRef: React.MutableRefObject<fabric.Rect | null>
   editedInspectedProperties: EditedInspectedProperties
   setActiveObjectId: (value: React.SetStateAction<string | null>) => void
   setInspectedObject: (
@@ -600,10 +601,11 @@ export function handleCanvasEditedObject({
   const canvas = fabricCanvasRef.current
   const activeObject = canvas.getActiveObject()
 
-  if (!activeObject) {
+  if (!workingBoxRectRef.current || !activeObject) {
     return
   }
 
+  const workingBoxRect = workingBoxRectRef.current
   const objectId = (activeObject as ExtendedFabricObject).objectId
   if (objectId !== editedInspectedProperties.objectId) {
     // @note we should throw an error here
@@ -628,8 +630,19 @@ export function handleCanvasEditedObject({
     activeObject.setRadius(editedInspectedProperties.radius)
   }
 
-  activeObject.set('left', editedInspectedProperties.x)
-  activeObject.set('top', editedInspectedProperties.y)
+  const x = setXRelativePosition(
+    workingBoxRect,
+    activeObject,
+    editedInspectedProperties.x
+  )
+  const y = setYRelativePosition(
+    workingBoxRect,
+    activeObject,
+    editedInspectedProperties.y
+  )
+
+  activeObject.set('left', x)
+  activeObject.set('top', y)
   activeObject.set('fill', editedInspectedProperties.fill)
 
   setActiveObjectId(objectId)
