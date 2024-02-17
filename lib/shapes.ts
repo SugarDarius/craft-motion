@@ -56,6 +56,8 @@ export function createCircle({
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   circle.set('objectId', id)
+  circle.set('lockScalingX', true)
+  circle.set('lockScalingY', true)
 
   return {
     objectId: id,
