@@ -85,8 +85,9 @@ export function createSpecificShape({
 
 type DimensionsBox = { width: number; height: number }
 export function getDimensionsBox(obj: fabric.Object): DimensionsBox {
-  const width = obj.getScaledWidth()
-  const height = obj.getScaledHeight()
+  const scaling = obj.getObjectScaling()
+  const width = (obj.width ?? 0) * scaling.scaleX
+  const height = (obj.height ?? 0) * scaling.scaleY
 
   return { width, height }
 }
