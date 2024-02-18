@@ -16,6 +16,20 @@ A simple project to craft animations with care
 npm install
 ```
 
+## Liveblocks.io config
+
+To make liveblocks working to need to create a `.env.local` file
+
+```sh
+touch .env.local
+```
+
+and into it your public development key from liveblocks
+
+```sh
+NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY=<your_liveblocks_public_key>
+```
+
 ## Running locally
 
 ```sh
