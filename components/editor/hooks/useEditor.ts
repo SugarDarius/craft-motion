@@ -78,6 +78,7 @@ type UseEditorReturnType = {
   onSelectEase: (ease: string) => void
   inspectedObject: InspectedObject | null
   onEditedObject: (editedInspectedProperties: EditedInspectedProperties) => void
+  canPlay: boolean
   isPlaying: boolean
   onPlay: () => void
   canExport: boolean
@@ -409,6 +410,7 @@ export function useEditor(): UseEditorReturnType {
   const canDelete =
     canvasObjects.size > 0 && activeObjectId !== null && !isPlaying
   const canDeleteAllOrExport = canvasObjects.size > 0 && !isPlaying
+  const canPlay = canvasObjects.size > 0
 
   return {
     canvasRef,
@@ -438,6 +440,7 @@ export function useEditor(): UseEditorReturnType {
     onSelectEase: handleSelectEase,
     inspectedObject,
     onEditedObject: handleEditedObject,
+    canPlay,
     isPlaying,
     onPlay: handlePlay,
     canExport: canDeleteAllOrExport,

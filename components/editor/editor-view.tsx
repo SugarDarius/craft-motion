@@ -49,6 +49,7 @@ export function EditorView() {
     inspectedObject,
     onEditedObject,
     isPlaying,
+    canPlay,
     onPlay,
     canExport,
     onExportJSON,
@@ -116,6 +117,7 @@ export function EditorView() {
           onChangeDuration={onChangeDuration}
           ease={ease}
           onSelectEase={onSelectEase}
+          canPlay={canPlay}
           onPlay={onPlay}
         >
           {inspectedObject ? (

@@ -17,6 +17,7 @@ export function EditorInspector({
   onChangeDuration,
   ease,
   onSelectEase,
+  canPlay,
   onPlay,
   children,
 }: {
@@ -25,6 +26,7 @@ export function EditorInspector({
   onChangeDuration: (duration: number) => void
   ease: string
   onSelectEase: (ease: string) => void
+  canPlay: boolean
   onPlay: () => void
   children: React.ReactNode
 }) {
@@ -99,7 +101,11 @@ export function EditorInspector({
           </div>
         </div>
         <div className='w-full flex-shrink-0 border-t-2 px-4 py-2'>
-          <Button className='w-full' disabled={isPlaying} onClick={onPlay}>
+          <Button
+            className='w-full'
+            disabled={!canPlay || isPlaying}
+            onClick={onPlay}
+          >
             <PlayIcon
               className={`${isPlaying ? 'animate-shake' : ''} mr-2 h-4 w-4`}
             />
